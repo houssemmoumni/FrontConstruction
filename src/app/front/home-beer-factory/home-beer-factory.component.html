@@ -1,0 +1,48 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light17></app-header-light17>
+  <!-- header END -->
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- Slider -->
+    <div class="main-slider style-two default-banner">
+      <app-slider10></app-slider10>
+    </div>
+    <!-- Slider END -->
+    <!-- contact area -->
+    <div class="content-block">
+      <app-content7 [data]="story"></app-content7>
+      <!-- About Us End -->
+      <!-- Our Services -->
+      <app-services-element13></app-services-element13>
+      <!-- Our Services End -->
+      <!-- Latest Project -->
+      <app-services-element14></app-services-element14>
+      <!-- Latest Project End -->
+      <!-- Team Section -->
+      <app-team13 [data]="our_team"></app-team13>
+      <!-- Team Section End -->
+      <!-- About Me End -->
+      <div class="section-full content-inner overlay-black-middle bg-img-fix"
+        style="background-image:url(assets/images/background/bg15.jpg);">
+        <div class="container">
+          <div class="section-head style2 text-center text-white">
+            <h2 class="title">Latest blog post</h2>
+            <p>There are many variations of passages of Lorem Ipsum typesetting industry has been the industry's standard dummy text ever since the been when an unknown printer.</p>
+          </div>
+          <app-blog5 [data]="blogs"></app-blog5>
+        </div>
+      </div>
+      <!-- Services -->
+      <!-- Latest blog -->
+      <app-testimonial11 [data]="testimonials"></app-testimonial11>
+      <!-- Latest blog END -->
+    </div>
+    <!-- contact area END -->
+  </div>
+  <!-- Content END -->
+  <!-- Footer -->
+  <app-footer9></app-footer9>
+  <!-- Footer END -->
+  <button class="scroltop style2 radius" (click)="scroll_top()" type="button"><i class="fa fa-arrow-up"></i></button>
+</div>
