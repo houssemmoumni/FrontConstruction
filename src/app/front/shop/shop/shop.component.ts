@@ -1,10 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CurrencyPipe, NgClass } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink,Router } from '@angular/router';
 import { Banner1Component } from '../../elements/banner/banner1/banner1.component';
 import { HeaderLight3Component } from '../../elements/header/header-light3/header-light3.component';
 import { Footer19Component } from '../../elements/footer/footer19/footer19.component';
 import { IconBox3Component } from '../../elements/icon-box/icon-box3/icon-box3.component';
+import { MaterialService } from '../../../services/material.service';
+import { MaterialResponse } from '../../../models/material-response';
+import { CommonModule } from '@angular/common';
+import { CartService } from '../../../services/cart.service';
+import { Material } from '../../../models/material';
+import { MaterialStatus } from '../../../models/material-status';
+import { WishlistService } from '../../../services/wishlist.service';
+
+
 
 interface type {
   img: string,
@@ -16,6 +25,7 @@ interface type {
 @Component({
     selector: 'app-shop',
     imports: [
+      CommonModule,  // <-- add this
         RouterLink,
         NgClass,
         CurrencyPipe,
@@ -27,12 +37,17 @@ interface type {
     templateUrl: './shop.component.html',
     styleUrl: './shop.component.css'
 })
-export class ShopComponent {
+export class ShopComponent implements OnInit {
   banner: any = {
     pagetitle: "Shop Grid 4",
     bg_image: "assets/images/banner/bnr4.jpg",
     title: "Shop Grid 4",
   }
+  materials: MaterialResponse[] = [];
+  constructor(private materialService: MaterialService,private cartService: CartService,  private router: Router,       private wishlistService: WishlistService // Correct injection
+    // Inject WishlistService
+
+  ) { }
   scroll_top() {
     window.scroll({
       top: 0,
@@ -125,5 +140,74 @@ export class ShopComponent {
       price: '192',
       rating :3
     },
+
+    
   ]
+
+  ngOnInit(): void {
+this.loadMaterial()
+}
+
+loadMaterial() {
+  this.materialService.getAllMaterials().subscribe(data => {
+    this.materials = data;
+  });
+}
+trackById(index: number, item: MaterialResponse): number {
+  return item.id;
+}
+addToCart(item: MaterialResponse) {
+  const material: Material = {
+    id: item.id,
+    name: item.name,
+    description: item.description,
+    availableQuantity: item.availableQuantity,
+    price: item.price,
+    category: { 
+      id: 1, // Placeholder, update if category ID is available
+      name: item.categoryName,
+      description: '',
+      materials: []
+    },
+    status: item.status ?? MaterialStatus.DISPONIBLE, // Default status if undefined
+    createdBy: 1, // Placeholder, update if needed
+    image: item.image
+  };
+
+  this.cartService.addToCart(material);
+  console.log('Added to cart:', item);
+  this.router.navigate(['/front/shop-cart']);
+
+  
+
+}
+// Toggle item in wishlist
+toggleWishlist(item: MaterialResponse) {
+  if (this.isInWishlist(item.id)) {
+    this.wishlistService.removeFromWishlist(item.id);
+  } else {
+    const material: Material = {
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      availableQuantity: item.availableQuantity,
+      price: item.price,
+      category: {
+        id: 1, // Placeholder, update if category ID is available
+        name: item.categoryName,
+        description: '',
+        materials: [],
+      },
+      status: item.status ?? MaterialStatus.DISPONIBLE, // Default status if undefined
+      createdBy: 1, // Placeholder, update if needed
+      image: item.image,
+    };
+    this.wishlistService.addToWishlist(material);
+  }
+}
+
+// Check if item is in wishlist
+isInWishlist(itemId: number): boolean {
+  return this.wishlistService.isInWishlist(itemId);
+}
 }

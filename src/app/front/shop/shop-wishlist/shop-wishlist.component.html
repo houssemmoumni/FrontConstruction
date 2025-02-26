@@ -28,26 +28,25 @@
                 </tr>
               </thead>
               <tbody>
-                @for(item of product_list; track item; let i = $index){
-                <tr class="alert">
+                <tr class="alert" *ngFor="let item of wishlistItems; trackBy: trackById; let i = index">
                   <td class="product-item-img">
-                    <img src="{{ item.img }}" alt="">
+                    <img src="{{ item.image?.url }}" alt="">
                   </td>
-                  <td class="product-item-name">{{ item.title }}</td>
+                  <td class="product-item-name">{{ item.name }}</td>
                   <td class="product-item-price">{{ item.price | currency  }}</td>
                   <td class="product-item-quantity">
                     <div class="quantity btn-quantity max-w80">
-                      <input id="demo_vertical{{ i+3 }}" type="text" value="{{ item.quantity }}" name="demo_vertical2"/>
+                      <input id="demo_vertical{{ i+3 }}" type="text" value="1" name="demo_vertical2"/>
                     </div>
                   </td>
                   <td class="product-item-totle">
-                    <a [routerLink]="['/shop-cart']" class="site-button">Add To Cart</a>
+                    <a href="javascript:void(0);"(click)="moveToCart(item); $event.preventDefault();" class="site-button">Add To Cart</a>
                   </td>
                   <td class="product-item-close">
-                    <a href="javascript:void(0);" data-dismiss="alert" aria-label="close" class="ti-close"></a>
+                    <a href="javascript:void(0);" (click)="removeFromWishlist(item.id); $event.preventDefault();" data-dismiss="alert" aria-label="close" class="ti-close"></a>
                   </td>
                 </tr>
-                }
+                
               </tbody>
             </table>
           </div>

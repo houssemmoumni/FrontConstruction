@@ -69,56 +69,51 @@
                     </ng-container>
 
                     <!-- Task ID Column -->
-                    <ng-container matColumnDef="taskID">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Task ID
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.taskID}}
-                        </td>
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef>Task ID</th>
+                        <td mat-cell *matCellDef="let task">{{task?.id}}</td>
                     </ng-container>
 
-                    <!-- Task Name Column -->
-                    <ng-container matColumnDef="taskName">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Task Name
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.taskName}}
-                        </td>
-                    </ng-container>
+                  <!-- Title Column -->
+                  <ng-container matColumnDef="title">
+                    <th mat-header-cell *matHeaderCellDef>Title</th>
+                    <td mat-cell *matCellDef="let task">{{task?.title}}</td>
+                </ng-container>
 
-                    <!-- Assigned To Column -->
-                    <ng-container matColumnDef="assignedTo">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Assigned To
-                        </th>
-                        <td mat-cell *matCellDef="let element" class="text-black">
-                            {{element.assignedTo}}
-                        </td>
+                <!-- Description Column -->
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef>Description</th>
+                    <td mat-cell *matCellDef="let task">{{task?.description}}</td>
+                </ng-container>
+
+                     <!-- Assigned To Column -->
+                     <ng-container matColumnDef="assignedTo">
+                        <th mat-header-cell *matHeaderCellDef>Assigned To</th>
+                        <td mat-cell *matCellDef="let task">{{task?.assignedTo}}</td>
                     </ng-container>
 
                     <!-- Due Date Column -->
                     <ng-container matColumnDef="dueDate">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Due Date
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.dueDate}}
-                        </td>
-                    </ng-container>
-
-                    <!-- Priority Column -->
-                    <ng-container matColumnDef="priority">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Priority
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.priority}}
-                        </td>
+                        <th mat-header-cell *matHeaderCellDef>Due Date</th>
+                        <td mat-cell *matCellDef="let task">{{task?.dueDate | date}}</td>
                     </ng-container>
 
                     <!-- Status Column -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let task">{{task?.status}}</td>
+                    </ng-container>
+
+                    <!-- Actions Column -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>Actions</th>
+                        <td mat-cell *matCellDef="let task">
+                            <button mat-button (click)="updateTask(task)">Edit</button>
+                            <button mat-button (click)="deleteTask(task?.id)">Delete</button>
+                        </td>
+                    </ng-container>
+
+                    <!-- Status Column
                     <ng-container matColumnDef="status">
                         <th mat-header-cell *matHeaderCellDef>
                             Status
@@ -137,9 +132,9 @@
                                 {{element.status.notStarted}}
                             </span>
                         </td>
-                    </ng-container>
+                    </ng-container> -->
 
-                    <!-- Action Column -->
+                    <!-- Action Column
                     <ng-container matColumnDef="action">
                         <th mat-header-cell *matHeaderCellDef>
                             Action
@@ -163,7 +158,7 @@
                                 </button>
                             </div>
                         </td>
-                    </ng-container>
+                    </ng-container> -->
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -179,7 +174,6 @@
     </mat-card-content>
 </mat-card>
 
-<!-- Popup -->
 <div
     class="add-new-task-popup"
     [class.active]="classApplied"
@@ -190,7 +184,7 @@
             <mat-card-header>
                 <mat-card-title>
                     <h5 class="mb-0">
-                        Add New Task
+                        {{ isEditMode ? 'Edit Task' : 'Add New Task' }}
                     </h5>
                 </mat-card-title>
                 <mat-card-subtitle>
@@ -206,13 +200,31 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label class="main-label d-block lh-1 text-black">
-                            Task Name
+                            Task Title
                         </label>
                         <mat-form-field>
                             <mat-label>
-                                Task name
+                                Task title
                             </mat-label>
-                            <input matInput placeholder="E.g. Hand Watch">
+                            <input matInput placeholder="Enter task title" [(ngModel)]="task.title" required minlength="5" #title="ngModel">
+                            <mat-error *ngIf="title.invalid && (title.dirty || title.touched)">
+                                <div *ngIf="title.errors?.['required']">Task title is required.</div>
+                                <div *ngIf="title.errors?.['minlength']">Task title must be at least 5 characters long.</div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="main-label d-block lh-1 text-black">
+                            Description
+                        </label>
+                        <mat-form-field>
+                            <mat-label>
+                                Task description
+                            </mat-label>
+                            <textarea matInput placeholder="Enter task description" [(ngModel)]="task.description" required #description="ngModel"></textarea>
+                            <mat-error *ngIf="description.invalid && (description.dirty || description.touched)">
+                                <div *ngIf="description.errors?.['required']">Task description is required.</div>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-md-6">
@@ -221,28 +233,16 @@
                         </label>
                         <mat-form-field>
                             <mat-label>
-                                Select
+                                Select Assignee
                             </mat-label>
-                            <mat-select>
-                                <mat-option value="option1">
-                                    Shawn Kennedy
-                                </mat-option>
-                                <mat-option value="option2">
-                                    Roberto Cruz
-                                </mat-option>
-                                <mat-option value="option3">
-                                    Juli Johnson
-                                </mat-option>
-                                <mat-option value="option4">
-                                    Catalina Engles	
-                                </mat-option>
-                                <mat-option value="option5">
-                                    Louis Nagle
-                                </mat-option>
-                                <mat-option value="option6">
-                                    Michael Marquez
+                            <mat-select (ngModel)="task.assignedToId"  required #assignedToId="ngModel">
+                                <mat-option *ngFor="let user of ouvriers" [value]="user.id">
+                                    {{user.username}}
                                 </mat-option>
                             </mat-select>
+                            <mat-error *ngIf="assignedToId.invalid && (assignedToId.dirty || assignedToId.touched)">
+                                <div *ngIf="assignedToId.errors?.['required']">Assignee is required.</div>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-md-6">
@@ -253,30 +253,12 @@
                             <mat-label>
                                 Choose a date
                             </mat-label>
-                            <input matInput [matDatepicker]="dueDate">
+                            <input matInput [matDatepicker]="dueDate" [(ngModel)]="task.dueDate" (dateChange)="onDateChange($event)" required #dueDateInput="ngModel">
                             <mat-datepicker-toggle matIconSuffix [for]="dueDate"></mat-datepicker-toggle>
                             <mat-datepicker #dueDate></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="main-label d-block lh-1 text-black">
-                            Priority
-                        </label>
-                        <mat-form-field>
-                            <mat-label>
-                                Select
-                            </mat-label>
-                            <mat-select>
-                                <mat-option value="option1">
-                                    High
-                                </mat-option>
-                                <mat-option value="option2">
-                                    Medium
-                                </mat-option>
-                                <mat-option value="option3">
-                                    Low
-                                </mat-option>
-                            </mat-select>
+                            <mat-error *ngIf="dueDateInput.invalid && (dueDateInput.dirty || dueDateInput.touched)">
+                                <div *ngIf="dueDateInput.errors?.['required']">Due date is required.</div>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-md-6">
@@ -285,22 +267,15 @@
                         </label>
                         <mat-form-field>
                             <mat-label>
-                                Select
+                                Select Status
                             </mat-label>
-                            <mat-select>
-                                <mat-option value="option1">
-                                    In Progress
-                                </mat-option>
-                                <mat-option value="option2">
-                                    Pending
-                                </mat-option>
-                                <mat-option value="option3">
-                                    Completed
-                                </mat-option>
-                                <mat-option value="option4">
-                                    Not Started
-                                </mat-option>
+                            <mat-select [(ngModel)]="task.status" required #status="ngModel">
+                                <mat-option *ngFor="let status of statusoptions" [value]="status">{{status}}</mat-option>
+                                
                             </mat-select>
+                            <mat-error *ngIf="status.invalid && (status.dirty || status.touched)">
+                                <div *ngIf="status.errors?.['required']">Status is required.</div>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                 </div>
@@ -311,11 +286,11 @@
                     >
                         Cancel
                     </button>
-                    <button mat-button>
-                        Create
-                    </button>
+                    <button mat-button (click)="isEditMode ? saveUpdatedTask() : addTask(task)" [disabled]="!isFormValid()">
+                        {{ isEditMode ? 'Update' : 'Create' }}                    </button>
                 </div>
             </mat-card-content>
         </mat-card>
     </div>
 </div>
+    

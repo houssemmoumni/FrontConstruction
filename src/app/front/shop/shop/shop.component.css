@@ -1,0 +1,8 @@
+.bg-danger {
+    background-color: red !important;
+    padding: 5px; /* Adjust padding to make the background visible */
+    border-radius: 50%; /* Optional: Makes it circular */
+}
+
+
+  

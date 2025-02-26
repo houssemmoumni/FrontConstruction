@@ -1,7 +1,7 @@
 <!-- Breadcrumb -->
 <div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
     <h5 class="mb-0">
-        Products List
+        Materials List
     </h5>
     <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
         <li class="breadcrumb-item position-relative">
@@ -11,17 +11,17 @@
             </a>
         </li>
         <li class="breadcrumb-item position-relative">
-            E-Commerce
+            Market
         </li>
         <li class="breadcrumb-item position-relative">
-            Products List
+            Materials List
         </li>
     </ol>
 </div>
 
-<!-- Products List -->
+<!-- Materials List -->
 <mat-card
-    class="daxa-card products-list-card mb-25 border-radius bg-white border-none d-block"
+    class="daxa-card materials-list-card mb-25 border-radius bg-white border-none d-block"
     [class.rtl-enabled]="themeService.isRTLEnabled()"
 >
     <mat-card-header>
@@ -30,28 +30,28 @@
                 <i class="material-symbols-outlined">
                     search
                 </i>
-                <input type="text" class="input-search d-block w-100 border-none outline-0" placeholder="Search product..." (keyup)="applyFilter($event)" #input>
+                <input type="text" class="input-search d-block w-100 border-none outline-0" placeholder="Search material..." (keyup)="applyFilter($event)" #input>
             </form>
             <ul class="info pl-0 mb-0 mt-0 list-unstyled text-body">
                 <li class="d-inline-block">
-                    All Products <span class="text-daxa">(48,753)</span>
+                    All Materials <span class="text-daxa">(48,753)</span>
                 </li>
                 <li class="d-inline-block">
-                    Published Products <span class="text-daxa">(35,921)</span>
+                    Available Materials <span class="text-daxa">(35,921)</span>
                 </li>
                 <li class="d-inline-block">
-                    Drafts Products <span class="text-daxa">(12,832)</span>
+                    Unavailable Materials <span class="text-daxa">(12,832)</span>
                 </li>
             </ul>
         </mat-card-title>
         <mat-card-subtitle>
             <a mat-button class="add-new-btn" routerLink="/ecommerce-page/create-product">
-                + Add New Product
+                + Add New Material
             </a>
         </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        <div class="products-list-table">
+        <div class="materials-list-table">
             <div class="table-responsive">
                 <table mat-table [dataSource]="dataSource">
 
@@ -77,28 +77,28 @@
                         </td>
                     </ng-container>
 
-                    <!-- Product ID Column -->
-                    <ng-container matColumnDef="productId">
+                    <!-- Material ID Column -->
+                    <ng-container matColumnDef="materialId">
                         <th mat-header-cell *matHeaderCellDef>
-                            Product ID
+                            Material ID
                         </th>
                         <td mat-cell *matCellDef="let element">
-                            {{element.productId}}
+                            {{element.id}}
                         </td>
                     </ng-container>
 
-                    <!-- Product Column -->
-                    <ng-container matColumnDef="product">
+                    <!-- Material Column -->
+                    <ng-container matColumnDef="material">
                         <th mat-header-cell *matHeaderCellDef>
-                            Product
+                            Material
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div class="info d-flex align-items-center">
                                 <div class="image">
-                                    <img [src]="element.product.img" alt="product-image">
+                                    <img [src]="element.img" alt="material-image"> <!-- Add image URL if available -->
                                 </div>
-                                <a routerLink="/ecommerce-page/product-details" class="d-block fw-medium">
-                                    {{element.product.name}}
+                                <a routerLink="/market/material-details" class="d-block fw-medium">
+                                    {{element.name}}
                                 </a>
                             </div>
                         </td>
@@ -110,7 +110,7 @@
                             Category
                         </th>
                         <td mat-cell *matCellDef="let element">
-                            {{element.category}}
+                            {{element.categoryName}}
                         </td>
                     </ng-container>
 
@@ -120,59 +120,37 @@
                             Price
                         </th>
                         <td mat-cell *matCellDef="let element">
-                            {{element.price}}
+                            {{element.price | currency}}
                         </td>
                     </ng-container>
 
-                    <!-- Stock Quantity Column -->
-                    <ng-container matColumnDef="stockQuantity">
+                    <!-- Available Quantity Column -->
+                    <ng-container matColumnDef="availableQuantity">
                         <th mat-header-cell *matHeaderCellDef>
-                            Stock Quantity
+                            Available Quantity
                         </th>
                         <td mat-cell *matCellDef="let element">
-                            {{element.stockQuantity}}
+                            {{element.availableQuantity}}
                         </td>
                     </ng-container>
 
-                    <!-- Date Column -->
-                    <ng-container matColumnDef="date">
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="status">
                         <th mat-header-cell *matHeaderCellDef>
-                            Date
+                            Status
                         </th>
                         <td mat-cell *matCellDef="let element">
-                            {{element.date}}
+                            <span class="status-badge" [ngClass]="{
+                                'available': element.status === 'DISPONIBLE',
+                                'unavailable': element.status === 'NON_DISPONIBLE',
+                                'rent': element.status === 'A_LOUER'
+                            }">
+                                {{element.status}}
+                            </span>
                         </td>
                     </ng-container>
 
-                    <!-- Sales Column -->
-                    <ng-container matColumnDef="sales">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Sales
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.sales}}
-                        </td>
-                    </ng-container>
-
-                    <!-- Revenue Column -->
-                    <ng-container matColumnDef="revenue">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Revenue
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.revenue}}
-                        </td>
-                    </ng-container>
-
-                    <!-- Rating Column -->
-                    <ng-container matColumnDef="rating">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Rating
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.rating}}
-                        </td>
-                    </ng-container>
+                   
 
                     <!-- Action Column -->
                     <ng-container matColumnDef="action">
@@ -181,19 +159,19 @@
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div class="action-info">
-                                <a mat-button routerLink="/ecommerce-page/product-details" matTooltip="View Product" matTooltipPosition="above">
+                                <a mat-button routerLink="/ecommerce-page/product-details" matTooltip="View Material" matTooltipPosition="above">
                                     <i class="material-symbols-outlined">
-                                        {{element.action.view}}
+                                        visibility
                                     </i>
                                 </a>
-                                <a mat-button routerLink="/ecommerce-page/edit-product" matTooltip="Edit Product" matTooltipPosition="above">
+                                <a mat-button [routerLink]="['/ecommerce-page/edit-product',element.id]"  matTooltip="Edit Material" matTooltipPosition="above">
                                     <i class="material-symbols-outlined">
-                                        {{element.action.edit}}
+                                        edit
                                     </i>
                                 </a>
-                                <button type="button" mat-button matTooltip="Delete" matTooltipPosition="above">
+                                <button type="button" mat-button matTooltip="Delete" matTooltipPosition="above" (click)="deleteMaterial(element.id)">
                                     <i class="material-symbols-outlined">
-                                        {{element.action.delete}}
+                                        delete
                                     </i>
                                 </button>
                             </div>

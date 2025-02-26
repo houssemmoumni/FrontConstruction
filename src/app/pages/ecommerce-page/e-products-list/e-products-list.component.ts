@@ -1,26 +1,44 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { RouterLink } from '@angular/router';
+import {Router, RouterLink } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
+import { CommonModule } from '@angular/common'; // Add this import
+import { MaterialService } from '../../../services/material.service';
+import { MaterialResponse } from '../../../models/material-response';
+import { MaterialRequest } from '../../../models/material-request';
+
 
 @Component({
     selector: 'app-e-products-list',
-    imports: [MatCardModule, MatMenuModule, MatButtonModule, RouterLink, MatTableModule, MatPaginatorModule, MatCheckboxModule, MatTooltipModule],
+    imports: [        CommonModule, // Add this import
+        MatCardModule, MatMenuModule, MatButtonModule, RouterLink, MatTableModule, MatPaginatorModule, MatCheckboxModule, MatTooltipModule],
     templateUrl: './e-products-list.component.html',
     styleUrl: './e-products-list.component.scss'
 })
-export class EProductsListComponent {
+export class EProductsListComponent implements OnInit {
+    materials: MaterialResponse[] = [];
+    userId: number = 1; // Set a static userId (e.g., 1)
 
-    displayedColumns: string[] = ['select', 'productId', 'product', 'category', 'price', 'stockQuantity', 'date', 'sales', 'revenue', 'rating', 'action'];
-    dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-    selection = new SelectionModel<PeriodicElement>(true, []);
+    
+
+
+    displayedColumns: string[] = ['select',
+  'materialId',
+  'material',
+  'category',
+  'price',
+  'availableQuantity',
+  'status',
+  'action'];
+    dataSource = new MatTableDataSource<MaterialResponse>(this.materials);
+    selection = new SelectionModel<MaterialResponse>(true, []);
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -45,11 +63,11 @@ export class EProductsListComponent {
     }
 
     /** The label for the checkbox on the passed row */
-    checkboxLabel(row?: PeriodicElement): string {
+    checkboxLabel(row?: MaterialResponse): string {
         if (!row) {
             return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
         }
-        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.product + 1}`;
+        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.name + 1}`;
     }
 
     // Search Filter
@@ -59,402 +77,45 @@ export class EProductsListComponent {
     }
 
     constructor(
-        public themeService: CustomizerSettingsService
+        public themeService: CustomizerSettingsService,private materialService: MaterialService,
+                private router: Router // Inject Router for navigation
+
     ) {}
+    ngOnInit(): void {
+        this.loadMaterials();
+        console.log(this.materials);
+      }
+    
+      loadMaterials(): void {
+        this.materialService.getAllMaterials().subscribe(data => {
+          this.dataSource.data = data;
+          this.materials = data;
+        });
+      }
+       addMaterial(): void 
+          {
+            this.router.navigate(['/ecommerce-page/create-product']);
 
-}
+              
+            }
+            updateTask(materialId:number): void {
+                console.log('Navigating to edit-product with ID:', materialId);
 
-const ELEMENT_DATA: PeriodicElement[] = [
-    {
-        productId: '#134',
-        product: {
-            img: 'images/products/product6.png',
-            name: 'Hand Watch'
-        },
-        category: 'Watch',
-        price: '$80',
-        stockQuantity: 250,
-        date: 'Nov 10, 2024',
-        sales: 120,
-        revenue: '$9,600.00',
-        rating: '5.00 (141 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
+              this.router.navigate(['/ecommerce-page/edit-product', materialId]);
+              };    
+          
+         
+    
+          deleteMaterial(materialId: number): void {
+            this.materialService.deleteMaterial(this.userId, materialId).subscribe(() => {
+                this.materials = this.materials.filter(material => material.id !== materialId);
+                this.dataSource.data = this.materials; // Update the table data
+            });
         }
-    },
-    {
-        productId: '#240',
-        product: {
-            img: 'images/products/product3.png',
-            name: 'Gaming Laptop'
-        },
-        category: 'Electronics',
-        price: '$750',
-        stockQuantity: 120,
-        date: 'Nov 15, 2024',
-        sales: 99,
-        revenue: '$74,250.00',
-        rating: '5.00 (69 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#269',
-        product: {
-            img: 'images/products/product8.png',
-            name: 'Sports Shoes'
-        },
-        category: 'Sports',
-        price: '$45',
-        stockQuantity: 50,
-        date: 'Nov 16, 2024',
-        sales: 45,
-        revenue: '$2,025',
-        rating: '5.00 (99 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#346',
-        product: {
-            img: 'images/products/product9.png',
-            name: 'Woman Handbag'
-        },
-        category: 'Fashion',
-        price: '$55',
-        stockQuantity: 350,
-        date: 'Nov 17, 2024',
-        sales: 200,
-        revenue: '$70,000.00',
-        rating: '4.00 (75 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#369',
-        product: {
-            img: 'images/products/product10.png',
-            name: 'Luxury Rendering'
-        },
-        category: 'Jewellery',
-        price: '$75',
-        stockQuantity: 100,
-        date: 'Nov 18, 2024',
-        sales: 80,
-        revenue: '$6,000.00',
-        rating: '5.00 (158 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#436',
-        product: {
-            img: 'images/products/product5.png',
-            name: 'Wireless Headphone'
-        },
-        category: 'Electronics',
-        price: '$25',
-        stockQuantity: 900,
-        date: 'Nov 19, 2024',
-        sales: 450,
-        revenue: '$11,250.00',
-        rating: '4.00 (250 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#536',
-        product: {
-            img: 'images/products/product11.png',
-            name: 'Futuristic Bracelet'
-        },
-        category: 'Accessories',
-        price: '$120',
-        stockQuantity: 250,
-        date: 'Nov 20, 2024',
-        sales: 180,
-        revenue: '$21,600.00',
-        rating: '5.00 (42 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#679',
-        product: {
-            img: 'images/products/product12.png',
-            name: 'Mobile Device'
-        },
-        category: 'Electronics',
-        price: '$150',
-        stockQuantity: 500,
-        date: 'Nov 21, 2024',
-        sales: 320,
-        revenue: '$48,000.00',
-        rating: '5.00 (248 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#751',
-        product: {
-            img: 'images/products/product13.png',
-            name: 'Triblend T-shirt'
-        },
-        category: 'Fashion',
-        price: '$15',
-        stockQuantity: 1200,
-        date: 'Nov 22, 2024',
-        sales: 1050,
-        revenue: '$15,750.00',
-        rating: '5.00(858 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#854',
-        product: {
-            img: 'images/products/product14.png',
-            name: 'Camera Lens'
-        },
-        category: 'Accessories',
-        price: '$100',
-        stockQuantity: 50,
-        date: 'Nov 23, 2024',
-        sales: 40,
-        revenue: '$4,000.00',
-        rating: '5.00 (30 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#854',
-        product: {
-            img: 'images/products/product14.png',
-            name: 'Camera Lens'
-        },
-        category: 'Accessories',
-        price: '$100',
-        stockQuantity: 50,
-        date: 'Nov 23, 2024',
-        sales: 40,
-        revenue: '$4,000.00',
-        rating: '5.00 (30 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#751',
-        product: {
-            img: 'images/products/product13.png',
-            name: 'Triblend T-shirt'
-        },
-        category: 'Fashion',
-        price: '$15',
-        stockQuantity: 1200,
-        date: 'Nov 22, 2024',
-        sales: 1050,
-        revenue: '$15,750.00',
-        rating: '5.00(858 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#679',
-        product: {
-            img: 'images/products/product12.png',
-            name: 'Mobile Device'
-        },
-        category: 'Electronics',
-        price: '$150',
-        stockQuantity: 500,
-        date: 'Nov 21, 2024',
-        sales: 320,
-        revenue: '$48,000.00',
-        rating: '5.00 (248 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#536',
-        product: {
-            img: 'images/products/product11.png',
-            name: 'Futuristic Bracelet'
-        },
-        category: 'Accessories',
-        price: '$120',
-        stockQuantity: 250,
-        date: 'Nov 20, 2024',
-        sales: 180,
-        revenue: '$21,600.00',
-        rating: '5.00 (42 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#436',
-        product: {
-            img: 'images/products/product5.png',
-            name: 'Wireless Headphone'
-        },
-        category: 'Electronics',
-        price: '$25',
-        stockQuantity: 900,
-        date: 'Nov 19, 2024',
-        sales: 450,
-        revenue: '$11,250.00',
-        rating: '4.00 (250 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#369',
-        product: {
-            img: 'images/products/product10.png',
-            name: 'Luxury Rendering'
-        },
-        category: 'Jewellery',
-        price: '$75',
-        stockQuantity: 100,
-        date: 'Nov 18, 2024',
-        sales: 80,
-        revenue: '$6,000.00',
-        rating: '5.00 (158 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#346',
-        product: {
-            img: 'images/products/product9.png',
-            name: 'Woman Handbag'
-        },
-        category: 'Fashion',
-        price: '$55',
-        stockQuantity: 350,
-        date: 'Nov 17, 2024',
-        sales: 200,
-        revenue: '$70,000.00',
-        rating: '4.00 (75 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#269',
-        product: {
-            img: 'images/products/product8.png',
-            name: 'Sports Shoes'
-        },
-        category: 'Sports',
-        price: '$45',
-        stockQuantity: 50,
-        date: 'Nov 16, 2024',
-        sales: 45,
-        revenue: '$2,025',
-        rating: '5.00 (99 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#240',
-        product: {
-            img: 'images/products/product3.png',
-            name: 'Gaming Laptop'
-        },
-        category: 'Electronics',
-        price: '$750',
-        stockQuantity: 120,
-        date: 'Nov 15, 2024',
-        sales: 99,
-        revenue: '$74,250.00',
-        rating: '5.00 (69 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        productId: '#134',
-        product: {
-            img: 'images/products/product6.png',
-            name: 'Hand Watch'
-        },
-        category: 'Watch',
-        price: '$80',
-        stockQuantity: 250,
-        date: 'Nov 10, 2024',
-        sales: 120,
-        revenue: '$9,600.00',
-        rating: '5.00 (141 reviews)',
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    }
-];
-export interface PeriodicElement {
-    productId: string;
-    product: any;
-    category: string;
-    price: string;
-    stockQuantity: number;
-    date: string;
-    sales: number;
-    revenue: string;
-    rating: string;
-    action: any;
-}
+      }
+          
+          
+    
+
+
+

@@ -26,24 +26,27 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @for(item of product_list; track item; let i = $index){
-                  <tr class="alert">
+                  <tr class="alert" *ngFor="let item of cartItems; trackBy: trackByMaterialId">
                     <td class="product-item-img">
-                      <img src="{{ item.img }}" alt="">
+                      <img [src]="item.material.image?.url" alt="{{ item.material.name }}" />
                     </td>
-                    <td class="product-item-name">{{ item.title }}</td>
-                    <td class="product-item-price">{{ item.unitPrice | currency}}</td>
+                    <td class="product-item-name">{{ item.material.name}}</td>
+                    <td class="product-item-price">{{item.material.price | currency}}</td>
                     <td class="product-item-quantity">
                       <div class="quantity btn-quantity max-w80">
-                        <input id="demo_vertical3" type="text" value="{{ item.quantity }}" name="demo_vertical2" />
+                        <button (click)="decrementQuantity(item)" [disabled]="item.quantity === 1">-</button>
+                        <input type="text" [value]="item.quantity" readonly />
+                        <button (click)="incrementQuantity(item)">+</button>
                       </div>
                     </td>
-                    <td class="product-item-totle">{{ item.price | currency}}</td>
+                    <td class="product-item-totle">{{ item.material.price * item.quantity | currency }}</td>
                     <td class="product-item-close">
-                      <a href="javascript:void(0);" data-dismiss="alert" aria-label="close" class="ti-close"></a>
+                      <a href="javascript:void(0);" (click)="removeItem(item)" class="ti-close"></a>
                     </td>
                   </tr>
-                  }
+                    
+                
+                  
                 </tbody>
               </table>
             </div>

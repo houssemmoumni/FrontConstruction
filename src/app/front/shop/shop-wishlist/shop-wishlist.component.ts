@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink,Router } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { Banner1Component } from '../../elements/banner/banner1/banner1.component';
 import { HeaderLight3Component } from '../../elements/header/header-light3/header-light3.component';
 import { IconBox3Component } from '../../elements/icon-box/icon-box3/icon-box3.component';
 import { Footer19Component } from '../../elements/footer/footer19/footer19.component';
+import { WishlistService } from '../../../services/wishlist.service'; // Import WishlistService
+import { Material } from '../../../models/material'; // Import Material model
+import { CommonModule } from '@angular/common'; // Add this import
+import { CartService } from '../../../services/cart.service';
+
 declare var jQuery: any;
 
 interface type {
@@ -16,6 +21,7 @@ interface type {
 @Component({
     selector: 'app-shop-wishlist',
     imports: [
+      CommonModule, // Add CommonModule here
         RouterLink,
         CurrencyPipe,
         HeaderLight3Component,
@@ -40,9 +46,18 @@ export class ShopWishlistComponent {
       behavior: 'smooth'
     });
   }
-  constructor() { }
+  wishlistItems: Material[] = []; // Array to hold wishlist items
+
+  constructor(private wishlistService: WishlistService,    private router: Router // Inject Router
+    , private cartService: CartService // Inject CartService
+  ) { }
+  trackById(index: number, item: Material): number {
+    return item.id; // Use a unique identifier (e.g., item.id if available)
+  }
 
   ngOnInit(): void {
+    this.loadWishlistItems(); // Load wishlist items on component initialization
+
     setTimeout(() => {
       (function ($) {
         jQuery("input[name='demo_vertical2']").TouchSpin({
@@ -54,37 +69,27 @@ export class ShopWishlistComponent {
       })(jQuery);
     }, 50);
   }
+  // Load wishlist items from the service
+  loadWishlistItems() {
+    this.wishlistItems = this.wishlistService.getWishlistItems();
+  }
 
-  product_list: type[] = [
-    {
-      img: 'assets/images/product/thumb/item1.jpg',
-      title: 'Prduct Item 1',
-      price: 20,
-      quantity: '1'
-    },
-    {
-      img: 'assets/images/product/thumb/item2.jpg',
-      title: 'Prduct Item 2',
-      price: 66,
-      quantity: '1'
-    },
-    {
-      img: 'assets/images/product/thumb/item3.jpg',
-      title: 'Prduct Item 3',
-      price: 58,
-      quantity: '1'
-    },
-    {
-      img: 'assets/images/product/thumb/item4.jpg',
-      title: 'Prduct Item 4',
-      price: 28,
-      quantity: '2'
-    },
-    {
-      img: 'assets/images/product/thumb/item5.jpg',
-      title: 'Prduct Item 5',
-      price: 38,
-      quantity: '1'
-    }
-  ]
+  // Remove item from wishlist
+  removeFromWishlist(itemId: number) {
+    this.wishlistService.removeFromWishlist(itemId);
+    this.loadWishlistItems(); // Refresh the wishlist items
+  }
+
+  moveToCart(item: Material) {
+    // Add the item to the cart
+    this.cartService.addToCart(item);
+
+    // Remove the item from the wishlist
+    this.wishlistService.removeFromWishlist(item.id);
+
+    // Refresh the wishlist items
+    this.loadWishlistItems();
+    this.router.navigate(['/front/shop-cart']);
+
+  }
 }

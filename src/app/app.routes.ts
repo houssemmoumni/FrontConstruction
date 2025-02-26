@@ -309,7 +309,7 @@ export const routes: Routes = [
             { path: 'products-list', component: EProductsListComponent },
             { path: 'product-details', component: EProductDetailsComponent },
             { path: 'create-product', component: ECreateProductComponent },
-            { path: 'edit-product', component: EEditProductComponent },
+            {path: 'edit-product/:id', component: EEditProductComponent},
             { path: 'orders', component: EOrdersComponent },
             { path: 'order-details', component: EOrderDetailsComponent },
             { path: 'create-order', component: ECreateOrderComponent },
