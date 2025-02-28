@@ -36,7 +36,7 @@ export class JoboffreComponent implements OnInit {
     this.loadJobOffers();
   }
 
-  // Charger les offres d'emploi publiées
+  // Charger les offres d'emploi publiée
   loadJobOffers(): void {
     this.jobOfferService.getJobOffers().subscribe(
       (data: JobOffer[]) => {
