@@ -1,0 +1,27 @@
+<h2>Formulaire de Candidature</h2>
+<form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="fullName">Nom complet</label>
+        <input type="text" id="fullName" class="form-control" [(ngModel)]="application.fullName" name="fullName" required>
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control" [(ngModel)]="application.email" name="email" required>
+    </div>
+
+    <div class="form-group">
+        <label for="resume">CV (lien ou fichier)</label>
+        <div class="input-group">
+            <input type="text" id="resume" class="form-control" [(ngModel)]="application.resume" name="resume" readonly>
+            <div class="input-group-append">
+                <label class="btn btn-outline-secondary m-0" for="fileInput">
+                    <i class="fa fa-upload"></i>
+                </label>
+                <input type="file" id="fileInput" style="display:none" (change)="onFileSelected($event)">
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Soumettre la candidature</button>
+</form>

@@ -1,0 +1,120 @@
+/* Variables CSS */
+:root {
+    --primary-color: #007bff; /* Couleur principale (bleue) */
+    --success-color: #28a745; /* Couleur de succès (verte) */
+    --card-bg-color: #ffffff; /* Couleur de fond de la carte */
+    --card-text-color: #333333; /* Couleur du texte de la carte */
+    --card-border-color: #e0e0e0; /* Couleur de la bordure de la carte */
+}
+
+/* Card Styling */
+.card {
+    border: 1px solid var(--card-border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--card-bg-color);
+    color: var(--card-text-color);
+    margin-bottom: 20px;
+    height: 100%; /* Assure que la carte prend toute la hauteur */
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 20px;
+    flex: 1; /* Permet au corps de la carte de remplir l'espace disponible */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Empêche le débordement du contenu */
+}
+
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: #666;
+    max-height: 100px; /* Hauteur par défaut */
+    overflow: hidden; /* Cache le texte qui dépasse */
+    transition: max-height 0.3s ease; /* Transition fluide */
+}
+
+.card-text.expanded {
+    max-height: 200px; /* Hauteur étendue */
+    overflow-y: auto; /* Ajoute un scrollbar si nécessaire */
+    padding-right: 10px; /* Espace pour éviter que le texte ne chevauche le scrollbar */
+}
+
+.badge {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+.badge-success {
+    background-color: var(--success-color); /* Vert */
+    color: rgb(30, 227, 12); /* Texte blanc */
+}
+
+.badge-danger {
+    background-color: #dc3545; /* Rouge */
+    color: rgb(252, 5, 5); /* Texte blanc */
+}
+
+/* Bouton "Voir Détails" */
+.btn-details {
+    background-color: var(--success-color); /* Couleur verte */
+    color: white; /* Texte blanc */
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-details:hover {
+    background-color: #218838; /* Vert plus foncé au survol */
+}
+
+/* Pagination Styling */
+.pagination-bx {
+    margin-top: 30px;
+}
+
+.pagination {
+    justify-content: center;
+}
+
+.page-item {
+    margin: 0 3px;
+}
+
+.page-link {
+    border: none;
+    background-color: var(--primary-color); /* Couleur bleue */
+    color: white; /* Texte blanc */
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.page-link:hover {
+    background-color: #0056b3; /* Bleu plus foncé au survol */
+}
+
+.page-item.active .page-link {
+    background-color: #0056b3; /* Bleu plus foncé pour la page active */
+    color: rgb(123, 240, 39); /* Texte blanc */
+}

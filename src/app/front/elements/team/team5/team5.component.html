@@ -1,0 +1,33 @@
+<div class="section-full bg-white content-inner">
+  <ng-template ngFor let-teamData [ngForOf]="data">
+    <div class="container">
+      <div class="section-head text-black text-center">
+        <h2 class="title text-capitalize">{{teamData.section_title}}</h2>
+        <p>{{teamData.section_description}}</p>
+      </div>
+      <div class="row">
+        @for(team of teamData.team; track team;){
+        <div class="col-lg-3 col-md-6 col-sm-6 wow fadeInUp" data-wow-duration="2s" data-wow-delay="0.2s">
+          <div class="dlab-box m-b30 dlab-team9">
+            <div class="dlab-media dlab-media-right">
+              <a href="javascript:void(0);">
+                <img alt="" src="{{team.image}}">
+              </a>
+              <div class="dlab-info-has">
+                <ul class="dlab-social-icon">
+                  @for( social of team.social_link; track social){
+                    <li><a target="_blank" class="site-button fa {{social.icon_class}}" title="{{social.title}}" href="{{social.link}}"></a></li>
+                  }
+                </ul>
+              </div>
+              <div class="clearfix">
+                <h4 class="dlab-title"><a [routerLink]="['/team-1']">{{team.name}}</a></h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </ng-template>
+</div>

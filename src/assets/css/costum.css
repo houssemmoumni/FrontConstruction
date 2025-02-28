@@ -1,0 +1,82 @@
+@media only screen and (max-width: 767px) {
+
+  .owl-carousel .owl-nav .owl-prev,
+  .owl-carousel .owl-nav .owl-next {
+    display: none;
+  }
+}
+
+.dlab-team4 .dlab-social-icon li a.site-button {
+  background: var(--color-primary) !important;
+  color: #fff !important;
+}
+
+@media only screen and (max-width: 767px) {
+  .section-full:last-child {
+    margin-bottom: 0px !important;
+  }
+}
+
+.dlab-box-bg:hover .icon-box-btn .site-button {
+  background-color: var(--color-primary) !important;
+}
+
+app-header-light5+.page-content .dlab-bnr-inr-md,
+app-header-light5+.page-content .dlab-bnr-inr-sm,
+app-header-dark5+.page-content .dlab-bnr-inr-md,
+app-header-dark5+.page-content .dlab-bnr-inr-sm {
+  padding-top: 60px !important;
+}
+
+@media only screen and (max-width: 767px) {
+
+  app-header-light5+.page-content .dlab-bnr-inr-sm .dlab-bnr-inr-entry,
+  app-header-dark5+.page-content .dlab-bnr-inr-sm .dlab-bnr-inr-entry {
+    padding-top: 65px;
+  }
+}
+
+ol.comment-list li.comment .reply a {
+  color: #6f6f6f !important;
+}
+
+@media only screen and (min-width: 991px) {
+
+  .header-bottom .main-bar-wraper:not([class*='is-fixed']) .header-nav .nav>li>.mega-menu,
+  .header-bottom .main-bar-wraper:not([class*='is-fixed']) .header-nav .nav>li>.sub-menu {
+    bottom: 100% !important;
+  }
+
+  .header-bottom .main-bar-wraper:not([class*='is-fixed']) .header-nav .nav>li>a i {
+    transform: rotate(180deg);
+    transition: all 0.5s;
+  }
+
+  .header-bottom .main-bar-wraper:not([class*='is-fixed']) .header-nav .nav>li .sub-menu li>.sub-menu {
+    bottom: 0;
+    top: auto;
+  }
+}
+
+.bootstrap-select .dropdown-toggle:before {
+  content: "\f0d7";
+  font-family: 'FontAwesome';
+  font-weight: 600;
+  position: absolute;
+  right: 12px;
+}
+.bootstrap-select div.dropdown-menu {
+  top: 3px !important;
+}
+
+.bootstrap-select div.dropdown-menu ul li a {
+  padding: 10px 20px;
+  font-size: 15px;
+}
+.bootstrap-select div.dropdown-menu ul li.selected {
+  background-color: var(--color-primary) !important;
+  color: #fff !important;
+}
+.breadcrumb-row ul li:after {
+  font-weight: 600;
+}

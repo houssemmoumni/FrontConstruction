@@ -1,0 +1,43 @@
+<h2>Ajouter une offre d'emploi</h2>
+<form (ngSubmit)="onSubmit()" #jobOfferForm="ngForm">
+  <div class="form-group">
+    <label for="title">Titre :</label>
+    <input type="text" id="title" class="form-control" [(ngModel)]="jobOffer.title" name="title" required>
+    <div *ngIf="jobOfferForm.submitted && !jobOffer.title" class="text-danger">
+      Le titre est requis.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description :</label>
+    <textarea id="description" class="form-control" [(ngModel)]="jobOffer.description" name="description" required></textarea>
+    <div *ngIf="jobOfferForm.submitted && !jobOffer.description" class="text-danger">
+      La description est requise.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="Status">Statut :</label>
+    <select id="Status" class="form-control" [(ngModel)]="jobOffer.Status" name="status" required>
+      <option value="">Sélectionnez un statut</option>
+      <option value="OPEN">Ouvert</option>
+      <option value="CLOSED">Fermé</option>
+    </select>
+    <div *ngIf="jobOfferForm.submitted && !jobOffer.Status" class="text-danger">
+      Le statut est requis.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="publish">Publier :</label>
+    <select id="publish" class="form-control" [(ngModel)]="jobOffer.publish" name="publish" required>
+      <option [ngValue]="true">Oui</option>
+      <option [ngValue]="false">Non</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Soumettre</button>
+  <button type="button" class="btn btn-secondary" (click)="router.navigate(['/joboffre'])">
+    Annuler
+  </button>
+</form>

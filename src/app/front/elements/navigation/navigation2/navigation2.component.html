@@ -1,0 +1,87 @@
+<ul class="nav navbar-nav d-flex justify-content-end">
+  @for(item of sidebarMenu_end; track item; let i = $index;){
+    <li class="{{ item.menuClass }}" [ngClass]="{'active': item.title == activeMenu, 'open': i.toString() == toggleMenuEnd}" >
+      <a href="javascript:void(0);" (click)="opneMenu(i, 'end')">{{ item.title }}<i class="fa fa-chevron-down"></i></a>
+      <ul *ngIf="item.subMenu" class="{{ item.subMenuClass }}">
+        @for(subitem of item.subMenu; track subitem; let sec_i = $index){
+          <li [ngClass]="{'open': sec_i.toString() == toggleSubMenu}">
+              <a
+                *ngIf="subitem.route && subitem.themeColor"
+                [routerLink]="[subitem.route]"
+                (click)="handleActiveMenu(subitem.route)"
+                (click)="themeColor(subitem.themeColor)"
+                >
+                <img src="{{ subitem.img }}" alt=""><span>{{ subitem.title }}</span>
+              </a>
+              <a
+                *ngIf="subitem.route && !subitem.themeColor"
+                (click)="handleActiveMenu(subitem.route)"
+                [routerLink]="[subitem.route]"
+                >
+                <span>{{ subitem.title }}</span>
+              </a>
+              <a
+                *ngIf="subitem.subSubMenu"
+                href="javascript:void(0)"
+                (click)="opneSubMenu(sec_i)"
+                >
+                <span>{{ subitem.title }}</span>
+                <i *ngIf="item.subMenuClass == 'sub-menu tab-content'" class="fa fa-angle-right"></i>
+              </a>
+              <ul *ngIf="subitem.subSubMenu" class="{{item.title == 'Features'?'sub-menu tab-content':'' }}">
+                @for(subsubitme of subitem.subSubMenu; track subsubitme;){
+                  <li>
+                      <a [routerLink]="[subsubitme.route]">{{ subsubitme.title }}</a>
+                  </li>
+                }
+              </ul>
+          </li>
+        }
+      </ul>
+    </li>
+  }
+</ul>
+
+<ul class="nav navbar-nav d-flex justify-content-start">
+  @for(item of sidebarMenu_start; track item; let i = $index;){
+    <li class="{{ item.menuClass }}" [ngClass]="{'active': item.title == activeMenu, 'open': i.toString() == toggleMenu}" >
+      <a href="javascript:void(0);" (click)="opneMenu(i, 'start')">{{ item.title }}<i class="fa fa-chevron-down"></i></a>
+      <ul *ngIf="item.subMenu" class="{{ item.subMenuClass }}">
+        @for(subitem of item.subMenu; track subitem; let sec_i = $index){
+          <li [ngClass]="{'open': sec_i.toString() == toggleSubMenu}">
+              <a
+                *ngIf="subitem.route && subitem.themeColor"
+                [routerLink]="[subitem.route]"
+                (click)="handleActiveMenu(subitem.route)"
+                (click)="themeColor(subitem.themeColor)"
+                >
+                <img src="{{ subitem.img }}" alt=""><span>{{ subitem.title }}</span>
+              </a>
+              <a
+                *ngIf="subitem.route && !subitem.themeColor"
+                (click)="handleActiveMenu(subitem.route)"
+                [routerLink]="[subitem.route]"
+                >
+                <span>{{ subitem.title }}</span>
+              </a>
+              <a
+                *ngIf="subitem.subSubMenu"
+                href="javascript:void(0)"
+                (click)="opneSubMenu(sec_i)"
+                >
+                <span>{{ subitem.title }}</span>
+                <i *ngIf="item.subMenuClass == 'sub-menu tab-content'" class="fa fa-angle-right"></i>
+              </a>
+              <ul *ngIf="subitem.subSubMenu" class="{{item.title == 'Features'?'sub-menu tab-content':'' }}">
+                @for(subsubitme of subitem.subSubMenu; track subsubitme;){
+                  <li>
+                      <a [routerLink]="[subsubitme.route]">{{ subsubitme.title }}</a>
+                  </li>
+                }
+              </ul>
+          </li>
+        }
+      </ul>
+    </li>
+  }
+</ul>

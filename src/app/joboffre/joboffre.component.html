@@ -1,0 +1,91 @@
+<mat-card class="daxa-card job-offers-card mb-25 border-radius bg-white border-none d-block">
+    <mat-card-header>
+      <mat-card-title>
+        <h5 class="mb-0">Gestion des Offres d'Emploi</h5>
+      </mat-card-title>
+      <mat-card-subtitle>
+        <button type="button" mat-button class="card-header-menu-btn" [matMenuTriggerFor]="cardHeaderMenu">
+          This Week
+        </button>
+        <mat-menu #cardHeaderMenu="matMenu" class="card-header-menu" xPosition="before">
+          <button mat-menu-item>This Day</button>
+          <button mat-menu-item>This Week</button>
+          <button mat-menu-item>This Month</button>
+          <button mat-menu-item>This Year</button>
+        </mat-menu>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="text-end mb-4">
+        <button type="button" mat-button class="daxa-btn" (click)="navigate()">
+          <mat-icon>add</mat-icon> Ajouter une Offre
+        </button>
+      </div>
+      <div class="job-offers-table">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col" class="fw-medium text-black">Titre</th>
+                <th scope="col" class="fw-medium text-black">Description</th>
+                <th scope="col" class="fw-medium text-black">Statut</th>
+                <th scope="col" class="fw-medium text-black">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let offer of jobOffers">
+                <td class="text-body">{{ offer.title }}</td>
+                <td class="text-body">{{ offer.description }}</td>
+                <td>
+                  <span
+                    class="daxa-badge d-inline-block"
+                    [ngClass]="{ deactive: offer.Status === 'CLOSED' }"
+                  >
+                    {{ offer.Status === 'OPEN' ? 'Ouverte' : 'Fermée' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="action-info d-flex align-items-center justify-content-end">
+                    <button
+                      type="button"
+                      class="text-daxa"
+                      mat-button
+                      matTooltip="Modifier"
+                      matTooltipPosition="above"
+                      (click)="editOffer(offer)"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button
+                      type="button"
+                      class="text-body"
+                      mat-button
+                      matTooltip="Supprimer"
+                      matTooltipPosition="above"
+                      (click)="deleteOffer(offer)"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button
+                      type="button"
+                      class="text-success"
+                      mat-button
+                      matTooltip="Publier"
+                      matTooltipPosition="above"
+                      (click)="publishOffer(offer)"
+                      [disabled]="offer.Status === 'PUBLISHED'"
+                    >
+                      <mat-icon>check</mat-icon>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <ng-template *ngIf="jobOffers.length === 0">
+        <div class="alert alert-info">Aucune offre d'emploi disponible pour le moment.</div>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
