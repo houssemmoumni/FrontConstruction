@@ -11,12 +11,36 @@ export class CandidateService {
 
   constructor(private http: HttpClient) {}
 
-  // Récupérer toutes les candidatures
+  // Submit an application
+  submitApplication(
+    candidateId: number,
+    jobOfferId: number,
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber: string,
+    address: string,
+    resumeFile: File
+  ): Observable<any> {
+    const formData = new FormData();
+    formData.append('candidateId', candidateId.toString());
+    formData.append('jobOfferId', jobOfferId.toString());
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('email', email);
+    formData.append('phoneNumber', phoneNumber);
+    formData.append('address', address);
+    formData.append('resumeFile', resumeFile);
+
+    return this.http.post(this.apiUrl, formData);
+  }
+
+  // Fetch all applications
   getAllApplications(): Observable<ApplicationDTO[]> {
     return this.http.get<ApplicationDTO[]>(this.apiUrl);
   }
 
-  // Mettre à jour le statut d'une candidature
+  // Update the status of an application
   updateApplicationStatus(id: number, status: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}/status`, { status });
   }

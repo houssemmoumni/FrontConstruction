@@ -1,8 +1,15 @@
 export interface ApplicationDTO {
-    id: number; // Corresponds to Long in Java
-    candidateFullName: string;
-    candidateEmail: string;
-    jobOfferTitle: string;
+    id: number;
+    candidate: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      phoneNumber: string;
+      address: string;
+    };
+    jobOffer: {
+      title: string;
+    };
     status: string;
-    resume: string | null; // Base64-encoded resume (or null if no resume)
+    resume: string; // Base64-encoded resume
   }

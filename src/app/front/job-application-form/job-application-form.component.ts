@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './job-application-form.component.html',
   styleUrls: ['./job-application-form.component.css'],
   standalone: true,
-  imports: [FormsModule]
+  imports: [FormsModule],
 })
 export class JobApplicationFormComponent implements OnInit {
   application = {
@@ -17,17 +17,17 @@ export class JobApplicationFormComponent implements OnInit {
       lastName: '',
       email: '',
       phoneNumber: '',
-      address: ''
+      address: '',
     },
-    candidateId: 10,  // Remplace avec l'ID du candidat connecté (récupéré depuis l'authentification)
-    jobOfferId: '' as string | null
+    candidateId: 10, // Replace with dynamic candidate ID (e.g., from authentication)
+    jobOfferId: '' as string | null,
   };
   selectedFile: File | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private router: Router // Injectez le Router
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -35,12 +35,18 @@ export class JobApplicationFormComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+    const file = event.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      this.selectedFile = file;
+    } else {
+      alert('❌ Veuillez télécharger un fichier PDF.');
+      this.selectedFile = null;
+    }
   }
 
   onSubmit() {
     if (!this.selectedFile) {
-      alert("❌ Veuillez télécharger un CV.");
+      alert('❌ Veuillez télécharger un CV.');
       return;
     }
 
@@ -56,14 +62,16 @@ export class JobApplicationFormComponent implements OnInit {
 
     this.http.post('http://localhost:8060/api/applications', formData).subscribe({
       next: () => {
-        alert('Candidature soumise avec succès !');
-        this.router.navigate(['/applicationlist']); // Redirigez vers la liste des candidatures
+        alert('✅ Candidature soumise avec succès !');
+        this.router.navigate(['/applicationlist']);
       },
       error: (error) => {
         console.error('Erreur lors de la soumission :', error);
-        console.log('Détail de l\'erreur :', error.error);
-        alert(error.error.error || 'Erreur lors de la soumission. Vérifiez les champs et réessayez.');
-      }
+        alert(
+          error.error?.error ||
+            '❌ Erreur lors de la soumission. Vérifiez les champs et réessayez.'
+        );
+      },
     });
   }
 }

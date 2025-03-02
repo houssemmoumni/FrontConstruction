@@ -13,17 +13,27 @@
   </thead>
   <tbody>
     <tr *ngFor="let application of applications">
-      <td>{{ application.candidateFullName }}</td>
-      <td>{{ application.candidateEmail }}</td>
-      <td>{{ application.jobOfferTitle }}</td>
+      <td>{{ application.candidate.firstName }} {{ application.candidate.lastName }}</td>
+      <td>{{ application.candidate.email }}</td>
+      <td>{{ application.jobOffer.title }}</td>
       <td>{{ application.status }}</td>
       <td>
-        <a *ngIf="application.resume" [href]="'data:application/pdf;base64,' + application.resume" target="_blank">Voir CV</a>
+        <button
+          *ngIf="application.resume"
+          class="btn btn-primary"
+          (click)="downloadResume(application.resume, application.candidate.firstName + '_' + application.candidate.lastName)"
+        >
+          Télécharger CV
+        </button>
         <span *ngIf="!application.resume">Pas de CV</span>
       </td>
       <td>
-        <button class="btn btn-success" (click)="updateStatus(application.id, 'ACCEPTED')">Accepter</button>
-        <button class="btn btn-danger" (click)="updateStatus(application.id, 'REJECTED')">Rejeter</button>
+        <button class="btn btn-success" (click)="updateStatus(application.id, 'ACCEPTED')">
+          Accepter
+        </button>
+        <button class="btn btn-danger" (click)="updateStatus(application.id, 'REJECTED')">
+          Rejeter
+        </button>
       </td>
     </tr>
   </tbody>
