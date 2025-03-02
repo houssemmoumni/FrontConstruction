@@ -1,0 +1,30 @@
+<h2>Liste des Candidatures</h2>
+
+<table class="table table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th>Nom Complet</th>
+      <th>Email</th>
+      <th>Offre d'Emploi</th>
+      <th>Statut</th>
+      <th>CV</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let application of applications">
+      <td>{{ application.candidateFullName }}</td>
+      <td>{{ application.candidateEmail }}</td>
+      <td>{{ application.jobOfferTitle }}</td>
+      <td>{{ application.status }}</td>
+      <td>
+        <a *ngIf="application.resume" [href]="'data:application/pdf;base64,' + application.resume" target="_blank">Voir CV</a>
+        <span *ngIf="!application.resume">Pas de CV</span>
+      </td>
+      <td>
+        <button class="btn btn-success" (click)="updateStatus(application.id, 'ACCEPTED')">Accepter</button>
+        <button class="btn btn-danger" (click)="updateStatus(application.id, 'REJECTED')">Rejeter</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

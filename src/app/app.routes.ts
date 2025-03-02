@@ -198,6 +198,8 @@ import { TeamMembersComponent } from './pages/users-page/team-members/team-membe
 import { JoboffreComponent } from './joboffre/joboffre.component';
 import { AddJobComponent } from './addjob/addjob.component';
 import { JobApplicationFormComponent } from './front/job-application-form/job-application-form.component';
+import { ApplicationListComponent } from './application-list/application-list.component';
+
 
 //front
 import { HeaderStyle1Component } from './front/features/header-style1/header-style1.component';
@@ -275,10 +277,14 @@ import { IndexComponent } from './front/index/index.component';
 export const routes: Routes = [
     { path: 'postuler/:jobId', component: JobApplicationFormComponent },
     {path: 'joboffre', component: JoboffreComponent},
-    { path: 'joboffre', component: JoboffreComponent },
+
     { path: 'editjob/:id', component: AddJobComponent },
     { path: 'addjob', component: AddJobComponent },
     { path: 'addjob/:id', component: AddJobComponent },
+    { path: 'applicationlist', component: ApplicationListComponent },
+
+
+    // { path: '', redirectTo: '/candidatelist', pathMatch: 'full' }
     // { path: '', redirectTo: '/joboffre', pathMatch: 'full' },
     // { path: '**', redirectTo: '/joboffre' },
     { path: '', component: EcommerceComponent },
