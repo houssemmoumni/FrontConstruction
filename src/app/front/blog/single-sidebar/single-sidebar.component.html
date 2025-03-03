@@ -1,0 +1,132 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light3></app-header-light3>
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- inner page banner -->
+    <app-banner1 [data]="banner"></app-banner1>
+    <!-- inner page banner END -->
+    <!-- contact area -->
+    <div class="content-inner-2">
+      <div class="container">
+        <div class="row">
+          <ng-template [ngIf]="layout.sidebar">
+            <div class="col-xl-3 col-lg-4 col-md-12" *ngIf="layout.sidebarPosition=='left'">
+              <aside class="side-bar sticky-top">
+                <app-search-form2></app-search-form2>
+                <app-recent-posts1></app-recent-posts1>
+                <app-newsletter1></app-newsletter1>
+                <app-our-gallery1></app-our-gallery1>
+                <app-category-list1></app-category-list1>
+                <app-tag-list1></app-tag-list1>
+              </aside>
+            </div>
+          </ng-template>
+          <!-- left part start -->
+          <div class=""
+            [ngClass]="{'col-xl-9 col-lg-8 col-md-12 m-b30': layout.sidebar === true, 'col-xl-12 col-lg-12': layout.sidebar === false}">
+            <!-- blog start -->
+            <div class="blog-post blog-single">
+              <div class="dlab-post-meta">
+                <ul>
+                  <li class="post-date"> <strong>10 Aug</strong> <span> 2024</span> </li>
+                  <li class="post-author ml-2"> By <a href="javascript:void(0);">Harry</a> </li>
+                </ul>
+              </div>
+              <div class="dlab-post-title ">
+                <h4 class="post-title m-t0"><a href="blog-single-sidebar">How To Get People To Like Industry</a></h4>
+              </div>
+              <div class="dlab-post-media dlab-img-effect zoom-slow">
+                <a href="blog-single-sidebar"><img src="assets/images/blog/default/thum1.jpg" alt=""></a>
+              </div>
+              <div class="dlab-post-text">
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                  industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                  scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and
+                  typesetting printer a galley Lorem Ipsum is simply dummy text of the printing and typesetting
+                  industry. Lorem Ipsum has been the industry's standard text ever since the 1500s, when an unknown
+                  printer took a galley of type and scrambled it to make a type specimen It has urvived not only five
+                  centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was
+                  popularised in 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more
+                  recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                  industry's standard text ever since the 1500s, when an unknown printer took a galley of type and
+                  scrambled it to make a type specimen It has urvived not only five centuries, but also the leap into
+                  electronic typesetting.</p>
+                <blockquote>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Has been the
+                  industry's standard text ever since the 1500s, when an unknown printer took a galley of type and
+                  scrambled it to make a type specimencenturies.</blockquote>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                  industry's standard text ever since the 1500s, when an unknown printer took a galley of type and
+                  scrambled it to make a type specimen It has urvived not only five centuries, but also the leap into
+                  electronic typesetting.</p>
+                <h5>Completely Responsive</h5>
+                <img class="alignleft" width="300" src="assets/images/blog/grid/pic4.jpg" alt="">
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                  industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                  scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
+                  into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
+                  release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
+                  software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of
+                  the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever
+                  since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
+                  specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                  remaining essentially unchanged. It was popularised in the 1960s with the releasefive centuries, but
+                  also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the
+                  1960s with the release</p>
+                <div class="dlab-divider bg-gray-dark"></div>
+                <img class="alignright" width="300" src="assets/images/blog/grid/pic1.jpg" alt="">
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                  industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                  scrambled it to make a type specimen book. It has survived not five centuries, but also the leap into
+                  electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
+                  release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
+                  software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of
+                  the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever
+                  since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
+                  specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                  remaining essentially unchanged. It was popularised in the 1960s with the release</p>
+              </div>
+              <div class="dlab-post-tags clear">
+                <div class="post-tags">
+                  <a href="javascript:void(0);">Child </a> <a href="javascript:void(0);">Eduction </a>
+                  <a  href="javascript:void(0);">Money </a> <a href="javascript:void(0);">Resturent </a>
+                </div>
+              </div>
+            </div>
+            <div class="clear" id="comment-list">
+              <div class="comments-area" id="comments">
+                <h2 class="comments-title">8 Comments</h2>
+                <div class="clearfix">
+                  <!-- comment list END -->
+                  <app-comments1></app-comments1>
+                  <!-- Form -->
+                  <app-comment-form1 [data]="layout"></app-comment-form1>
+                  <!-- Form -->
+                </div>
+              </div>
+            </div>
+            <!-- blog END -->
+          </div>
+          <!-- Side bar start -->
+          <ng-template [ngIf]="layout.sidebar">
+            <div class="col-xl-3 col-lg-4 col-md-12" *ngIf="layout.sidebarPosition=='right'">
+              <aside class="side-bar sticky-top">
+                <app-search-form2></app-search-form2>
+                <app-recent-posts1></app-recent-posts1>
+                <app-newsletter1></app-newsletter1>
+                <app-our-gallery1></app-our-gallery1>
+                <app-category-list1></app-category-list1>
+                <app-tag-list1></app-tag-list1>
+              </aside>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <!-- Content END-->
+    <!-- Footer -->
+    <app-footer13></app-footer13>
+    <!-- Footer END-->
+    <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+  </div>

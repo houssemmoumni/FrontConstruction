@@ -1,0 +1,205 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">Create Project</h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+        <li class="breadcrumb-item position-relative">
+            <a routerLink="/" class="d-inline-block position-relative">
+                <i class="ri-home-8-line"></i> Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item position-relative">Project Management</li>
+        <li class="breadcrumb-item position-relative">Projects</li>
+        <li class="breadcrumb-item position-relative">Create Project</li>
+    </ol>
+</div>
+
+<!-- Create Project -->
+<mat-card class="daxa-card">
+    <mat-card-header>
+        <mat-card-title>
+            <h5>{{isCreateProject ? 'Create New Project' : 'Update Project'}}</h5>
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <form #projectForm="ngForm" (ngSubmit)="createProject(projectForm)" class="project-form">
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field class="w-100">
+                        <mat-label>Project Name</mat-label>
+                        <input matInput 
+                               [(ngModel)]="project.projet_name" 
+                               name="projet_name" 
+                               required
+                               #projetName="ngModel"
+                               pattern="^[a-zA-Z0-9\s-]{3,50}$"
+                               [ngClass]="{'is-invalid': projetName.invalid && projetName.touched}">
+                        <mat-error *ngIf="projetName.invalid && projetName.touched">
+                            <span *ngIf="projetName.errors?.['required']">Project name is required</span>
+                            <span *ngIf="projetName.errors?.['pattern']">Use 3-50 characters (letters, numbers, spaces, hyphens)</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6">
+                    <mat-form-field class="w-100">
+                        <mat-label>Project Manager</mat-label>
+                        <mat-select [(ngModel)]="project.projectManager" name="projectManager" required>
+                            <mat-option *ngFor="let manager of projectManagers" [value]="manager">
+                                {{manager}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>Project manager is required</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6">
+                    <mat-form-field class="w-100">
+                        <mat-label>Start Date</mat-label>
+                        <input matInput 
+                               [matDatepicker]="startPicker" 
+                               [(ngModel)]="project.start_date" 
+                               name="start_date" 
+                               required
+                               [min]="isCreateProject ? minDate : null"
+                               #startDate="ngModel">
+                        <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startPicker></mat-datepicker>
+                        <mat-error *ngIf="startDate.invalid && startDate.touched">
+                            <span *ngIf="startDate.errors?.['required']">Start date is required</span>
+                            <span *ngIf="isCreateProject && startDate.errors?.['min']">Start date cannot be in the past</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6">
+                    <mat-form-field class="w-100">
+                        <mat-label>End Date</mat-label>
+                        <input matInput 
+                               [matDatepicker]="endPicker" 
+                               [(ngModel)]="project.end_date" 
+                               name="end_date"
+                               [min]="project.start_date"
+                               #endDate="ngModel">
+                        <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endPicker></mat-datepicker>
+                        <mat-error *ngIf="endDate.invalid && endDate.touched">
+                            End date must be after start date
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6">
+                    <mat-form-field class="w-100">
+                        <mat-label>Budget</mat-label>
+                        <input matInput 
+                               type="number" 
+                               [(ngModel)]="project.budget_estime" 
+                               name="budget_estime" 
+                               required
+                               min="0"
+                               max="999999999"
+                               #budget="ngModel">
+                        <mat-error *ngIf="budget.invalid && budget.touched">
+                            <span *ngIf="budget.errors?.['required']">Budget is required</span>
+                            <span *ngIf="budget.errors?.['min']">Budget must be positive</span>
+                            <span *ngIf="budget.errors?.['max']">Budget is too high</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6">
+                    <mat-form-field class="w-100">
+                        <mat-label>Risk Level (%)</mat-label>
+                        <input matInput 
+                               type="number" 
+                               [(ngModel)]="project.risque_retard" 
+                               name="risque_retard" 
+                               required
+                               min="0"
+                               max="100"
+                               #risk="ngModel">
+                        <mat-error *ngIf="risk.invalid && risk.touched">
+                            <span *ngIf="risk.errors?.['required']">Risk level is required</span>
+                            <span *ngIf="risk.errors?.['min'] || risk.errors?.['max']">Risk must be between 0 and 100</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6">
+                    <mat-form-field class="w-100">
+                        <mat-label>Status</mat-label>
+                        <mat-select [(ngModel)]="project.statut_projet" 
+                                  name="statut_projet" 
+                                  required
+                                  #statusField="ngModel">
+                            <mat-option *ngFor="let status of projectstatuts" [value]="status">
+                                {{status}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="statusField.invalid && statusField.touched">
+                            Project status is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-12">
+                    <mat-form-field class="w-100">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput 
+                                [(ngModel)]="project.projet_description" 
+                                name="projet_description" 
+                                #description="ngModel"
+                                required
+                                minlength="10"
+                                maxlength="500"
+                                rows="4"></textarea>
+                        <mat-hint align="end">{{description.value?.length || 0}}/500</mat-hint>
+                        <mat-error *ngIf="description.invalid && description.touched">
+                            <span *ngIf="description.errors?.['required']">Description is required</span>
+                            <span *ngIf="description.errors?.['minlength']">Description must be at least 10 characters</span>
+                            <span *ngIf="description.errors?.['maxlength']">Description cannot exceed 500 characters</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-12">
+                    <h5 class="mb-3">Project Location</h5>
+                    <mat-card class="daxa-card maps-card mb-25">
+                        <mat-card-content>
+                            <div class="map-container">
+                                <iframe [src]="mapUrl | safe" 
+                                    width="100%"
+                                    height="400"
+                                    frameborder="0"
+                                    style="border:0"
+                                    loading="lazy"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <div class="location-info mt-2">
+                                <p *ngIf="project.latitude && project.longitude" class="text-success">
+                                    Selected Location: {{project.latitude | number:'1.6-6'}}, {{project.longitude | number:'1.6-6'}}
+                                </p>
+                                <p *ngIf="!project.latitude || !project.longitude" class="text-muted">
+                                    Click anywhere on the map to set the location
+                                </p>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+            </div>
+
+            <div class="button-row">
+                <button mat-raised-button 
+                        color="primary" 
+                        type="submit" 
+                        [disabled]="!projectForm.valid && projectForm.pristine">
+                    {{isCreateProject ? 'Create Project' : 'Update Project'}}
+                </button>
+                <button mat-button type="button" (click)="clearForm(projectForm)">Cancel</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

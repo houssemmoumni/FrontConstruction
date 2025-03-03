@@ -1,0 +1,54 @@
+<div class="page-wraper">
+  <!-- <div id="loading-area" class="solar-loading"></div> -->
+  <!-- Slider -->
+  <app-slider6></app-slider6>
+  <!-- Slider END -->
+  <!-- header -->
+  <app-header-light11></app-header-light11>
+  <!-- header END -->
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- contact area -->
+    <div class="content-block">
+      <!-- About Us -->
+      <app-services-element6></app-services-element6>
+      <!-- About Us End -->
+      <!-- Call To Action End -->
+      <app-call-to-action5></app-call-to-action5>
+      <!-- Call To Action End -->
+      <!-- Services -->
+      <app-owl-slider7></app-owl-slider7>
+      <!-- Services End -->
+      <!-- Our Team -->
+      <app-team7 [data]="our_team"></app-team7>
+      <!-- Our Team END -->
+      <!-- About Company -->
+      <app-services-element7 [data]="slideStore"></app-services-element7>
+      <!-- About Company END -->
+      <!-- Latest Projects -->
+      <app-owl-slider8></app-owl-slider8>
+      <!-- Latest Projects End -->
+      <!-- Testimonials -->
+      <app-testimonial5 [data]="testimonials"></app-testimonial5>
+      <!-- Testimonials End -->
+      <!-- Latest From Blog -->
+      <div class="section-full content-inner bg-white">
+        <div class="container">
+          <div class="section-head text-black text-center">
+            <h2 class="title text-capitalize">latest from blog</h2>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry has been the industry's
+              standard dummy text ever since the been when an unknown printer.</p>
+          </div>
+          <app-blog4 [data]="blogs"></app-blog4>
+        </div>
+      </div>
+      <!-- Latest From Blog End -->
+    </div>
+    <!-- contact area END -->
+  </div>
+  <!-- Content END -->
+  <!-- Footer -->
+  <app-footer21></app-footer21>
+  <!-- Footer END -->
+  <button class="scroltop style2 radius" (click)="scroll_top()" type="button"><i class="fa fa-arrow-up"></i></button>
+</div>

@@ -1,0 +1,37 @@
+import {
+    ApplicationConfig,
+    importProvidersFrom,
+    provideZoneChangeDetection,
+} from '@angular/core';
+import { provideRouter, RouterModule } from '@angular/router';
+
+import { routes } from './app.routes';
+import { provideClientHydration } from '@angular/platform-browser';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import {
+    BrowserAnimationsModule,
+    provideAnimations,
+} from '@angular/platform-browser/animations';
+import {
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
+import { GoogleMapsModule } from '@angular/google-maps';
+
+export const appConfig: ApplicationConfig = {
+    providers: [
+        provideZoneChangeDetection({ eventCoalescing: true }),
+        provideRouter(routes),
+        provideClientHydration(),
+        provideAnimations(),
+        provideHttpClient(),
+        provideAnimationsAsync(),
+        importProvidersFrom(
+            BrowserAnimationsModule,
+            RouterModule.forRoot(routes, {
+                scrollPositionRestoration: 'top',
+            }),
+            GoogleMapsModule
+        ),
+    ],
+};

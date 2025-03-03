@@ -1,0 +1,29 @@
+<div class="section-full content-inner bg-gray">
+  <ng-template ngFor let-testimonialData [ngForOf]="data">
+    <div class="container">
+      <div class="section-head style2 text-center">
+        <h2 class="title">{{testimonialData.section_title}}</h2>
+        <p>{{testimonialData.section_description}}</p>
+      </div>
+      <owl-carousel-o [options]="customOptions" class="testimonial-five owl-none owl-loaded owl-theme">
+        @for(testimonial of testimonialData.testimonial; track testimonial){
+        <ng-template carouselSlide>
+          <div class="item wow fadeInUp" data-wow-duration="2s" data-wow-delay="0.3s">
+            <div class="testimonial-6">
+              <div class="testimonial-text bg-white quote-left quote-right">
+                <p>{{testimonial.description}}</p>
+              </div>
+              <div class="testimonial-detail clearfix bg-primary text-white">
+                <h4 class="testimonial-name m-tb0">{{testimonial.name}}</h4>
+                <span class="testimonial-position">{{testimonial.role}}</span>
+                <div class="testimonial-pic radius"><img src="{{testimonial.image}}" alt="" width="100" height="100">
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        }
+      </owl-carousel-o>
+    </div>
+  </ng-template>
+</div>

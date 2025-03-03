@@ -1,0 +1,38 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light3></app-header-light3>
+
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- inner page banner -->
+    <app-banner1 [data]="banner"></app-banner1>
+    <!-- inner page banner END -->
+    <!-- contact area -->
+    <div class="content-block">
+      <!-- Team Section -->
+      <div class="section-full text-center bg-white content-inner">
+
+        <app-team3 [data]="our_team"></app-team3>
+
+      </div>
+      <!-- Team Section END -->
+      <!-- Counter -->
+      <app-counter5></app-counter5>
+      <!-- Counter END -->
+      <!-- Team Section -->
+      <div class="section-full text-center bg-white content-inner">
+        <app-team14 [data]="our_team2"></app-team14>
+      </div>
+      <!-- Team Section END -->
+      <!-- About Quotes -->
+      <app-content16></app-content16>
+      <!-- About Quotes END -->
+    </div>
+    <!-- contact area END -->
+  </div>
+  <!-- Content END-->
+  <!-- Footer -->
+  <app-footer13></app-footer13>
+  <!-- Footer End -->
+ <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+</div>

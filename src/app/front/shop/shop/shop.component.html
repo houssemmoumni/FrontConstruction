@@ -1,0 +1,62 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light3></app-header-light3>
+  <!-- header END -->
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- inner page banner -->
+    <app-banner1 [data]="banner"></app-banner1>
+    <!-- inner page banner END -->
+    <!-- contact area -->
+    <div class="section-full content-inner">
+      <!-- Product -->
+      <div class="container">
+        <div class="row">
+          @for(item of products; track item){
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="item-box m-b10">
+              <div class="item-img">
+                <img src="{{ item.img }}" alt="" />
+                <div class="item-info-in">
+									<ul>
+										<li><a [routerLink]="['/shop-cart']"><i class="ti-shopping-cart"></i></a></li>
+										<li><a href="javascript:void(0);"><i class="ti-eye"></i></a></li>
+										<li><a href="javascript:void(0);"><i class="ti-heart"></i></a></li>
+									</ul>
+								</div>
+              </div>
+              <div class="item-info text-center text-black p-a10">
+                <h6 class="item-title font-weight-500">
+                  <a [routerLink]="['/shop-product-details']">{{ item.title }}</a>
+                </h6>
+                <ul class="item-review">
+                  @for(starRow of [].constructor(5); track starRow; let i = $index){
+                    @if(item.rating > i){
+                      <li><i class="fa fa-star" [ngClass]="[i == 4 ? 'mr-0':'mr-1']"></i></li>
+                    } @else {
+                      <li><i class="fa fa-star-o" [ngClass]="[i == 4 ? 'mr-0':'mr-1']"></i></li>
+                    }
+                  }
+                </ul>
+                <h4 class="item-price">
+                  <del>{{ item.offer_price | currency  }}</del>
+                  <span class="text-primary pl-2">{{ item.price | currency  }}</span>
+                </h4>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      <!-- Product END -->
+    </div>
+    <!-- Shop Service info -->
+    <app-icon-box3></app-icon-box3>
+    <!-- Shop Service info End -->
+  </div>
+  <!-- Content End -->
+  <!-- Footer -->
+  <app-footer19></app-footer19>
+  <!-- Footer END-->
+ <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+</div>

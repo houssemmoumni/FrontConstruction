@@ -1,0 +1,366 @@
+.mat-mdc-card {
+    &.daxa-card {
+        &.all-projects-card {
+            .mat-mdc-card-content {
+                margin: {
+                    left: -20px;
+                    right: -20px;
+                };
+                .all-projects-table {
+                    .mat-mdc-table {
+                        .mat-mdc-header-cell {
+                            &:last-child {
+                                text-align: right;
+                            }
+                        }
+                        .mat-mdc-cell {
+                            &:last-child {
+                                text-align: right;
+                            }
+                        }
+                        .daxa-badge {
+                            color: var(--daxaColor);
+                            background: rgba(15, 121, 243, 0.10);
+                            padding: 5px 10px;
+                            border-radius: 4px;
+                            font-size: 12px;
+
+                            &.in-progress {
+                                color: var(--warningColor);
+                                background: rgba(241, 179, 28, 0.10);
+                                background-color: #e3f2fd;
+                                color: #2196f3;
+                            }
+                            &.pending {
+                                color: var(--successColor);
+                                background: rgba(46, 212, 126, 0.10);
+                                background-color: #fff3e0;
+                                color: #ff9800;
+                            }
+                            &.not-started {
+                                color: var(--dangerColor);
+                                background: rgba(231, 76, 60, 0.10);
+                                background-color: #ffebee;
+                                color: #f44336;
+                            }
+                            &.completed {
+                                background-color: #e8f5e9;
+                                color: #4caf50;
+                            }
+                        }
+                        .team-members-list {
+                            img {
+                                width: 42px;
+                                border-radius: 50%;
+                                margin-right: -13px;
+                                border: 2px solid var(--whiteColor);
+                                
+                                &:last-child {
+                                    margin-right: 0;
+                                }
+                            }
+                        }
+                        .mat-mdc-progress-bar {
+                            --mdc-linear-progress-active-indicator-height: 5px;
+                            --mdc-linear-progress-track-height: 5px;
+                            margin-left: 10px;
+                            width: 90px;
+
+                            &.inProgress {
+                                --mdc-linear-progress-active-indicator-color: var(--warningColor);
+                            }
+                            &.pending {
+                                --mdc-linear-progress-active-indicator-color: var(--successColor);
+                            }
+                            &.notStarted {
+                                --mdc-linear-progress-active-indicator-color: var(--dangerColor);
+                            }
+                        }
+                    }
+                }
+            }
+            &.rtl-enabled {
+                .mat-mdc-card-content {
+                    .all-projects-table {
+                        .mat-mdc-table {
+                            .mat-mdc-header-cell {
+                                &:last-child {
+                                    text-align: left;
+                                }
+                            }
+                            .mat-mdc-cell {
+                                &:last-child {
+                                    text-align: left;
+                                }
+                            }
+                            .team-members-list {
+                                img {
+                                    margin: {
+                                        right: 0;
+                                        left: -13px;
+                                    };
+                                    &:last-child {
+                                        margin-left: 0;
+                                    }
+                                }
+                            }
+                            .mat-mdc-progress-bar {
+                                margin: {
+                                    left: 0;
+                                    right: 10px;
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+::ng-deep {
+    .mat-mdc-card {
+        &.daxa-card {
+            &.all-projects-card {
+                .mat-mdc-card-content {
+                    .all-projects-table {
+                        .mat-mdc-paginator {
+                            padding: {
+                                top: 15px;
+                                left: 20px;
+                                right: 20px;
+                            };
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Max width 767px */
+@media only screen and (max-width : 767px) {
+
+    .mat-mdc-card {
+        &.daxa-card {
+            &.all-projects-card {
+                .mat-mdc-card-content {
+                    margin: {
+                        left: -15px;
+                        right: -15px;
+                    };
+                }
+            }
+        }
+    }
+    ::ng-deep {
+        .mat-mdc-card {
+            &.daxa-card {
+                &.all-projects-card {
+                    .mat-mdc-card-header {
+                        .mat-mdc-card-header-text {
+                            display: block;
+
+                            .mat-mdc-card-subtitle {
+                                margin-top: 12px;
+                            }
+                        }
+                    }
+                    .mat-mdc-card-content {
+                        .all-projects-table {
+                            .mat-mdc-paginator {
+                                padding: {
+                                    top: 10px;
+                                    left: 15px;
+                                    right: 15px;
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+/* Min width 576px to Max width 767px */
+@media only screen and (min-width : 576px) and (max-width : 767px) {
+
+    .mat-mdc-card {
+        &.daxa-card {
+            &.all-projects-card {
+                .mat-mdc-card-content {
+                    margin: {
+                        left: -20px;
+                        right: -20px;
+                    };
+                }
+            }
+        }
+    }
+    ::ng-deep {
+        .mat-mdc-card {
+            &.daxa-card {
+                &.all-projects-card {
+                    .mat-mdc-card-content {
+                        .all-projects-table {
+                            .mat-mdc-paginator {
+                                padding: {
+                                    left: 20px;
+                                    right: 20px;
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+/* Min width 768px to Max width 991px */
+@media only screen and (min-width : 768px) and (max-width : 991px) {}
+
+/* Min width 992px to Max width 1199px */
+@media only screen and (min-width : 992px) and (max-width : 1199px) {}
+
+/* Min width 1200px to Max width 1399px */
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {}
+
+/* Min width 1600px */
+@media only screen and (min-width: 1600px) {}
+
+.mat-column-action {
+    width: 100px;
+    text-align: center;
+}
+
+.mat-column-projet_description {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mat-elevation-z8 {
+    overflow-x: auto;
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+
+    &.in-progress { background: #e3f2fd; color: #1976d2; }
+    &.pending { background: #fff3e0; color: #f57c00; }
+    &.completed { background: #e8f5e9; color: #388e3c; }
+    &.not-started { background: #ffebee; color: #d32f2f; }
+}
+
+.mat-mdc-card {
+    margin: 15px;
+    
+    .mat-mdc-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+// Responsive adjustments
+@media screen and (max-width: 768px) {
+    .mat-mdc-card {
+        margin: 10px;
+    }
+    
+    .mat-column-action {
+        width: 90px;
+    }
+}
+
+.loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mat-mdc-table {
+    width: 100%;
+    position: relative;
+}
+
+.table-container {
+    position: relative;
+    min-height: 200px;
+}
+
+.no-data-message {
+    padding: 2rem;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.search-container {
+    margin-bottom: 1rem;
+    padding: 0 16px;
+    
+    .mat-form-field {
+        font-size: 14px;
+    }
+}
+
+.table-responsive {
+    position: relative;
+    min-height: 200px;
+}
+
+.loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.no-data-message {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+:host {
+    display: block;
+    padding: 20px;
+}
+
+.mat-header-cell {
+    font-weight: bold;
+}

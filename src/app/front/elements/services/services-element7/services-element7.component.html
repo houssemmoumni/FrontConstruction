@@ -1,0 +1,26 @@
+<ng-template ngFor let-serviceData [ngForOf]="data">
+<div class="section-full bg-gray content-inner-2 about-carousel-ser">
+  <div class="container">
+    <div class="section-head text-center">
+      <h2 class="title"><span class="fullname" [innerHTML]="serviceData.section_title"></span></h2>
+      <p>{{serviceData.section_description}}</p>
+    </div>
+    <div class="about-ser-carousel owl-carousel owl-theme owl-btn-center-lr owl-dots-primary-full owl-dots-none owl-btn-3">
+      @for(item of serviceData.services; track item){
+      <div class="item wow fadeInUp" data-wow-duration="2s" data-wow-delay="0.3s">
+        <div class="dlab-box service-media-bx">
+          <div class="dlab-media dlab-img-effect zoom">
+            <a href="javascript:void(0);"><img src="{{ item.image }}" alt=""></a>
+          </div>
+          <div class="dlab-info text-center">
+            <h2 class="dlab-title"><a [routerLink]="['/services-details']">{{ item.title }}</a></h2>
+            <p>{{ item.decs }}</p>
+            <a [routerLink]="['/services-details']" class="site-button btnhover15">Read More</a>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+</ng-template>

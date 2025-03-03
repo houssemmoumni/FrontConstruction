@@ -1,0 +1,16 @@
+<div class="widget widget-newslatter">
+  <h5 class="widget-title style-1">Newsletter</h5>
+  <div class="news-box">
+    <p>Enter your e-mail and subscribe to our newsletter.</p>
+    @if(message){
+      <p [ngClass]="{ 'text-success': success, 'text-danger': !success }">{{ message }}</p>
+    }
+    <form class="dzSubscribe" [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
+      <div class="dzSubscribeMsg"></div>
+      <div class="input-group">
+        <input name="email" formControlName="email"  required="required" type="email" class="form-control" placeholder="Your Email" />
+        <button name="submit" value="Submit" type="submit" class="site-button btn-block radius-no">Subscribe Now</button>
+      </div>
+    </form>
+  </div>
+</div>

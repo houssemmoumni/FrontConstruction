@@ -1,0 +1,28 @@
+<mat-card class="daxa-card total-projects-card border-radius border-none d-block">
+    <mat-card-content>
+        <div class="d-flex justify-content-between">
+            <div class="title">
+                <h5>Total Projects</h5>
+                <div class="number fw-medium lh-1">
+                    <ng-container *ngIf="isLoading">
+                        <span>Loading...</span>
+                    </ng-container>
+                    <ng-container *ngIf="!isLoading">
+                        {{ totalProjects }}
+                    </ng-container>
+                </div>
+            </div>
+            <div class="icon text-center bg-primary rounded-circle text-white position-relative">
+                <i class="material-symbols-outlined">folder</i>
+            </div>
+        </div>
+        <div class="info d-flex align-items-center justify-content-between mt-3">
+            <span class="sub-title d-block text-body">
+                Total Active Projects
+            </span>
+            <span *ngIf="!isLoading" class="badge bg-light text-primary">
+                Updated
+            </span>
+        </div>
+    </mat-card-content>
+</mat-card>

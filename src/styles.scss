@@ -1,0 +1,381 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+    --fontFamily: 'Outfit', sans-serif;
+    --daxaColor: #0f79f3;
+    --primaryColor: #796df6;
+    --dangerColor: #e74c3c;
+    --infoColor: #00cae3;
+    --warningColor: #ffb264;
+    --successColor: #2ed47e;
+    --blackColor: #475569;
+    --whiteColor: #ffffff;
+    --bodyColor: #919aa3;
+    --transition: .5s;
+    --fontSize: 16px;
+    --borderBoxShadow: rgba(0, 0, 0, .05) 0px 6px 24px 0px, rgba(0, 0, 0, .08) 0px 0px 0px 1px;
+}
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0;
+    color: var(--blackColor);
+    background-color: #eff3f9;
+    font: {
+        weight: 400;
+        size: var(--fontSize);
+        family: var(--fontFamily);
+    };
+}
+a {
+    transition: var(--transition);
+    color: var(--blackColor);
+    text-decoration: none;
+    outline: 0 !important;
+
+    &:hover {
+        text-decoration: none;
+        color: var(--daxaColor);
+    }
+}
+.d-table {
+    width: 100%;
+    height: 100%;
+
+    &-cell {
+        vertical-align: middle;
+    }
+}
+img {
+    max-width: 100%;
+    height: auto;
+}
+input {
+    font: {
+        family: var(--fontFamily);
+        size: var(--fontSize);
+    };
+}
+button {
+    font: {
+        family: var(--fontFamily) !important;
+        size: var(--fontSize) !important;
+    };
+}
+.mb-25 {
+    margin-bottom: 25px !important;
+}
+
+// Custom snackbar styles
+.success-snackbar {
+    background: linear-gradient(135deg, #4CAF50, #45a049) !important;
+    color: white !important;
+    min-width: 300px !important;
+    margin-top: 20px !important;
+    padding: 16px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+    animation: slideInRight 0.3s ease-out !important;
+
+    .mat-simple-snackbar {
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    .mat-simple-snackbar-action {
+        color: white !important;
+        font-weight: bold !important;
+    }
+}
+
+.error-snackbar {
+    background: linear-gradient(135deg, #f44336, #d32f2f) !important;
+    color: white !important;
+    min-width: 300px !important;
+    margin-top: 20px !important;
+    padding: 16px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+    animation: slideInRight 0.3s ease-out !important;
+
+    .mat-simple-snackbar {
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    .mat-simple-snackbar-action {
+        color: white !important;
+        font-weight: bold !important;
+    }
+}
+
+.confirmation-snackbar {
+    background: linear-gradient(135deg, #ff9800, #f57c00) !important;
+    color: white !important;
+    min-width: 300px !important;
+    padding: 16px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+    animation: shake 0.5s ease-in-out !important;
+
+    .mat-simple-snackbar {
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+
+    .mat-simple-snackbar-action {
+        color: white !important;
+        background: rgba(255, 255, 255, 0.2) !important;
+        padding: 5px 10px !important;
+        border-radius: 4px !important;
+        transition: background 0.3s ease !important;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.3) !important;
+        }
+    }
+}
+
+// Event details snackbar styles
+.event-details-snackbar {
+    background: linear-gradient(135deg, #1a237e, #283593) !important;
+    color: white !important;
+    min-width: 400px !important;
+    max-width: 600px !important;
+    padding: 0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3) !important;
+    animation: slideInDown 0.5s ease-out, fadeIn 0.5s ease-out !important;
+
+    .mat-simple-snackbar {
+        font-family: 'Roboto', sans-serif !important;
+        display: block !important;
+        
+        .event-details {
+            .event-header {
+                background: rgba(255, 255, 255, 0.1);
+                padding: 16px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+                h3 {
+                    font-size: 1.25rem !important;
+                    font-weight: 500 !important;
+                    margin: 0 !important;
+                    color: #fff !important;
+                }
+
+                .status-badge {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                }
+            }
+
+            .event-body {
+                padding: 16px 20px;
+
+                .event-info {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 12px;
+                    margin-bottom: 12px;
+                    
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    i {
+                        font-size: 1.1rem;
+                        color: #90caf9;
+                        margin-top: 3px;
+                    }
+
+                    span {
+                        color: #e3f2fd;
+                        font-size: 0.95rem;
+                        line-height: 1.5;
+
+                        strong {
+                            color: #fff;
+                            font-weight: 500;
+                            margin-right: 4px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .mat-simple-snackbar-action {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        color: #fff !important;
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+.delete-confirmation-snackbar {
+    background: linear-gradient(135deg, #ff6b6b, #ff4757) !important;
+    color: white !important;
+    min-width: 400px !important;
+    padding: 16px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3) !important;
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both !important;
+
+    .mat-simple-snackbar {
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 20px !important;
+    }
+
+    .mat-simple-snackbar-action {
+        padding: 8px 16px !important;
+        border-radius: 4px !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        color: white !important;
+        font-weight: 500 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        transition: all 0.3s ease !important;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.25) !important;
+            transform: scale(1.05) !important;
+        }
+    }
+}
+
+// Add animation
+@keyframes slideInDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+.notification-animation {
+    animation: slideInRight 0.3s ease-out;
+}
+
+.mat-snack-bar-container {
+    animation: slideInDown 0.3s ease-out !important;
+}
+
+// Utilities CSS
+@import "./utilities";
+
+// UI Kit CSS
+@import "./ui-kit";
+
+// Typography CSS
+@import "./typography";
+
+// RTL CSS
+@import "./rtl";
+
+// Dark CSS
+@import "./dark";
+
+/* Max width 767px */
+@media only screen and (max-width : 767px) {
+
+    body {
+        font-size: 14px;
+    }
+    .mb-25 {
+        margin-bottom: 15px !important;
+    }
+    button {
+        font-size: 14px !important;
+    }
+
+}
+
+/* Min width 576px to Max width 767px */
+@media only screen and (min-width : 576px) and (max-width : 767px) {
+
+    .mb-25 {
+        margin-bottom: 20px !important;
+    }
+
+}
+
+/* Min width 768px to Max width 991px */
+@media only screen and (min-width : 768px) and (max-width : 991px) {
+
+    body {
+        font-size: 15px;
+    }
+    button {
+        font-size: 15px !important;
+    }
+
+}
+
+/* Min width 992px to Max width 1199px */
+@media only screen and (min-width : 992px) and (max-width : 1199px) {}
+
+/* Min width 1200px to Max width 1399px */
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {}
+
+/* Min width 1600px */
+@media only screen and (min-width: 1600px) {}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

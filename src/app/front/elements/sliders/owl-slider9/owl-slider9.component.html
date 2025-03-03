@@ -1,0 +1,27 @@
+<div class="section-full content-inner-2 exhibition-bx">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 wow fadeInLeft" data-wow-duration="2s" data-wow-delay="0.3s">
+        <owl-carousel-o [options]="customOptions" class="exhibition-carousel d-block owl-none m-b30">
+          @for(slide of slideStore; track slide){
+          <ng-template carouselSlide>
+            <div class="item"><img src="{{slide.image}}" alt=""></div>
+          </ng-template>
+          }
+        </owl-carousel-o>
+      </div>
+      <div class="col-lg-6 m-b30 wow fadeInRight" data-wow-duration="2s" data-wow-delay="0.3s">
+        <div class="content-bx1">
+          <div class="section-head">
+            <h2 class="title">Quality Products <br />With Sweet eggs a breads </h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent molestie nec nisl eget scelerisque.
+              Quisque placerat suscipit eros, eu tincidunt tellus blandit vel. Donec pellentesque dapibus interdum.
+              Mauris et tellus congue, rutrum neque a, varius felis.</p>
+          </div>
+          <a [routerLink]="['/contact-2']" class="site-button btnhover10 black m-r10 m-b10">Contact us</a>
+          <a [routerLink]="['/portfolio-details']" class="site-button btnhover10 black m-b10">View portfolio</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

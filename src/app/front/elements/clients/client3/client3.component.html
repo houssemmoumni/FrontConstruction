@@ -1,0 +1,18 @@
+<div class="section-full content-inner-2 bg-gray wow fadeIn" data-wow-duration="2s" data-wow-delay="0.6s">
+  <div class="container">
+    <div class="section-content">
+      <owl-carousel-o [options]="customOptions" class="client-logo-carousel mfp-gallery gallery owl-btn-center-lr owl-btn-3">
+        @for(logoItem of data; track logoItem){
+        <ng-template carouselSlide>
+          <div class="item">
+            <div class="ow-client-logo p-a25">
+              <div class="client-logo"><a href="{{logoItem.logo_url}}"><img src="{{logoItem.logo_image}}" alt=""></a>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        }
+      </owl-carousel-o>
+    </div>
+  </div>
+</div>

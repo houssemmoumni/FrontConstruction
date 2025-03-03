@@ -1,0 +1,52 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light9></app-header-light9>
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- Slider -->
+    <app-slider4></app-slider4>
+    <!-- contact area -->
+    <div class="content-block">
+      <!-- Call To Action End -->
+      <app-call-to-action4></app-call-to-action4>
+      <!-- About Us -->
+      <app-owl-slider3></app-owl-slider3>
+      <!-- Services -->
+      <app-services-element4></app-services-element4>
+      <!-- Latest Projects -->
+      <app-owl-slider4></app-owl-slider4>
+      <!-- Team -->
+      <app-team5 [data]="our_team"></app-team5>
+      <!-- Testimonials -->
+      <app-testimonial3 [data]="testimonials"></app-testimonial3>
+      <!-- Latest Blog -->
+      <div class="section-full content-inner bg-white">
+        <div class="container">
+          <div class="section-head text-black text-center">
+            <h2 class="title text-capitalize">latest blog</h2>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry has been the industry's standard dummy text ever since the been when an unknown printer.</p>
+          </div>
+          <app-blog4 [data]="blogs"></app-blog4>
+        </div>
+      </div>
+      <!-- Latest Blog End -->
+      <!-- Client logo -->
+      <div class="section-full content-inner-2 bg-gray wow fadeIn" data-wow-duration="2s" data-wow-delay="0.6s">
+        <div class="container">
+          <div class="section-head text-black text-center">
+            <h2 class="title text-capitalize">We work with our partners to provide project perfection,<br /><span class="text-primary">join with our parnership.</span></h2>
+          </div>
+          <app-client2 [data]="clients"></app-client2>
+        </div>
+      </div>
+      <!-- Client logo End -->
+    </div>
+    <!-- contact area END -->
+  </div>
+  <!-- Content END -->
+  <!-- Footer -->
+  <app-footer16></app-footer16>
+  <!-- Footer END-->
+
+  <button class="scroltop style1 white icon-up" (click)="scroll_top()" type="button"><i class="fa fa-arrow-up"></i></button>
+</div>

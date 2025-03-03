@@ -1,0 +1,45 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light3 />
+
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- Main Slider -->
+    <app-slider1></app-slider1>
+    <!-- contact area -->
+    <div class="content-block">
+
+      <!-- About Company -->
+      <!-- <app-owl-slider1 [data]="slideStore"></app-owl-slider1> -->
+      <app-services-element7 [data]="slideStore"></app-services-element7>
+
+      <!-- Our Projects  -->
+      <app-call-to-action1></app-call-to-action1>
+
+      <!-- Our Services -->
+      <app-services-element1></app-services-element1>
+
+      <!-- Company staus -->
+      <app-counter1></app-counter1>
+
+      <!-- Team member -->
+      <div class="section-full bg-gray content-inner">
+        <app-team3 [data]="our_team"></app-team3>
+      </div>
+
+      <!-- Testimonials blog -->
+      <app-testimonial1 [data]="testimonials"></app-testimonial1>
+
+      <!-- Latest blog -->
+      <app-blog1></app-blog1>
+
+      <!-- Client logo -->
+      <app-client1  [data]="clients"></app-client1>
+    </div>
+  </div>
+  <!-- Content END-->
+  <!-- Footer -->
+  <app-footer14></app-footer14>
+
+  <button class="scroltop icon-up" (click)="scroll_top()" type="button"><i class="fa fa-arrow-up"></i></button>
+</div>

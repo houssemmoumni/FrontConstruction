@@ -1,0 +1,27 @@
+<div class="section-full content-inner-1">
+  <ng-template ngFor let-teamData [ngForOf]="data">
+    <div class="section-head text-center">
+      <h2 class="title">{{teamData.section_title}}</h2>
+      <div class="dlab-separator bg-primary m-b0"></div>
+    </div>
+    <owl-carousel-o [options]="customOptions" class="owl-team dlab-team11-area owl-theme owl-btn-center-lr dots-theme">
+      @for(team of teamData.team; track team;){
+      <ng-template carouselSlide>
+        <div class="item wow fadeInUp" data-wow-duration="2s" data-wow-delay="0.4s">
+          <div class="dlab-box dlab-team11">
+            <div class="dlab-media dlab-img-effect zoom">
+              <a href="javascript:void(0);">
+                <img src="{{team.image}}" alt="" />
+              </a>
+            </div>
+            <div class="dlab-info">
+              <h4 class="dlab-title"><a [routerLink]="['/team-1']">{{team.name}}</a></h4>
+              <span class="dlab-position">{{team.role}}</span>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      }
+    </owl-carousel-o>
+  </ng-template>
+</div>

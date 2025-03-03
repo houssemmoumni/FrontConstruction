@@ -1,0 +1,67 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light3></app-header-light3>
+  <!-- header END -->
+  <!-- Content -->
+  <div class="page-content bg-gray">
+    <!-- inner page banner -->
+    <app-banner1 [data]="banner"></app-banner1>
+    <!-- inner page banner END -->
+    <div class="content-inner-2">
+      <div class="container">
+        <div class="row">
+          <div [ngClass]="{'col-xl-9 col-lg-8': layout.sidebar === true, 'col-xl-12 col-lg-12': layout.sidebar === false}">
+            <!-- blog grid -->
+            <div id="masonry" class="dlab-blog-grid-2" style="width: 100%;">
+              @for(item of blogList; track item;){
+                <div class="post card-container {{ layout.gridClass}} col-md-6 col-sm-12">
+                  <div class="blog-post blog-grid blog-rounded blog-effect1">
+                    <div class="dlab-post-media dlab-img-effect">
+                      <a [routerLink]="['/blog-single']"><img src="{{ item.image }}" alt="" /></a>
+                    </div>
+                    <div class="dlab-info p-a25 border-1">
+                      <div class="dlab-post-meta ">
+                        <ul>
+                          <li class="post-date">{{ item.date }}</li>
+                          <li class="post-author ml-2">By <a href="javascript:void(0);">{{ item.userName }}</a></li>
+                        </ul>
+                      </div>
+                      <div class="dlab-post-title ">
+                        <h4 class="post-title"><a [routerLink]="['/blog-single']">{{ item.title }}</a></h4>
+                      </div>
+                      <div class="dlab-post-text">
+                        <p>{{ item.decs }}</p>
+                      </div>
+                      <div class="dlab-post-readmore">
+                        <a [routerLink]="['/blog-single']" title="READ MORE" rel="bookmark" class="site-button">READ MORE
+                          <i class="ti-arrow-right"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+            <!-- blog grid END -->
+            <!-- Pagination start -->
+            <div class="pagination-bx clearfix m-b30 text-center">
+              <ul class="pagination">
+                <li class="previous"><a href="javascript:void(0);"><i class="ti-arrow-left"></i> Prev</a></li>
+                <li class="active"><a href="javascript:void(0);">1</a></li>
+                <li><a href="javascript:void(0);">2</a></li>
+                <li><a href="javascript:void(0);">3</a></li>
+                <li class="next"><a href="javascript:void(0);">Next <i class="ti-arrow-right"></i></a></li>
+              </ul>
+            </div>
+            <!-- Pagination END -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Content END-->
+  <!-- Footer -->
+  <app-footer13></app-footer13>
+  <!-- Footer END-->
+ <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+</div>

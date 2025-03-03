@@ -1,0 +1,20 @@
+
+<owl-carousel-o [options]="customOptions" class="owl-slider owl-theme owl-btn-center-lr">
+  @for(slide of slideStore; track slide;){
+  <ng-template carouselSlide>
+    <div class="item slide-item">
+      <div class="slide-item-img">
+        <img src="{{slide.image}}" class="" alt=""/>
+      </div>
+      <div class="slide-content">
+        <div class="slide-content-box">
+          <div class="slide-content-area">
+            <h2 class="slider-title">{{slide.title}}</h2>
+            <p>{{slide.introtext}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  }
+</owl-carousel-o>

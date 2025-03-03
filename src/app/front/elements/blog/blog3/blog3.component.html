@@ -1,0 +1,27 @@
+<owl-carousel-o [options]="customOptions" class="blog-carousel owl-none">
+  @for(blog of data; track blog){
+  <ng-template carouselSlide>
+    <div class="item">
+      <div class="blog-post post-style-2">
+        <div class="dlab-post-media dlab-img-effect zoom">
+          <a  routerLink="/{{blog.read_more_link}}"><img src="{{blog.blog_image}}" alt=""></a>
+        </div>
+        <div class="dlab-post-info">
+          <div class="dlab-post-meta">
+            <ul>
+              <li class="post-date" [innerHTML]="blog.post_date"></li>
+              <li class="post-author" [innerHTML]="blog.post_author"></li>
+            </ul>
+          </div>
+          <div class="dlab-post-title">
+            <h4 class="post-title"><a  routerLink="/{{blog.read_more_link}}">{{blog.post_title}}</a></h4>
+          </div>
+          <div class="dlab-post-readmore">
+            <a  routerLink="/{{blog.read_more_link}}" title="READ MORE" rel="bookmark" class="site-button btnhover20">{{blog.read_more_text}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  }
+</owl-carousel-o>

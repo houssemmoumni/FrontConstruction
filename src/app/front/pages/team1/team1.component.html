@@ -1,0 +1,27 @@
+
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light3></app-header-light3>
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- inner page banner -->
+    <app-banner1 [data] = "banner"></app-banner1>
+    <!-- contact area -->
+    <div class="content-block">
+      <!-- Our Team -->
+      <div class="section-full content-inner">
+        <div class="container">
+          <div class="section-head text-black text-center">
+            <app-team3 [data]="our_team"></app-team3>
+          </div>
+        </div>
+      </div>
+      <!-- Our Team END -->
+      <!-- Cleint logo -->
+      <app-client3  [data] = "clients"></app-client3>
+      <!-- Cleint logo END -->
+    </div>
+  </div>
+  <app-footer13></app-footer13>
+ <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+</div>

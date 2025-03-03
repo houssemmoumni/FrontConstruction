@@ -1,0 +1,88 @@
+<footer class="site-footer text-uppercase bg-primary">
+  <div class="footer-top" style="background-image:url(assets/images/background/bg2.png); background-size: contain;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 col-5 col-xl-2 col-lg-2 col-sm-6 footer-col-4">
+          <div class="widget widget_services border-0">
+            <h5 class="m-b30 text-white">Company</h5>
+            <ul>
+              <li><a [routerLink]="['/index']">About Us </a></li>
+              <li><a [routerLink]="['/index']">Home </a></li>
+              <li><a [routerLink]="['/contact']">Contact Us</a></li>
+              <li><a [routerLink]="['/about-1']">About Us</a></li>
+              <li><a [routerLink]="['/services-2']">Our Services</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-3 col-7 col-xl-2 col-lg-3 col-sm-6 footer-col-4">
+          <div class="widget widget_services border-0">
+            <h5 class="m-b30 text-white">Useful Link</h5>
+            <ul>
+              <li><a [routerLink]="['/index']">Create Account</a></li>
+              <li><a [routerLink]="['/index']">Company Philosophy </a></li>
+              <li><a [routerLink]="['/contact']">Corporate Culture</a></li>
+              <li><a [routerLink]="['/about-1']">Portfolio</a></li>
+              <li><a [routerLink]="['/services-2']">Client Management</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4 col-lg-3 col-sm-6 footer-col-4">
+          <div class="widget widget_getintuch">
+            <h5 class="m-b30 text-white ">Contact us</h5>
+            <ul>
+              <li><i class="ti-location-pin"></i><strong>address</strong> demo address #8901 Marmora Road Chi Minh City,
+                Vietnam </li>
+              <li><i class="ti-mobile"></i><strong>phone</strong>0800-123456 (24/7 Support Line)</li>
+              <li><i class="ti-email"></i><strong>email</strong>{{ email }}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-12 col-xl-4 col-lg-4 col-sm-6 footer-col-4 ">
+          <div class="widget">
+            <h5 class="m-b30 text-white">Subscribe To Our Newsletter</h5>
+            <p class="text-capitalize m-b20">Lorem Ipsum is simply dummy text of the printing and typesetting industry  has been the industry's standard dummy text ever since the..</p>
+            <div class="subscribe-form m-b20">
+              <form class="dzSubscribe" [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
+                <div class="dzSubscribeMsg"></div>
+                <div class="input-group">
+                  <input name="email" formControlName="email"  class="form-control" placeholder="Your Email Id"
+                    type="email">
+                  <span class="input-group-btn">
+                    <button name="submit" value="Submit" type="submit" class="site-button radius-xl">Subscribe</button>
+                  </span>
+                </div>
+              </form>
+              @if(message){
+                <p [ngClass]="{ 'text-success': success, 'text-danger': !success }">{{ message }}</p>
+              }
+            </div>
+            <ul class="list-inline m-a0">
+              <li><a href="javascript:void(0);" class="site-button facebook circle "><i class="fa fa-facebook"></i></a></li>
+              <li><a href="javascript:void(0);" class="site-button google-plus circle "><i class="fa fa-google-plus"></i></a></li>
+              <li><a href="javascript:void(0);" class="site-button linkedin circle "><i class="fa fa-linkedin"></i></a></li>
+              <li><a href="javascript:void(0);" class="site-button instagram circle "><i class="fa fa-instagram"></i></a></li>
+              <li><a href="javascript:void(0);" class="site-button twitter circle "><i class="fa fa-twitter"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- footer bottom part -->
+  <div class="footer-bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-sm-6 text-left "> <span>Copyright © 2024 DexignZone</span> </div>
+        <div class="col-md-6 col-sm-6 text-right ">
+          <div class="widget-link ">
+            <ul>
+              <li><a [routerLink]="['/about-2']"> About</a></li>
+              <li><a [routerLink]="['/help-desk']"> Help Desk</a></li>
+              <li><a [routerLink]="['/privacy-policy']"> Privacy Policy</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
