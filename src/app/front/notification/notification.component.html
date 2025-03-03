@@ -1,0 +1,22 @@
+<div
+  class="fixed top-4 right-4 z-50"
+  @fadeInOut
+  *ngIf="message"
+>
+  <div
+    class="p-4 rounded-lg shadow-lg flex items-center space-x-3"
+    [class]="bgColor + ' ' + textColor"
+  >
+    <span class="text-2xl">{{ icon }}</span>
+    <div>
+      <p class="font-medium">{{ message }}</p>
+      <a
+        *ngIf="link"
+        [routerLink]="link"
+        class="text-sm underline hover:opacity-80"
+      >
+        Voir l'entretien
+      </a>
+    </div>
+  </div>
+</div>

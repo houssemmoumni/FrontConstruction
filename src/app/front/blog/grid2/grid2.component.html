@@ -11,8 +11,8 @@
 
         <div class="content-inner-2">
             <div class="container">
-                <!-- Filtres -->
-                <div class="row mb-4">
+                <!-- Filtres et Recherche -->
+                <div class="row mb-4 align-items-center">
                     <div class="col-md-6">
                         <!-- Menu déroulant pour filtrer par date -->
                         <button type="button" mat-button class="btn btn-primary" [matMenuTriggerFor]="dateFilterMenu">
@@ -25,7 +25,32 @@
                             <button mat-menu-item (click)="filterByDate('thisYear')">Cette année</button>
                         </mat-menu>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 d-flex align-items-center justify-content-end">
+                        <!-- Icône de notification -->
+                        <div class="notification-bell me-3">
+                            <div class="bell-icon" (click)="toggleNotifications()">
+                                <span class="material-icons">notifications</span>
+                                <span *ngIf="unreadNotificationsCount > 0" class="badge">
+                                    {{ unreadNotificationsCount }}
+                                </span>
+                            </div>
+                            <!-- Boîte déroulante des notifications -->
+                            <div *ngIf="showNotifications" class="notification-dropdown">
+                                <div *ngFor="let notification of notifications" class="notification-item">
+                                    <div class="notification-icon">
+                                        <span *ngIf="notification.type === 'success'">🎉</span>
+                                        <span *ngIf="notification.type === 'error'">😢</span>
+                                    </div>
+                                    <div class="notification-content">
+                                        <p>{{ notification.message }}</p>
+                                        <a *ngIf="notification.link" [routerLink]="notification.link">Voir l'entretien</a>
+                                        <button *ngIf="!notification.read" (click)="markAsRead(notification)" class="mark-as-read">
+                                            Marquer comme lu
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Champ de recherche pour filtrer par titre ou description -->
                         <input type="text" class="form-control" placeholder="Rechercher par titre ou description" [(ngModel)]="searchQuery" (input)="applySearchFilter()">
                     </div>
@@ -64,7 +89,6 @@
                                             <a [routerLink]="['/postuler', item.id]" class="btn btn-primary btn-block mt-3">
                                                 Postuler
                                             </a>
-
                                         </div>
                                     </div>
                                 </div>

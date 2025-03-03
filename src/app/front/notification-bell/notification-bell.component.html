@@ -1,0 +1,21 @@
+<div class="notification-bell">
+    <!-- Icône de notification -->
+    <div class="bell-icon" (click)="toggleNotifications()">
+      <span class="material-icons">notifications</span>
+      <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
+    </div>
+
+    <!-- Boîte déroulante des notifications -->
+    <div *ngIf="isOpen" class="notification-dropdown">
+      <div *ngFor="let notification of notifications" class="notification-item">
+        <div class="notification-icon">
+          <span *ngIf="notification.type === 'success'">🎉</span>
+          <span *ngIf="notification.type === 'error'">😢</span>
+        </div>
+        <div class="notification-content">
+          <p>{{ notification.message }}</p>
+          <a *ngIf="notification.link" [routerLink]="notification.link">Voir l'entretien</a>
+        </div>
+      </div>
+    </div>
+  </div>

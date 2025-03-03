@@ -1,13 +1,14 @@
-import { CommonModule, NgClass } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { JobOfferService } from '../../../services/job-offer.service';
+import { CandidateService } from '../../../services/candidate.service';
 import { Banner1Component } from '../../elements/banner/banner1/banner1.component';
 import { Footer13Component } from '../../elements/footer/footer13/footer13.component';
 import { HeaderLight3Component } from '../../elements/header/header-light3/header-light3.component';
-import { FormsModule } from '@angular/forms'; // Pour ngModel
-import { MatMenuModule } from '@angular/material/menu'; // Pour mat-menu
-import { MatButtonModule } from '@angular/material/button'; // Pour mat-button
+import { FormsModule } from '@angular/forms';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule, NgClass } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-grid2',
@@ -15,13 +16,13 @@ import { MatButtonModule } from '@angular/material/button'; // Pour mat-button
   imports: [
     CommonModule,
     NgClass,
-    RouterLink,
     HeaderLight3Component,
     Banner1Component,
     Footer13Component,
     FormsModule,
     MatMenuModule,
     MatButtonModule,
+    RouterModule,
   ],
   templateUrl: './grid2.component.html',
   styleUrls: ['./grid2.component.css']
@@ -39,25 +40,31 @@ export class Grid2Component implements OnInit {
     gridClass: "col-lg-4 col-md-6"
   };
 
-  blogList: any[] = []; // Liste complète des offres d'emploi
-  displayedBlogs: any[] = []; // Liste des offres affichées sur la page actuelle
-  currentPage: number = 1; // Page actuelle
-  itemsPerPage: number = 2; // Nombre d'offres par page
-  searchQuery: string = ''; // Terme de recherche
-  selectedItem: any = null; // Offre sélectionnée pour afficher la description complète
+  blogList: any[] = [];
+  displayedBlogs: any[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 2;
+  searchQuery: string = '';
+  selectedItem: any = null;
+  notifications: any[] = []; // Liste des notifications
+  showNotifications: boolean = false; // Contrôle l'affichage de la boîte de notifications
+  unreadNotificationsCount: number = 0; // Nombre de notifications non lues
 
-  constructor(public jobOfferService: JobOfferService) { }
+  constructor(
+    public jobOfferService: JobOfferService,
+    private candidateService: CandidateService
+  ) { }
 
   ngOnInit(): void {
     this.fetchPublishedJobOffers();
+    this.checkApplicationStatus(); // Vérifiez le statut des candidatures
   }
 
-  // Récupère les offres d'emploi publiées
   fetchPublishedJobOffers() {
     this.jobOfferService.getJobOffers().subscribe({
       next: (data) => {
-        this.blogList = data.filter(offer => offer.publish); // Filtre les offres publiées
-        this.updateDisplayedBlogs(); // Met à jour les offres affichées
+        this.blogList = data.filter(offer => offer.publish);
+        this.updateDisplayedBlogs();
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des offres publiées :', error);
@@ -65,94 +72,126 @@ export class Grid2Component implements OnInit {
     });
   }
 
-  // Met à jour la liste des offres affichées en fonction de la page actuelle
+  checkApplicationStatus() {
+    const candidateId = 1; // Remplacez par l'ID du candidat connecté
+    this.candidateService.getAllApplications().subscribe({
+      next: (applications) => {
+        applications.forEach(application => {
+          if (application.status === 'ACCEPTED') {
+            this.notifications.push({
+              type: 'success',
+              message: `Félicitations ! Vous avez été accepté pour l'offre "${application.jobOffer.title}".`,
+              link: `/interview/${application.id}`, // Lien vers l'entretien
+              read: false // Marquer comme non lu
+            });
+          } else if (application.status === 'REJECTED') {
+            this.notifications.push({
+              type: 'error',
+              message: `Malheureusement, votre candidature pour l'offre "${application.jobOffer.title}" a été rejetée.`,
+              link: '', // Pas de lien pour un rejet
+              read: false // Marquer comme non lu
+            });
+          }
+        });
+        this.updateUnreadNotificationsCount(); // Mettre à jour le nombre de notifications non lues
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des candidatures :', error);
+      }
+    });
+  }
+
+  // Met à jour le nombre de notifications non lues
+  updateUnreadNotificationsCount() {
+    this.unreadNotificationsCount = this.notifications.filter(n => !n.read).length;
+  }
+
+  // Ouvre ou ferme la boîte de notifications
+  toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
+  }
+
+  // Marque une notification comme lue
+  markAsRead(notification: any) {
+    notification.read = true;
+    this.updateUnreadNotificationsCount(); // Mettre à jour le compteur après avoir marqué comme lu
+  }
+
   updateDisplayedBlogs(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.displayedBlogs = this.blogList.slice(startIndex, endIndex);
   }
 
-  // Change de page
   changePage(page: number): void {
-    if (page < 1 || page > this.totalPages) return; // Empêche de dépasser les limites
+    if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
     this.updateDisplayedBlogs();
   }
 
-  // Calcule le nombre total de pages
   get totalPages(): number {
     return Math.ceil(this.blogList.length / this.itemsPerPage);
   }
 
-  // Génère un tableau de numéros de page pour la pagination
   get pages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  // Filtre les offres par date
   filterByDate(range: string): void {
-    const today = new Date(); // Date actuelle
-    today.setHours(0, 0, 0, 0); // Réinitialiser l'heure pour éviter les problèmes de comparaison
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    // Crée une copie de la liste complète des offres
     let filteredList = this.blogList.slice();
 
     switch (range) {
-        case 'today':
-            // Filtre pour les offres publiées aujourd'hui
-            filteredList = filteredList.filter(offer => {
-                const offerDate = new Date(offer.postedDate);
-                offerDate.setHours(0, 0, 0, 0); // Réinitialiser l'heure
-                return offerDate.getTime() === today.getTime();
-            });
-            break;
+      case 'today':
+        filteredList = filteredList.filter(offer => {
+          const offerDate = new Date(offer.postedDate);
+          offerDate.setHours(0, 0, 0, 0);
+          return offerDate.getTime() === today.getTime();
+        });
+        break;
 
-        case 'thisWeek':
-            // Filtre pour les offres publiées cette semaine
-            const startOfWeek = new Date(today);
-            startOfWeek.setDate(today.getDate() - today.getDay()); // Début de la semaine (dimanche)
-            const endOfWeek = new Date(today);
-            endOfWeek.setDate(today.getDate() + (6 - today.getDay())); // Fin de la semaine (samedi)
+      case 'thisWeek':
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay());
+        const endOfWeek = new Date(today);
+        endOfWeek.setDate(today.getDate() + (6 - today.getDay()));
 
-            filteredList = filteredList.filter(offer => {
-                const offerDate = new Date(offer.postedDate);
-                return offerDate >= startOfWeek && offerDate <= endOfWeek;
-            });
-            break;
+        filteredList = filteredList.filter(offer => {
+          const offerDate = new Date(offer.postedDate);
+          return offerDate >= startOfWeek && offerDate <= endOfWeek;
+        });
+        break;
 
-        case 'thisMonth':
-            // Filtre pour les offres publiées ce mois-ci
-            const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // Début du mois
-            const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Fin du mois
+      case 'thisMonth':
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
-            filteredList = filteredList.filter(offer => {
-                const offerDate = new Date(offer.postedDate);
-                return offerDate >= startOfMonth && offerDate <= endOfMonth;
-            });
-            break;
+        filteredList = filteredList.filter(offer => {
+          const offerDate = new Date(offer.postedDate);
+          return offerDate >= startOfMonth && offerDate <= endOfMonth;
+        });
+        break;
 
-        case 'thisYear':
-            // Filtre pour les offres publiées cette année
-            const startOfYear = new Date(today.getFullYear(), 0, 1); // Début de l'année
-            const endOfYear = new Date(today.getFullYear(), 11, 31); // Fin de l'année
+      case 'thisYear':
+        const startOfYear = new Date(today.getFullYear(), 0, 1);
+        const endOfYear = new Date(today.getFullYear(), 11, 31);
 
-            filteredList = filteredList.filter(offer => {
-                const offerDate = new Date(offer.postedDate);
-                return offerDate >= startOfYear && offerDate <= endOfYear;
-            });
-            break;
+        filteredList = filteredList.filter(offer => {
+          const offerDate = new Date(offer.postedDate);
+          return offerDate >= startOfYear && offerDate <= endOfYear;
+        });
+        break;
 
-        default:
-            // Aucun filtre appliqué
-            break;
+      default:
+        break;
     }
 
-    // Met à jour la liste affichée
     this.displayedBlogs = filteredList.slice(0, this.itemsPerPage);
-    this.currentPage = 1; // Réinitialise la pagination
-}
+    this.currentPage = 1;
+  }
 
-  // Filtre les offres par titre ou description
   applySearchFilter(): void {
     if (this.searchQuery) {
       this.blogList = this.blogList.filter(offer =>
@@ -160,24 +199,20 @@ export class Grid2Component implements OnInit {
         offer.description.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     } else {
-      this.fetchPublishedJobOffers(); // Réinitialise la liste si la recherche est vide
+      this.fetchPublishedJobOffers();
     }
-    this.currentPage = 1; // Réinitialise la pagination
+    this.currentPage = 1;
     this.updateDisplayedBlogs();
   }
 
-  // Affiche ou masque la description complète
   showFullDescription(item: any): void {
     if (this.selectedItem === item) {
-      // Si l'élément est déjà sélectionné, on le désélectionne (pour "Read Less")
       this.selectedItem = null;
     } else {
-      // Sinon, on sélectionne l'élément (pour "Read More")
       this.selectedItem = item;
     }
   }
 
-  // Scroll vers le haut de la page
   scroll_top() {
     window.scroll({
       top: 0,

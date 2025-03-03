@@ -19,7 +19,7 @@ export class JobApplicationFormComponent implements OnInit {
       phoneNumber: '',
       address: '',
     },
-    candidateId: 10, // Replace with dynamic candidate ID (e.g., from authentication)
+    candidateId: 7, // Replace with dynamic candidate ID (e.g., from authentication)
     jobOfferId: '' as string | null,
   };
   selectedFile: File | null = null;
