@@ -1,0 +1,15 @@
+<!-- src/app/front/interview-details/interview-details.component.html -->
+<div *ngIf="interview; else loading" class="interview-details">
+    <h2>Détails de l'entretien</h2>
+    <p><strong>Date :</strong> {{ interview.interviewDate | date: 'dd/MM/yyyy' }}</p>
+    <p><strong>Feedback :</strong> {{ interview.feedback }}</p>
+    <p><strong>Application ID :</strong> {{ interview.application?.id }}</p>
+  </div>
+
+  <ng-template #loading>
+    <p>Chargement des détails de l'entretien...</p>
+  </ng-template>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>

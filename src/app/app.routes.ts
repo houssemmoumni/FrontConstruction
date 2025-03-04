@@ -199,6 +199,7 @@ import { JoboffreComponent } from './joboffre/joboffre.component';
 import { AddJobComponent } from './addjob/addjob.component';
 import { JobApplicationFormComponent } from './front/job-application-form/job-application-form.component';
 import { ApplicationListComponent } from './application-list/application-list.component';
+import { InterviewDetailsComponent } from './front/interview-details/interview-details.component';
 
 
 //front
@@ -282,6 +283,7 @@ export const routes: Routes = [
     { path: 'addjob', component: AddJobComponent },
     { path: 'addjob/:id', component: AddJobComponent },
     { path: 'applicationlist', component: ApplicationListComponent },
+    {path: 'interview/:id',component: InterviewDetailsComponent},
 
 
     // { path: '', redirectTo: '/candidatelist', pathMatch: 'full' }

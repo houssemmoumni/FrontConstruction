@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
 import { ApplicationDTO } from '../models/application.dto';
 
 @Injectable({
@@ -32,16 +32,31 @@ export class CandidateService {
     formData.append('address', address);
     formData.append('resumeFile', resumeFile);
 
-    return this.http.post(this.apiUrl, formData);
+    return this.http.post(this.apiUrl, formData).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Erreur lors de la soumission de la candidature :', error);
+        return throwError(() => new Error('Erreur lors de la soumission de la candidature.'));
+      })
+    );
   }
 
   // Fetch all applications
   getAllApplications(): Observable<ApplicationDTO[]> {
-    return this.http.get<ApplicationDTO[]>(this.apiUrl);
+    return this.http.get<ApplicationDTO[]>(this.apiUrl).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Erreur lors de la récupération des candidatures :', error);
+        return throwError(() => new Error('Erreur lors de la récupération des candidatures.'));
+      })
+    );
   }
 
   // Update the status of an application
   updateApplicationStatus(id: number, status: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}/status`, { status });
+    return this.http.put(`${this.apiUrl}/${id}/status`, { status }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Erreur lors de la mise à jour du statut :', error);
+        return throwError(() => new Error('Erreur lors de la mise à jour du statut.'));
+      })
+    );
   }
 }

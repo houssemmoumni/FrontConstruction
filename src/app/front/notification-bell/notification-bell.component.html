@@ -1,21 +1,21 @@
-<div class="notification-bell">
-    <!-- Icône de notification -->
-    <div class="bell-icon" (click)="toggleNotifications()">
-      <span class="material-icons">notifications</span>
-      <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
-    </div>
+<!-- src/app/front/notification-bell/notification-bell.component.html -->
+<div class="notification-bell" (click)="toggleNotifications()">
+    🔔
+    <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
+  </div>
 
-    <!-- Boîte déroulante des notifications -->
-    <div *ngIf="isOpen" class="notification-dropdown">
-      <div *ngFor="let notification of notifications" class="notification-item">
-        <div class="notification-icon">
-          <span *ngIf="notification.type === 'success'">🎉</span>
-          <span *ngIf="notification.type === 'error'">😢</span>
-        </div>
-        <div class="notification-content">
-          <p>{{ notification.message }}</p>
-          <a *ngIf="notification.link" [routerLink]="notification.link">Voir l'entretien</a>
-        </div>
+  <div *ngIf="isOpen" class="notification-dropdown">
+    <div *ngFor="let notification of notifications" class="notification-item">
+      <div class="notification-icon">
+        <span *ngIf="notification.type === 'success'">🎉</span>
+        <span *ngIf="notification.type === 'error'">😢</span>
+      </div>
+      <div class="notification-content">
+        <p>{{ notification.message }}</p>
+        <a *ngIf="notification.interview_id" [routerLink]="['/interview', notification.interview_id]">Voir l'entretien</a>
+        <button *ngIf="!notification.is_read" (click)="markAsRead(notification)" class="mark-as-read">
+          Marquer comme lu
+        </button>
       </div>
     </div>
   </div>

@@ -19,7 +19,6 @@ export class JobApplicationFormComponent implements OnInit {
       phoneNumber: '',
       address: '',
     },
-    candidateId: 7, // Replace with dynamic candidate ID (e.g., from authentication)
     jobOfferId: '' as string | null,
   };
   selectedFile: File | null = null;
@@ -43,7 +42,6 @@ export class JobApplicationFormComponent implements OnInit {
       this.selectedFile = null;
     }
   }
-
   onSubmit() {
     if (!this.selectedFile) {
       alert('❌ Veuillez télécharger un CV.');
@@ -51,7 +49,6 @@ export class JobApplicationFormComponent implements OnInit {
     }
 
     const formData = new FormData();
-    formData.append('candidateId', this.application.candidateId.toString());
     formData.append('jobOfferId', this.application.jobOfferId as string);
     formData.append('firstName', this.application.candidate.firstName);
     formData.append('lastName', this.application.candidate.lastName);
@@ -59,6 +56,11 @@ export class JobApplicationFormComponent implements OnInit {
     formData.append('phoneNumber', this.application.candidate.phoneNumber);
     formData.append('address', this.application.candidate.address);
     formData.append('resumeFile', this.selectedFile);
+
+    // Afficher les données du formulaire dans la console
+    for (const entry of formData as any) {
+      console.log(entry[0], entry[1]);
+    }
 
     this.http.post('http://localhost:8060/api/applications', formData).subscribe({
       next: () => {
@@ -74,4 +76,5 @@ export class JobApplicationFormComponent implements OnInit {
       },
     });
   }
+
 }

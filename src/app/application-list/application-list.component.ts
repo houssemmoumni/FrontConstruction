@@ -36,7 +36,7 @@ export class ApplicationListComponent implements OnInit {
     this.candidateService.updateApplicationStatus(id, status).subscribe({
       next: () => {
         alert('✅ Statut mis à jour avec succès !');
-        this.loadApplications();
+        this.loadApplications(); // Recharger la liste des candidatures après la mise à jour
       },
       error: (err) => {
         console.error('Erreur lors de la mise à jour du statut :', err);
