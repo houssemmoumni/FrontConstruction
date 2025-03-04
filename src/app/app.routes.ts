@@ -159,8 +159,13 @@ import { PmTeamsComponent } from './pages/project-management-page/pm-teams/pm-te
 import { PmClientsComponent } from './pages/project-management-page/pm-clients/pm-clients.component';
 import { PmCreateProjectComponent } from './pages/project-management-page/pm-create-project/pm-create-project.component';
 import { PmProjectsListComponent } from './pages/project-management-page/pm-projects-list/pm-projects-list.component';
+import { PmUpdateAssuranceComponent } from './pages/project-management-page/pm-update-assurance/pm-update-assurance.component';
 import { PmProjectOverviewComponent } from './pages/project-management-page/pm-project-overview/pm-project-overview.component';
 import { ProjectManagementPageComponent } from './pages/project-management-page/project-management-page.component';
+import { ContratPageComponent } from './pages/contrat-page/contrat-page.component';
+import { PmCreateContratComponent } from './pages/contrat-page/pm-create-contrat/pm-create-contrat.component';
+import { PmContratListComponent } from './pages/contrat-page/pm-contrats-list/pm-contrat-list.component';
+import { PmUpdateContratComponent } from './pages/contrat-page/pm-update-contrat/pm-update-contrat.component';
 import { CCreateDealComponent } from './pages/crm-page/c-create-deal/c-create-deal.component';
 import { CDealsComponent } from './pages/crm-page/c-deals/c-deals.component';
 import { CLeadsComponent } from './pages/crm-page/c-leads/c-leads.component';
@@ -279,6 +284,7 @@ export const routes: Routes = [
     { path: 'contacts', component: ContactsComponent },
     { path: 'chat', component: ChatComponent },
     { path: 'kanban-board', component: KanbanBoardComponent },
+
     {
         path: 'file-manager',
         component: FileManagerComponent,
@@ -348,14 +354,31 @@ export const routes: Routes = [
         component: ProjectManagementPageComponent,
         children: [
             { path: '', component: PmProjectOverviewComponent },
-            { path: 'projects-list', component: PmProjectsListComponent },
-            { path: 'create-project', component: PmCreateProjectComponent },
+            { path: 'assurances-list', component: PmProjectsListComponent },
+            { path: 'create-assurance', component: PmCreateProjectComponent },
+            { path: 'update-assurance/:id', component: PmUpdateAssuranceComponent },
             { path: 'clients', component: PmClientsComponent },
             { path: 'teams', component: PmTeamsComponent },
             { path: 'kanban-board', component: PmKanbanBoardComponent },
             { path: 'users', component: PmUsersComponent },
             { path: 'create-user', component: PmCreateUserComponent },
             { path: 'edit-user', component: PmEditUserComponent },
+        ],
+    },
+    {
+        path: 'contrat-page',
+        component: ContratPageComponent,
+        children: [
+            { path: '', component: PmProjectOverviewComponent },
+            { path: 'contrats-list', component: PmContratListComponent },
+            { path: 'create-contrat', component: PmCreateContratComponent },
+            { path: 'update-contrat/:id', component: PmUpdateContratComponent },
+            //{ path: 'clients', component: PmClientsComponent },
+            //{ path: 'teams', component: PmTeamsComponent },
+            //{ path: 'kanban-board', component: PmKanbanBoardComponent },
+            //{ path: 'users', component: PmUsersComponent },
+            //{ path: 'create-user', component: PmCreateUserComponent },
+            //{ path: 'edit-user', component: PmEditUserComponent },
         ],
     },
     {

@@ -1,7 +1,7 @@
 <!-- Breadcrumb -->
 <div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
     <h5 class="mb-0">
-        Create Assurance
+        Update Assurance
     </h5>
     <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
         <li class="breadcrumb-item position-relative">
@@ -17,25 +17,25 @@
             Assurances
         </li>
         <li class="breadcrumb-item position-relative">
-            Create Assurance
+            Update Assurance
         </li>
     </ol>
 </div>
 
-<!-- Create Assurance -->
+<!-- Update Assurance -->
 <mat-card
-    class="daxa-card create-assurance-card mb-25 border-radius bg-white border-none d-block"
+    class="daxa-card update-assurance-card mb-25 border-radius bg-white border-none d-block"
     [class.rtl-enabled]="themeService.isRTLEnabled()"
 >
     <mat-card-header>
         <mat-card-title>
             <h5 class="mb-0">
-                Create New Assurance
+                Update Assurance
             </h5>
         </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <form [formGroup]="assuranceForm" (ngSubmit)="createAssurance()">
+        <form [formGroup]="assuranceForm" (ngSubmit)="updateAssurance()">
             <div class="row">
                 <div class="col-sm-6">
                     <mat-form-field>
@@ -146,7 +146,7 @@
                     </mat-form-field>
                 </div>
             </div>
-            <button mat-button type="submit">Create Assurance</button>
+            <button mat-raised-button color="primary" type="submit">Update Assurance</button>
         </form>
     </mat-card-content>
 </mat-card>
