@@ -108,7 +108,23 @@
                             <i class="material-symbols-outlined">more_vert</i>
                         </button>
                         <mat-menu #menu="matMenu">
-                           
+                            <!-- Debug info -->
+                            {{debugWorkerStatus(worker)}}
+                            
+                            <!-- Assign button -->
+                            <button mat-menu-item (click)="assignToProject(worker.id)" *ngIf="!worker.currentProject">
+                                <i class="material-symbols-outlined">assignment_ind</i>
+                                <span>Assign to Project</span>
+                            </button>
+                            
+                            <!-- Remove button -->
+                            <button mat-menu-item (click)="removeFromProject(worker.id)" *ngIf="worker.currentProject"
+                                    [matTooltip]="'Currently in: ' + worker.currentProject?.projet_name">
+                                <i class="material-symbols-outlined text-warning">person_remove</i>
+                                <span>Remove from {{worker.currentProject?.projet_name}}</span>
+                            </button>
+                            
+                            <!-- Delete button -->
                             <button mat-menu-item (click)="deleteWorker(worker.id)">
                                 <i class="material-symbols-outlined text-danger">delete</i>
                                 <span>Delete</span>

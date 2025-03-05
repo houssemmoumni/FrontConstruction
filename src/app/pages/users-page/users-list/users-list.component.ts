@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { DeleteConfirmationDialogComponent } from '../../../shared/components/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { ProjectAssignmentDialogComponent } from './project-assignment-dialog.component';
 
 @Component({
     selector: 'app-users-list',
@@ -27,8 +28,7 @@ import { DeleteConfirmationDialogComponent } from '../../../shared/components/de
         MatTableModule, 
         MatPaginatorModule, 
         MatTooltipModule,
-        MatIconModule,
-        MatMenuModule
+        MatIconModule
     ],
     templateUrl: './users-list.component.html'
 })
@@ -56,7 +56,7 @@ export class UsersListComponent implements OnInit {
             const searchStr = filter.toLowerCase();
             return data.name.toLowerCase().includes(searchStr) ||             // Search by name
                    data.email.toLowerCase().includes(searchStr) ||           // Search by email
-                   data.phone.toLowerCase().includes(searchStr) ||           // Search by phone
+                   (data.phone?.toLowerCase().includes(searchStr) || '') ||  // Search by phone
                    data.role.toLowerCase().includes(searchStr) ||            // Search by role
                    data.joindate.toLowerCase().includes(searchStr);          // Search by join date
         };
@@ -65,10 +65,19 @@ export class UsersListComponent implements OnInit {
     loadWorkers() {
         this.workerService.getAllWorkers().subscribe({
             next: (workers) => {
+                console.group('Workers Data');
+                workers.forEach(worker => {
+                    console.log(`Worker ${worker.name}:`, {
+                        project: worker.projectId,
+                        project_id: worker.projectId,
+                        hasProject: !!worker.projectId
+                    });
+                });
+                console.groupEnd();
                 this.dataSource.data = workers;
             },
             error: (error) => {
-                console.error('Error loading workers:', error);
+                console.error('Error:', error);
                 this.showMessage('Failed to load workers', true);
             }
         });
@@ -106,6 +115,74 @@ export class UsersListComponent implements OnInit {
         });
     }
 
+    assignToProject(workerId: number): void {
+        const dialogRef = this.dialog.open(ProjectAssignmentDialogComponent, {
+            width: '400px',
+            disableClose: true,
+            data: { workerId }
+        });
+
+        dialogRef.afterClosed().subscribe(projectId => {
+            if (projectId) {
+                this.workerService.assignWorkerToProject(workerId, projectId).subscribe({
+                    next: () => {
+                        this.showMessage('Worker assigned to project successfully');
+                        this.loadWorkers();
+                    },
+                    error: (error) => {
+                        console.error('Error:', error);
+                        this.showMessage(error.message || 'Failed to assign worker to project', true);
+                    }
+                });
+            }
+        });
+    }
+
+    removeFromProject(workerId: number): void {
+        const worker = this.dataSource.data.find(w => w.id === workerId);
+        
+        console.group('Remove Worker from Project');
+        console.log('Worker to remove:', worker);
+        console.log('Current project:', worker?.currentProject);
+
+        if (!worker?.currentProject) {
+            console.warn('No project found for worker');
+            console.groupEnd();
+            return;
+        }
+
+        const confirmSnackBar = this.snackBar.open(
+            `Remove ${worker.name} from ${worker.currentProject.projet_name}?`,
+            'Remove',
+            {
+                duration: 5000,
+                panelClass: ['warning-snackbar'],
+                horizontalPosition: 'center',
+                verticalPosition: 'top'
+            }
+        );
+
+        confirmSnackBar.onAction().subscribe(() => {
+            this.workerService.removeWorkerFromProject(workerId).subscribe({
+                next: (updatedWorker) => {
+                    this.snackBar.open('Worker removed from project successfully', 'Close', {
+                        duration: 3000,
+                        panelClass: ['success-snackbar']
+                    });
+                    console.log('Updated worker:', updatedWorker);
+                    this.loadWorkers();
+                },
+                error: (error) => {
+                    console.error('Removal failed:', error);
+                    this.snackBar.open('Failed to remove worker from project', 'Close', {
+                        duration: 3000,
+                        panelClass: ['error-snackbar']
+                    });
+                }
+            });
+        });
+    }
+
     private showMessage(message: string, isError = false) {
         this.snackBar.open(message, 'Close', {
             duration: 5000,
@@ -113,5 +190,27 @@ export class UsersListComponent implements OnInit {
             verticalPosition: 'top',
             panelClass: isError ? ['error-snackbar'] : ['success-snackbar']
         });
+    }
+
+    // Add debug helper
+    hasProject(worker: Worker): boolean {
+        if (!worker) return false;
+        console.log(`Worker ${worker.name} project status:`, {
+            hasProjet: !!worker.projectId,
+            projet: worker.projectId,
+            projetId: worker.projectId
+        });
+        return !!worker.projectId;
+    }
+
+    // Add this helper method
+    debugWorkerStatus(worker: Worker): void {
+        console.group(`Worker: ${worker.name}`);
+        console.log('Full worker data:', worker);
+        console.log('Current Project:', worker.currentProject);
+        console.log('Project ID:', worker.projectId);
+        console.log('Has Project:', !!worker.currentProject);
+        console.groupEnd();
+        '';
     }
 }

@@ -16,6 +16,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { WorkerDetailsDialogComponent } from '../../../components/worker-details-dialog/worker-details-dialog.component';
 
 @Component({
     selector: 'app-pm-projects-list',
@@ -36,7 +38,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         MatMenuModule,
         MatFormFieldModule,
         MatInputModule,
-        DatePipe
+        DatePipe,
+        MatDialogModule
     ]
 })
 export class PmProjectsListComponent implements OnInit {
@@ -46,6 +49,7 @@ export class PmProjectsListComponent implements OnInit {
         'start_date',
         'end_date',
         'projectManager',
+        'workers',
         'budget_estime',
         'statut_projet',
         'action'
@@ -53,14 +57,14 @@ export class PmProjectsListComponent implements OnInit {
     dataSource = new MatTableDataSource<project>();
     isLoading = true;
     error: any;
-
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild(MatSort) sort!: MatSort;
 
     constructor(
         public themeService: CustomizerSettingsService,
         private projectService: ProjectManagementService,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
+        private dialog: MatDialog
     ) {}
 
     ngOnInit() {
@@ -69,8 +73,7 @@ export class PmProjectsListComponent implements OnInit {
         
         // Updated filter predicate to search across all fields
         this.dataSource.filterPredicate = (data: project, filter: string): boolean => {
-            const searchStr = filter.toLowerCase();
-            
+            const searchStr = filter.toLowerCase();    
             const searchableValues = [
                 data.projet_name?.toLowerCase(),
                 data.projet_description?.toLowerCase(),
@@ -83,7 +86,6 @@ export class PmProjectsListComponent implements OnInit {
                 data.latitude?.toString(),
                 data.longitude?.toString()
             ];
-
             return searchableValues.some(value => value?.includes(searchStr));
         };
     }
@@ -117,7 +119,6 @@ export class PmProjectsListComponent implements OnInit {
                 console.error('Error loading projects:', err);
                 this.error = err.message || 'Failed to load projects';
                 this.dataSource.data = [];
-                
                 // Add server check hint if it's a connection error
                 if (err.status === 0 || err.status === 500) {
                     this.error += '\nPlease verify that:\n1. The server is running\n2. The API endpoint is correct\n3. You have an active internet connection';
@@ -140,7 +141,6 @@ export class PmProjectsListComponent implements OnInit {
                 verticalPosition: 'top'
             }
         );
-
         confirmSnackBar.onAction().subscribe(() => {
             this.projectService.deleteProject(projet_id).subscribe({
                 next: () => {
@@ -184,7 +184,6 @@ export class PmProjectsListComponent implements OnInit {
     applyFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value;
         this.dataSource.filter = filterValue.trim().toLowerCase();
-
         if (this.dataSource.paginator) {
             this.dataSource.paginator.firstPage();
         }
@@ -195,11 +194,34 @@ export class PmProjectsListComponent implements OnInit {
         // Format date in multiple ways to make it searchable
         const d = new Date(date);
         if (isNaN(d.getTime())) return '';
-        
         return [
             d.toLocaleDateString(), // e.g., "1/1/2024"
             d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), // e.g., "Jan 1, 2024"
             d.toISOString().split('T')[0] // e.g., "2024-01-01"
         ].join(' ').toLowerCase();
+    }
+
+    getWorkerCount(workers: any[]): string {
+        if (!workers || workers.length === 0) return 'No workers';
+        return `${workers.length} worker${workers.length > 1 ? 's' : ''}`;
+    }
+
+    getRandomColor(name: string): string {
+        const colors = [
+            '#1976d2', '#388e3c', '#d32f2f', '#7b1fa2',
+            '#c2185b', '#0288d1', '#303f9f', '#ef6c00'
+        ];
+        const index = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        return colors[index % colors.length];
+    }
+
+    showWorkerDetails(workers: any[]): void {
+        if (!workers?.length) return;
+        
+        this.dialog.open(WorkerDetailsDialogComponent, {
+            width: '500px',
+            data: workers,
+            panelClass: 'worker-details-dialog'
+        });
     }
 }

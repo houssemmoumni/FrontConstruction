@@ -89,11 +89,52 @@
                                 color: var(--blackColor);
                             }
                             .fc-h-event {
-                                padding: 5px;
-                                margin: 2px;
+                                padding: 8px !important;
+                                margin: 3px !important;
+                                border-radius: 6px !important;
+                                border: none !important;
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+                                transition: all 0.3s ease !important;
+
+                                &:hover {
+                                    transform: translateY(-2px) !important;
+                                    box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+                                }
+
+                                .fc-event-main-content {
+                                    .event-title {
+                                        font-weight: 500;
+                                        margin-bottom: 4px;
+                                        font-size: 0.95em;
+                                    }
+
+                                    .event-workers {
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 4px;
+                                        opacity: 0.9;
+                                        font-size: 0.85em;
+
+                                        .worker-count {
+                                            background: rgba(255,255,255,0.2);
+                                            padding: 2px 6px;
+                                            border-radius: 12px;
+                                            display: inline-flex;
+                                            align-items: center;
+                                            gap: 4px;
+                                        }
+                                    }
+                                }
 
                                 .fc-event-title {
                                     white-space: break-spaces;
+                                    padding: 2px 4px;
+
+                                    &:after {
+                                        content: '👥';
+                                        margin-left: 5px;
+                                        font-size: 0.9em;
+                                    }
                                 }
                             }
                             .fc-daygrid-more-link {

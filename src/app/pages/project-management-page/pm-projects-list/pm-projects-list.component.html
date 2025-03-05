@@ -107,6 +107,36 @@
                     </td>
                 </ng-container>
 
+                <!-- Workers Column -->
+                <ng-container matColumnDef="workers">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 
+                        <mat-icon class="team-header-icon">groups</mat-icon>
+                        Team Members 
+                    </th>
+                    <td mat-cell *matCellDef="let project">
+                        <div class="workers-container" (click)="showWorkerDetails(project.workers)">
+                            <div class="workers-avatars" *ngIf="project.workers?.length">
+                                <div class="avatar-stack">
+                                    <div class="avatar" 
+                                         *ngFor="let worker of project.workers.slice(0, 3)"
+                                         [style.background-color]="getRandomColor(worker.name)"
+                                         [matTooltip]="worker.name + ' (' + worker.role + ')'">
+                                        <span class="worker-initial">{{worker.name.charAt(0)}}</span>
+                                    </div>
+                                    <div class="avatar more" *ngIf="project.workers.length > 3"
+                                         [matTooltip]="'Click to see ' + (project.workers.length - 3) + ' more team members'">
+                                        +{{project.workers.length - 3}}
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="worker-count" [class.has-workers]="project.workers?.length">
+                                {{getWorkerCount(project.workers)}}
+                                <mat-icon class="view-details">visibility</mat-icon>
+                            </span>
+                        </div>
+                    </td>
+                </ng-container>
+
                 <!-- Actions Column -->
                 <ng-container matColumnDef="action">
                     <th mat-header-cell *matHeaderCellDef>Actions</th>
