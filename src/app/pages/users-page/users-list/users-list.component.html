@@ -20,139 +20,122 @@
 </div>
 
 <!-- Users -->
-<mat-card
-    class="daxa-card users-card mb-25 border-radius bg-white border-none d-block"
-    [class.rtl-enabled]="themeService.isRTLEnabled()"
->
-    <mat-card-header>
+<mat-card class="daxa-card users-card mb-25" [class.rtl-enabled]="themeService.isRTLEnabled()">
+    <mat-card-header class="d-flex justify-content-between align-items-center">
         <mat-card-title>
-            <form class="search-box position-relative">
-                <i class="material-symbols-outlined">
-                    search
-                </i>
-                <input type="text" class="input-search d-block w-100 border-none outline-0" placeholder="Search user..." (keyup)="applyFilter($event)" #input>
-            </form>
+            <div class="search-box position-relative">
+                <i class="material-symbols-outlined">search</i>
+                <input 
+                    type="text" 
+                    class="input-search form-control" 
+                    placeholder="Search by name, email, phone, role..." 
+                    (keyup)="applyFilter($event)" 
+                    #input
+                >
+            </div>
         </mat-card-title>
         <mat-card-subtitle>
-            <a mat-button class="add-new-btn" routerLink="/users/add-user">
-                + Add New User
+            <a mat-raised-button color="primary" class="add-new-btn" routerLink="/users-page/add-user">
+                <i class="material-symbols-outlined">add</i>
+                Add New Worker
             </a>
         </mat-card-subtitle>
     </mat-card-header>
+
     <mat-card-content>
-        <div class="users-table">
-            <div class="table-responsive">
-                <table mat-table [dataSource]="dataSource">
-
-                    <!-- User ID Column -->
-                    <ng-container matColumnDef="userID">
-                        <th mat-header-cell *matHeaderCellDef>
-                            User ID
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.userID}}
-                        </td>
-                    </ng-container>
-
-                    <!-- User Column -->
-                    <ng-container matColumnDef="user">
-                        <th mat-header-cell *matHeaderCellDef>
-                            User
-                        </th>
-                        <td mat-cell *matCellDef="let element" class="text-black">
-                            <div class="info d-flex align-items-center">
-                                <div class="image">
-                                    <img [src]="element.user.img" alt="user-image">
-                                </div>
-                                <span class="d-block fw-medium">
-                                    {{element.user.name}}
-                                </span>
+        <div class="table-container mat-elevation-z0">
+            <table mat-table [dataSource]="dataSource" class="w-100">
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef class="fw-bold"> Name </th>
+                    <td mat-cell *matCellDef="let worker" class="align-middle">
+                        <div class="d-flex align-items-center">
+                            <div class="user-avatar me-3">
+                                <!-- Default avatar if no image -->
+                                <i class="material-symbols-outlined" *ngIf="!worker.imagePath">person</i>
+                                <img [src]="worker.imagePath" *ngIf="worker.imagePath" [alt]="worker.name">
                             </div>
-                        </td>
-                    </ng-container>
+                            <span class="user-name">{{worker.name}}</span>
+                        </div>
+                    </td>
+                </ng-container>
 
-                    <!-- Email Column -->
-                    <ng-container matColumnDef="email">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Email
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.email}}
-                        </td>
-                    </ng-container>
+                <!-- Role Column -->
+                <ng-container matColumnDef="role">
+                    <th mat-header-cell *matHeaderCellDef class="fw-bold"> Role </th>
+                    <td mat-cell *matCellDef="let worker">
+                        <span class="role-badge" [ngClass]="worker.role.toLowerCase()">
+                            {{worker.role | titlecase}}
+                        </span>
+                    </td>
+                </ng-container>
 
-                    <!-- Location Column -->
-                    <ng-container matColumnDef="location">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Location
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.location}}
-                        </td>
-                    </ng-container>
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef class="fw-bold"> Email </th>
+                    <td mat-cell *matCellDef="let worker">
+                        <a [href]="'mailto:' + worker.email" class="email-link">
+                            {{worker.email}}
+                        </a>
+                    </td>
+                </ng-container>
 
-                    <!-- Phone Column -->
-                    <ng-container matColumnDef="phone">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Phone
-                        </th>
-                        <td mat-cell *matCellDef="let element" class="text-black">
-                            {{element.phone}}
-                        </td>
-                    </ng-container>
+                <!-- Phone Column -->
+                <ng-container matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef class="fw-bold"> Phone </th>
+                    <td mat-cell *matCellDef="let worker">
+                        <a [href]="'tel:' + worker.phone" class="phone-link">
+                            {{worker.phone}}
+                        </a>
+                    </td>
+                </ng-container>
 
-                    <!-- Projects Column -->
-                    <ng-container matColumnDef="projects">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Projects
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.projects}}
-                        </td>
-                    </ng-container>
+                <!-- Join Date Column -->
+                <ng-container matColumnDef="joindate">
+                    <th mat-header-cell *matHeaderCellDef class="fw-bold"> Join Date </th>
+                    <td mat-cell *matCellDef="let worker">
+                        <span class="date-display">
+                            {{worker.joindate | date:'mediumDate'}}
+                        </span>
+                    </td>
+                </ng-container>
 
-                    <!-- Join Date Column -->
-                    <ng-container matColumnDef="joinDate">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Join Date
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.joinDate}}
-                        </td>
-                    </ng-container>
+                <!-- Action Column -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef class="fw-bold text-center"> Actions </th>
+                    <td mat-cell *matCellDef="let worker" class="text-center">
+                        <button mat-icon-button [matMenuTriggerFor]="menu" color="primary">
+                            <i class="material-symbols-outlined">more_vert</i>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                           
+                            <button mat-menu-item (click)="deleteWorker(worker.id)">
+                                <i class="material-symbols-outlined text-danger">delete</i>
+                                <span>Delete</span>
+                            </button>
+                        </mat-menu>
+                    </td>
+                </ng-container>
 
-                    <!-- Action Column -->
-                    <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef>
-                            Action
-                        </th>
-                        <td mat-cell *matCellDef="let element">
-                            <div class="action-info">
-                                <button type="button" mat-button matTooltip="View" matTooltipPosition="above">
-                                    <i class="material-symbols-outlined">
-                                        {{element.action.view}}
-                                    </i>
-                                </button>
-                                <button type="button" mat-button matTooltip="Delete" matTooltipPosition="above">
-                                    <i class="material-symbols-outlined">
-                                        {{element.action.delete}}
-                                    </i>
-                                </button>
-                            </div>
-                        </td>
-                    </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                    class="hover-row"></tr>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    
-                    <!-- Row shown when there is no matching data. -->
-                    <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-                    </tr>
+                <!-- No Data Row -->
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell text-center p-4" colspan="6">
+                        <div class="no-data-message">
+                            <i class="material-symbols-outlined">search_off</i>
+                            <p>No workers found matching "{{input.value}}"</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-                </table>
-            </div>
-            <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25]" 
+                          showFirstLastButtons
+                          class="mat-elevation-z0">
+            </mat-paginator>
         </div>
     </mat-card-content>
 </mat-card>

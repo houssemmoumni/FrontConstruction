@@ -703,5 +703,24 @@ export const routes: Routes = [
     { path: 'front/contact-4', component: ContactUs4Component },
     // Here add new pages component
 
+    {
+        path: 'users-page',
+        children: [
+            {
+                path: '',
+                redirectTo: 'users-list',
+                pathMatch: 'full'
+            },
+            {
+                path: 'users-list',
+                component: UsersListComponent
+            },
+            {
+                path: 'add-user',
+                component: AddUserComponent
+            }
+        ]
+    },
+
     { path: '**', component: NotFoundComponent }, // This line will remain down from the whole pages component list
 ];
