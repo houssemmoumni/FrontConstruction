@@ -1,0 +1,25 @@
+<ng-template ngFor let-portfolioData [ngForOf]="data">
+  <ng-template ngFor let-gridData [ngForOf]="portfolioData.grids">
+  <li class="{{gridData.grid_class}} card-container {{portfolioData.class_name}} col-md-6 col-sm-6 p-a0">
+    <div class="dlab-box dlab-gallery-box">
+      <div class="dlab-media dlab-img-overlay1 dlab-img-effect">
+        <a [routerLink]="['/portfolio-details']"> <img src="{{gridData.image}}"  alt=""> </a>
+        <div class="overlay-bx">
+          <div class="overlay-icon">
+            <div class="text-white">
+              <a [routerLink]="['/portfolio-details']"><i class="fa fa-link icon-bx-xs"></i></a>
+              <span attr.data-exthumbimage="{{gridData.img_thumb}}" attr.data-src="{{gridData.img_src}}" class="check-km" title="Factory Managment">
+                <i class="fa fa-picture-o icon-bx-xs"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dez-info p-a30 bg-white">
+        <p class="dez-title m-t0"><a [routerLink]="['/portfolio-details']">{{gridData.title}}</a></p>
+        <p><small>{{gridData.category}}</small></p>
+      </div>
+    </div>
+  </li>
+  </ng-template>
+</ng-template>

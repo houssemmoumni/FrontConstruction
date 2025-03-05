@@ -1,0 +1,27 @@
+<div class="section-full bg-gray content-inner-2 about-carousel-ser">
+  <div class="container">
+    <div class="section-head text-center">
+      <h2 class="title">Why Customer Love To <br /><span class="text-primary">Choose Us</span></h2>
+      <p>There are many variations of passages of Lorem Ipsum typesetting industry has been the industry's standard dummy text ever since the been when an unknown printer.</p>
+    </div>
+    <owl-carousel-o [options]="customOptions" class="about-ser-carousel owl-theme owl-btn-center-lr owl-dots-primary-full owl-btn-3 m-b30">
+      @for(slide of data; track slide;){
+        <ng-template carouselSlide>
+          <div class="item">
+            <div class="dlab-box service-media-bx">
+              <div class="dlab-media">
+                <a [routerLink]="['/about-1']"><img class="lazy" src="{{slide.image}}" alt=""></a>
+              </div>
+              <div class="dlab-info text-center">
+                <h2 class="dlab-title"><a [routerLink]="['/about-1']">{{slide.title}}</a></h2>
+                <p>{{slide.subtitle}}</p>
+                <a [routerLink]="['/about-1']" class="site-button btnhover13">Read More</a>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      }
+    </owl-carousel-o>
+  </div>
+</div>
+

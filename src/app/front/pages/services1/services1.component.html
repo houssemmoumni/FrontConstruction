@@ -1,0 +1,29 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light3></app-header-light3>
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- inner page banner -->
+    <app-banner1 [data] = "banner"></app-banner1>
+    <!-- contact area -->
+    <div class="content-block">
+      <!-- About Us -->
+      <app-query-form2></app-query-form2>
+
+      <!-- Why Chose Us -->
+      <app-content14></app-content14>
+
+      <!-- Testimonials -->
+      <app-testimonial13 [data]="testimonials"></app-testimonial13>
+
+      <!-- Get in touch -->
+      <app-query-form3></app-query-form3>
+    </div>
+  <!-- contact area END -->
+  </div>
+
+  <!-- Footer -->
+  <app-footer13></app-footer13>
+
+ <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+</div>

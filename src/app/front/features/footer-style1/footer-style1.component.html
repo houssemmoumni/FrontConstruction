@@ -1,0 +1,62 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light3></app-header-light3>
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- inner page banner -->
+    <app-banner1 [data] = "banner"></app-banner1>
+    <!-- contact area -->
+    <div class="content-block">
+      <!-- Code Box -->
+      <div class="section-full content-inner bg-white video-section" style="background-image:url('assets/images/background/bg-video.png');">
+        <div class="container">
+          <div class="footer-box">
+            <div class="row align-items-center">
+              <div class="col-lg-3 col-md-4">
+                <img src="assets/images/footer.png" alt=""/>
+              </div>
+              <div class="col-lg-9 col-md-8">
+                <h2 class="title">Check Footer Style 01</h2>
+                <p>A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm.</p>
+              </div>
+            </div>
+          </div>
+          <div class="relative">
+            <button id="copyButton" class="btn">Copy</button>
+<pre class="code-box" id="copyTarget">
+&lt;!-- Footer --&gt;
+&lt;footer class="site-footer" &gt;
+&lt;div class="p-tb60 text-center bg-black "&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="col-md-12"&gt;
+        &lt;h3 class="font-weight-300"&gt;LET'S CONNECT&lt;/h3&gt;
+        &lt;div class="dlab-separator bg-white"&gt;&lt;/div&gt;
+        &lt;p class="max-w600 m-auto"&gt;Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard&lt;/p&gt;
+        &lt;ul class="list-inline m-t20"&gt;
+          &lt;li&gt;&lt;a class="site-button white outline circle"&gt;&lt;i class="fa fa-facebook"&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a class="site-button white outline circle"&gt;&lt;i class="fa fa-google-plus"&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a class="site-button white outline circle"&gt;&lt;i class="fa fa-linkedin"&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a class="site-button white outline circle"&gt;&lt;i class="fa fa-twitter"&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/footer&gt;
+&lt;!-- Footer END --&gt;
+</pre>
+          </div>
+        </div>
+      </div>
+      <!-- Code Box End -->
+    </div>
+    <!-- contact area END -->
+  </div>
+  <!-- Content END-->
+  <!-- Footer -->
+  <app-footer1></app-footer1>
+  <!-- Footer END -->
+  <!-- scroll top button -->
+ <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+</div>

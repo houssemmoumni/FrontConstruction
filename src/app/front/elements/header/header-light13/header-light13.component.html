@@ -1,0 +1,59 @@
+<header class="site-header header center mo-left">
+  <!-- main header -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="row d-flex justify-content-between align-items-center">
+        <div class="dlab-topbar-left">
+          <ul>
+            <li><i class="fa fa-phone m-r5"></i> +91 456 872 1230</li>
+            <li><i class="fa fa-envelope-o m-r5"></i> {{ email }}</li>
+          </ul>
+        </div>
+        <div class="dlab-topbar-right topbar-social">
+          <span class="m-r10">Follows Us :</span>
+          <ul>
+            <li class="pr-1"><a href="#" class="site-button circle-sm facebook sharp-sm"><i class="fa fa-facebook"></i></a></li>
+            <li class="pr-1"><a href="#" class="site-button circle-sm google-plus"><i class="fa fa-google-plus"></i></a></li>
+            <li class="pr-1"><a href="#" class="site-button circle-sm twitter"><i class="fa fa-twitter"></i></a></li>
+            <li class="pr-1"><a href="#" class="site-button circle-sm instagram"><i class="fa fa-instagram"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sticky-header main-bar-wraper navbar-expand-lg">
+    <div class="main-bar clearfix ">
+      <div class="container clearfix">
+        <!-- website logo -->
+        <div class="logo-header mostion">
+          <a [routerLink]="['/index']"><img src="assets/images/logo-center-6.png" class="logo1" alt=""><img
+              src="assets/images/logo-center-light.png" class="logo2" alt=""></a>
+        </div>
+        <!-- nav toggle button -->
+        <button class="navbar-toggler collapsed navicon justify-content-end" type="button" (click)="clickEvent()" [ngClass]="{'open': collapseToggle}">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <!-- main nav -->
+        <div class="header-nav navbar-collapse collapse justify-content-between" id="navbarNavDropdown" [ngClass]="{'collapse show': collapseToggle}">
+          <div class="logo-header mostion">
+            <a [routerLink]="['/index']"><img src="assets/images/logo-6.png" alt=""></a>
+          </div>
+
+          <app-navigation2 class="w-100"></app-navigation2>
+
+          <div class="dlab-social-icon">
+            <ul>
+              <li class="mt-4"><a class="site-button facebook circle-sm outline fa fa-facebook" href="javascript:void(0);"></a></li>
+              <li ><a class="site-button twitter circle-sm outline fa fa-twitter" href="javascript:void(0);"></a></li>
+              <li ><a class="site-button linkedin circle-sm outline fa fa-linkedin" href="javascript:void(0);"></a></li>
+              <li ><a class="site-button instagram circle-sm outline fa fa-instagram" href="javascript:void(0);"></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- main header END -->
+</header>

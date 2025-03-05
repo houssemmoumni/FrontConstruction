@@ -1,0 +1,93 @@
+<div class="page-wraper">
+
+
+  <!-- header -->
+  <app-header-light3></app-header-light3>
+  <!-- header END -->
+  <!-- Content -->
+  <div class="page-content bg-gray">
+    <!-- inner page banner -->
+    <app-banner1 [data]="banner"></app-banner1>
+    <!-- inner page banner END -->
+    <!-- contact area -->
+    <div class="content-inner-2 bg-gray">
+      <div class="container">
+        <div class="row">
+          <ng-template [ngIf]="layout.sidebar">
+            <div class="col-xl-3 col-lg-4" *ngIf="layout.sidebarPosition=='left'">
+              <aside class="side-bar sticky-top">
+                <app-search-form2></app-search-form2>
+                <app-recent-posts1></app-recent-posts1>
+                <app-newsletter1></app-newsletter1>
+                <app-our-gallery1></app-our-gallery1>
+                <app-category-list1></app-category-list1>
+                <app-tag-list1></app-tag-list1>
+              </aside>
+            </div>
+          </ng-template>
+
+          <div [ngClass]="{'col-xl-9 col-lg-8': layout.sidebar === true, 'col-xl-12 col-lg-12': layout.sidebar === false}">
+            <!-- Blog half image -->
+            @for(item of blogList; track item;){
+              <div class="blog-post blog-md clearfix">
+                <div class="dlab-post-media dlab-img-effect zoom-slow">
+                  <a [routerLink]="['/blog-single']"><img src="{{ item.image }}" alt=""></a>
+                </div>
+                <div class="dlab-post-info">
+                  <div class="dlab-post-meta">
+                    <ul>
+                      <li class="post-date"> {{ item.date }} </li>
+                      <li class="post-author ml-2"> By <a href="javascript:void(0);">{{ item.userName }}</a> </li>
+                    </ul>
+                  </div>
+                  <div class="dlab-post-title">
+                    <h4 class="post-title"><a [routerLink]="['/blog-single']">{{ item.title }}</a></h4>
+                  </div>
+                  <div class="dlab-post-text">
+                    <p>{{ item.decs }}</p>
+                  </div>
+                  <div class="dlab-post-readmore">
+                    <a [routerLink]="['/blog-single']" title="READ MORE" rel="bookmark" class="site-button">READ MORE
+                      <i class="ti-arrow-right"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            }
+            <!-- Pagination start -->
+            <div class="pagination-bx clearfix m-b30 text-center">
+              <ul class="pagination">
+                <li class="previous"><a href="javascript:void(0);"><i class="ti-arrow-left"></i> Prev</a></li>
+                <li class="active"><a href="javascript:void(0);">1</a></li>
+                <li><a href="javascript:void(0);">2</a></li>
+                <li><a href="javascript:void(0);">3</a></li>
+                <li class="next"><a href="javascript:void(0);">Next <i class="ti-arrow-right"></i></a></li>
+              </ul>
+            </div>
+            <!-- Pagination END -->
+          </div>
+
+          <ng-template [ngIf]="layout.sidebar">
+            <div class="col-xl-3 col-lg-4" *ngIf="layout.sidebarPosition=='right'">
+              <aside class="side-bar sticky-top">
+                <app-search-form2></app-search-form2>
+                <app-recent-posts1></app-recent-posts1>
+                <app-newsletter1></app-newsletter1>
+                <app-our-gallery1></app-our-gallery1>
+                <app-category-list1></app-category-list1>
+                <app-tag-list1></app-tag-list1>
+              </aside>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Content END-->
+  <!-- Footer -->
+  <!-- Newsletter -->
+  <!-- Footer -->
+  <app-footer13></app-footer13>
+  <!-- Footer END-->
+  <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+</div>

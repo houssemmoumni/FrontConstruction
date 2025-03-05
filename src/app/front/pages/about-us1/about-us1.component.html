@@ -1,0 +1,37 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light3></app-header-light3>
+
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- inner page banner -->
+    <app-banner1 [data] = "banner"></app-banner1>
+
+    <!-- contact area -->
+    <div class="content-block">
+      <!-- About Services info -->
+      <app-content11></app-content11>
+
+      <!-- Counter -->
+      <app-counter3></app-counter3>
+
+      <!-- Team Section -->
+      <div class="section-full bg-gray content-inner">
+        <app-team3 [data]="our_team"></app-team3>
+      </div>
+
+      <!-- Price Table -->
+      <app-price-table1></app-price-table1>
+
+      <!-- Testimonials -->
+      <app-testimonial2 [data]="testimonials"></app-testimonial2>
+
+    </div>
+    <!-- contact area END -->
+  </div>
+  <!-- Content END -->
+  <!-- Footer -->
+  <app-footer13></app-footer13>
+  <!-- Footer End -->
+ <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+</div>
