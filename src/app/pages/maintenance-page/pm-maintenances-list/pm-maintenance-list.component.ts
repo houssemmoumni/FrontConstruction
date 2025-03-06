@@ -7,6 +7,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { Router, RouterLink } from '@angular/router';
 import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
 import { ChangeDetectorRef } from '@angular/core';
@@ -24,6 +25,7 @@ import { maintenance } from '../../../../models/maintenance';
     RouterLink,
     MatTableModule,
     MatPaginatorModule,
+    MatSortModule,
     NgIf,
     MatTooltipModule,
     MatProgressBarModule,
@@ -39,6 +41,7 @@ export class PmMaintenanceListComponent implements OnInit, AfterViewInit {
   searchQuery: string = '';  // Search query for filtering
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     public themeService: CustomizerSettingsService,
@@ -52,8 +55,8 @@ export class PmMaintenanceListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Initialize paginator after the view is initialized
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   loadMaintenances() {

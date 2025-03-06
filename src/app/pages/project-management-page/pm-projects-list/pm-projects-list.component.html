@@ -31,7 +31,7 @@
             </h5>
         </mat-card-title>
         <mat-card-subtitle>
-            <a mat-button class="add-new-btn" routerLink="/project-management-page/create-project">
+            <a mat-button class="add-new-btn" routerLink="/project-management-page/create-assurance">
                 + Add New Assurance
             </a>
         </mat-card-subtitle>
@@ -44,11 +44,11 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table mat-table [dataSource]="dataSource">
+            <table mat-table [dataSource]="dataSource" matSort>
 
                 <!-- ID Column -->
                 <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         ID
                         <input type="text" (input)="applyColumnFilter($event, 'id')" placeholder="Filter ID">
                     </th>
@@ -59,7 +59,7 @@
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         Name
                         <input type="text" (input)="applyColumnFilter($event, 'name')" placeholder="Filter Name">
                     </th>
@@ -70,7 +70,7 @@
 
                 <!-- Description Column -->
                 <ng-container matColumnDef="description">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         Description
                         <input type="text" (input)="applyColumnFilter($event, 'description')" placeholder="Filter Description">
                     </th>
@@ -81,7 +81,7 @@
 
                 <!-- Adresse Column -->
                 <ng-container matColumnDef="adresse">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         Adresse
                         <input type="text" (input)="applyColumnFilter($event, 'adresse')" placeholder="Filter Adresse">
                     </th>
@@ -92,7 +92,7 @@
 
                 <!-- Email Column -->
                 <ng-container matColumnDef="email">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         Email
                         <input type="text" (input)="applyColumnFilter($event, 'email')" placeholder="Filter Email">
                     </th>
@@ -103,7 +103,7 @@
 
                 <!-- Telephone Column -->
                 <ng-container matColumnDef="telephone">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         Telephone
                         <input type="text" (input)="applyColumnFilter($event, 'telephone')" placeholder="Filter Telephone">
                     </th>
@@ -114,7 +114,7 @@
 
                 <!-- Fax Column -->
                 <ng-container matColumnDef="fax">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         Fax
                         <input type="text" (input)="applyColumnFilter($event, 'fax')" placeholder="Filter Fax">
                     </th>
@@ -136,7 +136,7 @@
 
                 <!-- Site Web Column -->
                 <ng-container matColumnDef="siteWeb">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         Site Web
                         <input type="text" (input)="applyColumnFilter($event, 'siteWeb')" placeholder="Filter Site Web">
                     </th>

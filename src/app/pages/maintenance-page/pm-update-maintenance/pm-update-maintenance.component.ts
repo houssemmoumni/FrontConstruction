@@ -45,7 +45,7 @@ export class PmUpdateMaintenanceComponent implements OnInit {
   contrats: contrat[] = [];
   maintenanceId!: number;
   selectedFile: File | null = null;
-  statusOptions: string[] = ['EN_ATTENTE', 'EN_COURS', 'TERMINE'];
+  statusOptions: string[] = ['EN_ATTENTE', 'EN_COURS', 'TERMINE', 'REFUSE'];
 
   constructor(
     private fb: FormBuilder,

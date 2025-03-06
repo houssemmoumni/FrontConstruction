@@ -7,6 +7,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { Router, RouterLink } from '@angular/router';
 import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
 import { ChangeDetectorRef } from '@angular/core';
@@ -24,6 +25,7 @@ import { contrat } from '../../../../models/contrat.model';
     RouterLink,
     MatTableModule,
     MatPaginatorModule,
+    MatSortModule,
     NgIf,
     MatTooltipModule,
     MatProgressBarModule,
@@ -39,6 +41,7 @@ export class PmContratListComponent implements OnInit, AfterViewInit {
   searchQuery: string = '';  // Search query for filtering
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     public themeService: CustomizerSettingsService,
@@ -52,8 +55,26 @@ export class PmContratListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Initialize paginator after the view is initialized
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'id':
+          return item.id;
+        case 'contratCondition':
+          return item.contratcondition.toLowerCase();
+        case 'dateSignature':
+          return new Date(item.date_signature);
+        case 'dateExpiration':
+          return new Date(item.date_expiration);
+        case 'assurance':
+          return item.assurance?.name.toLowerCase();
+        case 'projet':
+          return item.projet?.title.toLowerCase();
+        default:
+          return (item as any)[property];
+      }
+    };
   }
 
   loadContrats() {
@@ -61,6 +82,7 @@ export class PmContratListComponent implements OnInit, AfterViewInit {
       next: contrats => {
         this.dataSource.data = contrats;  // Assign contracts to the data source
         this.dataSource.paginator = this.paginator;  // Ensure paginator is assigned after data is loaded
+        this.dataSource.sort = this.sort;  // Ensure sort is assigned after data is loaded
         this.changeDetector.detectChanges();  // Ensure Angular detects changes
       },
       error: err => {

@@ -44,11 +44,11 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table mat-table [dataSource]="dataSource">
+            <table mat-table [dataSource]="dataSource" matSort>
 
                 <!-- ID Column -->
                 <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         ID
                         <input type="text" (input)="applyColumnFilter($event, 'id')" placeholder=" Filter ID">
                     </th>
@@ -59,7 +59,7 @@
 
                 <!-- Title Column -->
                 <ng-container matColumnDef="title">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         Title
                         <input type="text" (input)="applyColumnFilter($event, 'title')" placeholder=" Filter Title">
                     </th>
@@ -70,7 +70,7 @@
 
                 <!-- Description Column -->
                 <ng-container matColumnDef="description">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         Description
                         <input type="text" (input)="applyColumnFilter($event, 'description')" placeholder=" Filter Description">
                     </th>
@@ -91,7 +91,7 @@
 
                 <!-- Email Column -->
                 <ng-container matColumnDef="email">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         Email
                         <input type="text" (input)="applyColumnFilter($event, 'email')" placeholder=" Filter Email">
                     </th>
@@ -102,7 +102,7 @@
 
                 <!-- Contrat Column -->
                 <ng-container matColumnDef="contrat">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         Contrat
                         <input type="text" (input)="applyColumnFilter($event, 'contrat')" placeholder=" Filter Contrat">
                     </th>
@@ -113,7 +113,7 @@
 
                 <!-- Status Column -->
                 <ng-container matColumnDef="status">
-                    <th mat-header-cell *matHeaderCellDef>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         Status
                         <input type="text" (input)="applyColumnFilter($event, 'status')" placeholder=" Filter Status">
                     </th>

@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FileUploadModule } from '@iplab/ngx-file-upload';
 import { NgxEditorModule } from 'ngx-editor';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -50,7 +50,8 @@ export class PmCreateContratComponent implements OnInit {
     private contratService: ContratService,
     private assuranceService: AssuranceService,
     private projetService: ProjetService,
-    private snackBar: MatSnackBar // ✅ Injected here
+    private snackBar: MatSnackBar, // ✅ Injected here
+    private router: Router // ✅ Injected here
   ) {}
 
   ngOnInit() {
@@ -127,6 +128,9 @@ export class PmCreateContratComponent implements OnInit {
             duration: 3000,
             panelClass: ['success-snackbar']
           });
+
+          // Redirect to contracts list page
+          this.router.navigate(['/contrat-page/contrats-list']);
         },
         error: (err: any) => {
           console.error('Erreur lors de la création du contrat :', err);
