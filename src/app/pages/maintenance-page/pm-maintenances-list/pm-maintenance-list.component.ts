@@ -36,7 +36,7 @@ import { maintenance } from '../../../../models/maintenance';
   styleUrls: ['./pm-maintenance-list.component.scss']
 })
 export class PmMaintenanceListComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['id', 'title', 'description', 'image', 'email', 'contrat', 'status', 'action'];
+  displayedColumns: string[] = ['id', 'title', 'description', 'image', 'email', 'contrat', 'status', 'priority', 'action'];
   dataSource = new MatTableDataSource<maintenance>();
   searchQuery: string = '';  // Search query for filtering
 
@@ -109,28 +109,42 @@ export class PmMaintenanceListComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  getPriorityClass(priority: string): string {
+    switch (priority?.toLowerCase()) {
+        case 'high':
+            return 'priority-high';
+        case 'medium':
+            return 'priority-medium';
+        case 'low':
+            return 'priority-low';
+        default:
+            return 'priority-default';
+    }
+}
 
   // Method to apply filter for each column
   applyColumnFilter(event: Event, column: string) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filterPredicate = (data: maintenance, filter: string) => {
-      const transformedFilter = filter.trim().toLowerCase();
-      switch (column) {
-        case 'id':
-          return data.id?.toString().includes(transformedFilter) ?? false;
-        case 'title':
-          return data.title.toLowerCase().includes(transformedFilter);
-        case 'description':
-          return data.description.toLowerCase().includes(transformedFilter);
-        case 'email':
-          return data.email.toLowerCase().includes(transformedFilter);
-        case 'contrat':
-          return data.contrat?.id?.toString().includes(transformedFilter) ?? false;
-        case 'status':
-          return data.status.toLowerCase().includes(transformedFilter);
-        default:
-          return false;
-      }
+        const transformedFilter = filter.trim().toLowerCase();
+        switch (column) {
+            case 'id':
+                return data.id?.toString().includes(transformedFilter) ?? false;
+            case 'title':
+                return data.title.toLowerCase().includes(transformedFilter);
+            case 'description':
+                return data.description.toLowerCase().includes(transformedFilter);
+            case 'email':
+                return data.email.toLowerCase().includes(transformedFilter);
+            case 'contrat':
+                return data.contrat?.id?.toString().includes(transformedFilter) ?? false;
+            case 'status':
+                return data.status.toLowerCase().includes(transformedFilter);
+            case 'priority':
+                return data.priority.toLowerCase().includes(transformedFilter); // Filter by priority
+            default:
+                return false;
+        }
     };
 
     // Apply the filter to the data source
@@ -138,10 +152,10 @@ export class PmMaintenanceListComponent implements OnInit, AfterViewInit {
 
     // Reset paginator to the first page
     if (this.paginator) {
-      this.paginator.firstPage();
+        this.paginator.firstPage();
     }
 
     // Detect changes after filtering
     this.changeDetector.detectChanges();
-  }
+}
 }

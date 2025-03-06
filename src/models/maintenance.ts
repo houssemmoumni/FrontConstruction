@@ -8,4 +8,5 @@ export interface maintenance {
     email: string;
     contrat: contrat;
     status: string;
+    priority: string;
 }
