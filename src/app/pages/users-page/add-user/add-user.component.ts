@@ -39,7 +39,7 @@ import { Worker } from '../../../models/worker.model';
 export class AddUserComponent {
     workerForm = this.fb.nonNullable.group({
         name: ['', [Validators.required, Validators.minLength(3)]],
-        role: [Role.DEVELOPPEUR, Validators.required],
+        role: [Role.TECHNICIEN, Validators.required],
         email: ['', [Validators.required, Validators.email]],        // Lowercase field name
         phone: ['', [Validators.required, Validators.pattern('^[0-9]{8,}$')]], // Lowercase field name
         joindate: [new Date(), Validators.required]

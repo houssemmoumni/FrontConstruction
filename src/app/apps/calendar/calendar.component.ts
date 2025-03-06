@@ -4,7 +4,7 @@ import { WorkingScheduleComponent } from './working-schedule/working-schedule.co
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
-import { CalendarOptions, EventClickArg } from '@fullcalendar/core';
+import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CustomizerSettingsService } from '../../customizer-settings/customizer-settings.service';
@@ -12,8 +12,6 @@ import { ProjectManagementService } from '../../services/project-management.serv
 import { project } from '../../models/project.model';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { EventDetailsSnackbarComponent } from '../../shared/components/event-details-snackbar/event-details-snackbar.component';
-import { MatDialog } from '@angular/material/dialog';
-import { WorkerDetailsDialogComponent } from '../../components/worker-details-dialog/worker-details-dialog.component';
 
 @Component({
     selector: 'app-calendar',
@@ -24,47 +22,25 @@ import { WorkerDetailsDialogComponent } from '../../components/worker-details-di
 export class CalendarComponent implements OnInit {
     calendarOptions: CalendarOptions = {
         initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
         dayMaxEvents: true,
         weekends: true,
-        events: (info, successCallback, failureCallback) => {
-            this.projectService.getAllProjects().subscribe({
-                next: (projects) => {
-                    const events = projects.map(project => ({
-                        title: `${project.projet_name} (${project.workers?.length || 0} 👥)`,
-                        date: project.start_date,
-                        backgroundColor: this.getStatusColor(project.statut_projet),
-                        borderColor: this.getStatusColor(project.statut_projet),
-                        extendedProps: {
-                            workers: project.workers || [],
-                            projectName: project.projet_name,
-                            status: project.statut_projet,
-                            description: project.projet_description
-                        }
-                    }));
-                    successCallback(events);
-                },
-                error: (error) => {
-                    console.error('Error:', error);
-                    failureCallback(error);
-                }
-            });
-        },
+        events: [], 
         eventClick: this.handleEventClick.bind(this),
         plugins: [dayGridPlugin],
-        eventDidMount: (info) => {
-            // Add tooltip with worker count
-            const workers = info.event.extendedProps['workers'];
-            const count = workers?.length || 0;
-            info.el.title = `${count} team member${count !== 1 ? 's' : ''}\nClick to view details`;
-        },
         eventContent: (arg) => {
-            const workerCount = arg.event.extendedProps['workers']?.length || 0;
+            const workers = arg.event.extendedProps['workers'] || [];
             return {
                 html: `
                     <div class="fc-event-main-content">
-                        <div class="event-title">${arg.event.extendedProps['projectName']}</div>
-                        <div class="event-workers">
-                            <span class="worker-count">${workerCount} 👥</span>
+                        <div class="event-title">${arg.event.title}</div>
+                        <div class="event-details">
+                            <span class="status-badge">${arg.event.extendedProps['status']}</span>
+                            <span class="worker-count">${workers.length} members</span>
                         </div>
                     </div>
                 `
@@ -75,8 +51,7 @@ export class CalendarComponent implements OnInit {
     constructor(
         public themeService: CustomizerSettingsService,
         private projectService: ProjectManagementService,
-        private snackBar: MatSnackBar,
-        private dialog: MatDialog
+        private snackBar: MatSnackBar
     ) {}
 
     ngOnInit() {
@@ -86,20 +61,29 @@ export class CalendarComponent implements OnInit {
     private loadProjectEvents() {
         this.projectService.getAllProjects().subscribe({
             next: (projects: project[]) => {
+                console.log('Loading projects for calendar:', projects);
                 const events = projects.map(project => ({
+                    id: project.projet_id?.toString(),
                     title: project.projet_name,
                     start: new Date(project.start_date),
                     end: project.end_date ? new Date(project.end_date) : undefined,
+                    allDay: true,
                     extendedProps: {
                         description: project.projet_description,
                         status: project.statut_projet,
-                        manager: project.projectManager
+                        manager: project.projectManager,
+                        workers: project.workers || [],
+                        budget: project.budget_estime
                     },
                     backgroundColor: this.getStatusColor(project.statut_projet),
-                    borderColor: this.getStatusColor(project.statut_projet)
+                    borderColor: this.getStatusColor(project.statut_projet),
+                    textColor: '#ffffff'
                 }));
 
-                this.calendarOptions.events = events;
+                this.calendarOptions = {
+                    ...this.calendarOptions,
+                    events: events
+                };
                 console.log('Calendar events loaded:', events);
             },
             error: (error) => {
@@ -118,18 +102,51 @@ export class CalendarComponent implements OnInit {
         }
     }
 
-    handleEventClick(clickInfo: EventClickArg) {
-        const event = clickInfo.event;
-        const workers = event.extendedProps['workers'];
-        const projectName = event.extendedProps['projet_name'];
-        
-        this.dialog.open(WorkerDetailsDialogComponent, {
-            width: '500px',
-            data: {
-                workers: workers || [],
-                projectName: projectName
-            },
-            panelClass: 'worker-details-dialog'
+    handleEventClick(info: any) {
+        const event = info.event;
+        const status = event.extendedProps.status;
+        const statusColor = this.getStatusColor(status);
+        const workers = event.extendedProps.workers || [];
+
+        const workersList = workers.length 
+            ? `<div class="event-workers">
+                <strong>Team Members (${workers.length}):</strong>
+                <ul>${workers.map((w: { name: any; role: any; }) => `<li>${w.name} - ${w.role}</li>`).join('')}</ul>
+               </div>`
+            : '';
+
+        const message = `
+            <div class="event-header">
+                <h3>${event.title}</h3>
+                <span class="status-badge" style="background-color: ${statusColor}20; color: ${statusColor}">
+                    ${status}
+                </span>
+            </div>
+            <div class="event-body">
+                <div class="event-info">
+                    <i class="ri-user-3-line"></i>
+                    <span><strong>Manager:</strong> ${event.extendedProps.manager}</span>
+                </div>
+                ${event.extendedProps.description ? `
+                    <div class="event-info">
+                        <i class="ri-file-text-line"></i>
+                        <span><strong>Description:</strong> ${event.extendedProps.description}</span>
+                    </div>
+                ` : ''}
+                <div class="event-info">
+                    <i class="ri-calendar-line"></i>
+                    <span><strong>Period:</strong> ${this.formatDate(event.start)} - ${event.end ? this.formatDate(event.end) : 'Ongoing'}</span>
+                </div>
+                ${workersList}
+            </div>
+        `;
+
+        this.snackBar.openFromComponent(EventDetailsSnackbarComponent, {
+            duration: 8000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['event-details-snackbar', 'notification-animation'],
+            data: { message }
         });
     }
 

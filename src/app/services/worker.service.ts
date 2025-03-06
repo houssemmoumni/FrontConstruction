@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable, catchError, throwError, tap } from 'rxjs';
 import { Worker } from '../models/worker.model';
 import { project } from '../models/project.model';
 import { ProjectManagementService } from './project-management.service';
@@ -13,7 +14,8 @@ export class WorkerService {
 
   constructor(
     private http: HttpClient,
-    private projectService: ProjectManagementService
+    private projectService: ProjectManagementService,
+    private router: Router
   ) { }
 
   getAllWorkers(): Observable<Worker[]> {
@@ -36,6 +38,11 @@ export class WorkerService {
     return this.http.put<Worker>(
       `${this.apiUrl}/workers/${workerId}/assign/${projectId}`,
       {}
+    ).pipe(
+      tap(() => {
+        // Navigate to projects list after successful assignment
+        this.router.navigate(['/project-management-page/projects-list']);
+      })
     );
   }
 

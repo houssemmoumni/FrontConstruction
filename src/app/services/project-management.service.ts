@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { project } from '../models/project.model';
 import { tap, catchError, map, retry } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 export interface ApiError {
     message: string;
@@ -15,11 +16,11 @@ export interface ApiError {
   providedIn: 'root'
 })
 export class ProjectManagementService {
-  private api = 'http://localhost:8040';
+  private apiUrl = 'http://localhost:8040';
   private retryAttempts = 3;
   private retryDelay = 1000; // 1 second
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   public createProject(project: any): Observable<project> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -42,7 +43,7 @@ export class ProjectManagementService {
     // Log the exact request being sent
     console.log('Request payload:', JSON.stringify(formattedProject, null, 2));
 
-    return this.httpClient.post<project>(`${this.api}/save/projects`, formattedProject, { headers }).pipe(
+    return this.http.post<project>(`${this.apiUrl}/save/projects`, formattedProject, { headers }).pipe(
         tap(response => console.log('Success response:', response)),
         catchError(error => {
             console.error('Error details:', {
@@ -77,7 +78,8 @@ export class ProjectManagementService {
   }
 
   public getAllProjects(): Observable<project[]> {
-    return this.httpClient.get<project[]>(`${this.api}/get/projects`).pipe(
+    // Change from /projets to /get/projects to match your backend endpoint
+    return this.http.get<project[]>(`${this.apiUrl}/get/projects`).pipe(
       retry({
         count: this.retryAttempts,
         delay: this.retryDelay
@@ -86,21 +88,28 @@ export class ProjectManagementService {
         if (!response) return [];
         return Array.isArray(response) ? response : [response];
       }),
-      catchError(error => {
-        console.error('Server error details:', error);
-        let errorMessage = 'Failed to load projects';
-        
-        if (error.status === 500) {
-          errorMessage = 'Server error: Please check if the server is running';
-        } else if (error.status === 0) {
-          errorMessage = 'Cannot connect to server. Please check your connection';
-        } else if (error.error?.message) {
-          errorMessage = error.error.message;
-        }
-
-        return throwError(() => new Error(errorMessage));
-      })
+      catchError(this.handleError)
     );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('Server error details:', error);
+    let errorMessage = 'An error occurred';
+
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Client error: ${error.error.message}`;
+    } else {
+      if (error.status === 404) {
+        errorMessage = `API endpoint not found. Please check if the URL /get/projects is correct`;
+      } else if (error.status === 0) {
+        errorMessage = 'Server connection failed. Please check if the server is running.';
+      } else {
+        errorMessage = `Server error: ${error.status}\nMessage: ${error.message}`;
+      }
+    }
+
+    console.log('Error message:', errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 
   isProjectActive(project: project): boolean {
@@ -131,11 +140,11 @@ export class ProjectManagementService {
   }
 
   public deleteProject(projet_id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.api}/delete/projects/${projet_id}`);
+    return this.http.delete<void>(`${this.apiUrl}/delete/projects/${projet_id}`);
   }
 
   public getProjectById(projet_id: number): Observable<project> {
-    return this.httpClient.get<project>(`${this.api}/get/projects/${projet_id}`);
+    return this.http.get<project>(`${this.apiUrl}/get/projects/${projet_id}`);
   }
 
   public updateProject(id: number, project: any): Observable<project> {
@@ -158,7 +167,7 @@ export class ProjectManagementService {
 
     console.log('Update payload:', formattedProject);
 
-    return this.httpClient.put<project>(`${this.api}/update/projects/${id}`, formattedProject, { headers }).pipe(
+    return this.http.put<project>(`${this.apiUrl}/update/projects/${id}`, formattedProject, { headers }).pipe(
         tap(response => console.log('Update response:', response)),
         catchError(error => {
             console.error('Update error:', error);
@@ -179,5 +188,18 @@ export class ProjectManagementService {
         'Emily Brown - Product Manager',
         'David Wilson - Engineering Manager'
     ];
+  }
+
+  assignWorkersToProject(projectId: number, workers: any[]): Observable<any> {
+    return this.http.post(`${this.apiUrl}/projects/${projectId}/workers`, workers).pipe(
+        tap(() => {
+            // Navigate to projects list after successful assignment
+            this.router.navigate(['/project-management-page/projects-list']);
+        }),
+        catchError(error => {
+            console.error('Error assigning workers:', error);
+            return throwError(() => error);
+        })
+    );
   }
 }

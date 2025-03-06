@@ -1,11 +1,11 @@
 import { project } from "./project.model";
 
 export enum Role {
-    ADMIN = 'ADMIN',
-    CHEF_PROJET = 'CHEF_PROJET',
-    DEVELOPPEUR = 'DEVELOPPEUR',
-    TESTEUR = 'TESTEUR',
-    CLIENT = 'CLIENT'
+    CHEF_CHANTIER = 'CHEF_CHANTIER',
+    CONDUCTEUR_TRAVEAUX = 'CONDUCTEUR_TRAVEAUX',
+    INGENIEUR = 'INGENIEUR',
+    CONDUCTEUR_SECURITE = 'CONDUCTEUR_SECURITE',
+    TECHNICIEN = 'TECHNICIEN'
 }
 
 export interface Worker {

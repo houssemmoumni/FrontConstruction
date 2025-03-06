@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { DeleteConfirmationDialogComponent } from '../../../shared/components/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { ProjectAssignmentDialogComponent } from './project-assignment-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-users-list',
@@ -42,7 +43,8 @@ export class UsersListComponent implements OnInit {
         public themeService: CustomizerSettingsService,
         private workerService: WorkerService,
         private dialog: MatDialog,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -127,7 +129,8 @@ export class UsersListComponent implements OnInit {
                 this.workerService.assignWorkerToProject(workerId, projectId).subscribe({
                     next: () => {
                         this.showMessage('Worker assigned to project successfully');
-                        this.loadWorkers();
+                        // Navigate to projects list
+                        this.router.navigate(['/project-management-page/projects-list']);
                     },
                     error: (error) => {
                         console.error('Error:', error);
