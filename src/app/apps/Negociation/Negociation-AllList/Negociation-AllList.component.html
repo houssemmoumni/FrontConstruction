@@ -1,0 +1,121 @@
+<div class="negociation-table">
+    <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>
+                    ID
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.id}}
+                </td>
+            </ng-container>
+
+            <!-- Client ID Column -->
+            <ng-container matColumnDef="clientId">
+                <th mat-header-cell *matHeaderCellDef>
+                    Client ID
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.clientId}}
+                </td>
+            </ng-container>
+
+            <!-- Admin ID Column -->
+            <ng-container matColumnDef="adminId">
+                <th mat-header-cell *matHeaderCellDef>
+                    Admin ID
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.adminId}}
+                </td>
+            </ng-container>
+
+            <!-- Budget Estime Column -->
+            <ng-container matColumnDef="budgetEstime">
+                <th mat-header-cell *matHeaderCellDef>
+                    Budget Estime
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.budgetEstime}}
+                </td>
+            </ng-container>
+
+            <!-- Exigences Column -->
+            <ng-container matColumnDef="exigences">
+                <th mat-header-cell *matHeaderCellDef>
+                    Exigences
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.exigences}}
+                </td>
+            </ng-container>
+
+            <!-- Statut Column -->
+            <ng-container matColumnDef="statut">
+                <th mat-header-cell *matHeaderCellDef>
+                    Statut
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.statut}}
+                </td>
+            </ng-container>
+
+            <!-- Date Creation Column -->
+            <ng-container matColumnDef="dateCreation">
+                <th mat-header-cell *matHeaderCellDef>
+                    Date Creation
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.dateCreation}}
+                </td>
+            </ng-container>
+
+            <!-- Date Fin Column -->
+            <ng-container matColumnDef="dateFin">
+                <th mat-header-cell *matHeaderCellDef>
+                    Date Fin
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.dateFin}}
+                </td>
+            </ng-container>
+
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>
+                    Action
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="action-info">
+                        <a mat-button [routerLink]="['/negociation-detaille', element.id]" matTooltip="View Negociation" matTooltipPosition="above">
+                            <i class="material-symbols-outlined">
+                                visibility
+                            </i>
+                        </a>
+                        <a mat-button [routerLink]="['/negociation-edit', element.id]" matTooltip="Edit Negociation" matTooltipPosition="above">
+                            <i class="material-symbols-outlined">
+                                edit
+                            </i>
+                        </a>
+                        <button type="button" mat-button matTooltip="Delete" matTooltipPosition="above" (click)="deleteNegociation(element.id!)">
+                            <i class="material-symbols-outlined">
+                                delete
+                            </i>
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+    <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+    </div>
+    <button mat-raised-button color="primary" (click)="generatePDF()">Generate PDF</button>
+</div>

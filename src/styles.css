@@ -1,0 +1,11 @@
+/* Ensure buttons are not obstructed */
+button {
+  z-index: 1;
+  position: relative;
+}
+
+/* Ensure other elements do not overlap buttons */
+.mat-expansion-panel, .mat-form-field {
+  z-index: 0;
+  position: relative;
+}

@@ -1,0 +1,350 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">
+        Negociation Details
+    </h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+        <li class="breadcrumb-item position-relative">
+            <a routerLink="/" class="d-inline-block position-relative">
+                <i class="ri-home-8-line"></i>
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item position-relative">
+            Negociation
+        </li>
+        <li class="breadcrumb-item position-relative">
+            Negociation Details
+        </li>
+    </ol>
+</div>
+
+<!-- Negociation Details -->
+<mat-card
+    class="daxa-card negociation-details-card mb-25 border-radius bg-gradient border-none d-block"
+    [class.rtl-enabled]="themeService.isRTLEnabled()"
+>
+    <mat-card-header>
+        <mat-card-title>
+            <h5 class="mt-0 text-white mb-0">
+                Negociation Details
+            </h5>
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="negociation-details-table">
+            <div class="table-responsive">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef class="text-white">
+                            ID
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-white">
+                            {{element.id}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Client ID Column -->
+                    <ng-container matColumnDef="clientId">
+                        <th mat-header-cell *matHeaderCellDef class="text-white">
+                            Client ID
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="fw-medium text-white">
+                            {{element.clientId}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Admin ID Column -->
+                    <ng-container matColumnDef="adminId">
+                        <th mat-header-cell *matHeaderCellDef class="text-white">
+                            Admin ID
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-white">
+                            {{element.adminId}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Budget Estime Column -->
+                    <ng-container matColumnDef="budgetEstime">
+                        <th mat-header-cell *matHeaderCellDef class="text-white">
+                            Budget Estime
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-white">
+                            {{element.budgetEstime}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Exigences Column -->
+                    <ng-container matColumnDef="exigences">
+                        <th mat-header-cell *matHeaderCellDef class="text-white">
+                            Exigences
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-white">
+                            {{element.exigences}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Statut Column -->
+                    <ng-container matColumnDef="statut">
+                        <th mat-header-cell *matHeaderCellDef class="text-white">
+                            Statut
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-white">
+                            {{element.statut}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Date Creation Column -->
+                    <ng-container matColumnDef="dateCreation">
+                        <th mat-header-cell *matHeaderCellDef class="text-white">
+                            Date Creation
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-white">
+                            {{element.dateCreation}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Date Fin Column -->
+                    <ng-container matColumnDef="dateFin">
+                        <th mat-header-cell *matHeaderCellDef class="text-white">
+                            Date Fin
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-white">
+                            {{element.dateFin}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Action Column -->
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef class="text-white">
+                            Action
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-white">
+                            <div class="action-info">
+                                <a mat-button [routerLink]="['/negociation-edit', element.id]" matTooltip="Edit Negociation" matTooltipPosition="above">
+                                    <i class="material-symbols-outlined">
+                                        edit
+                                    </i>
+                                </a>
+                                <button type="button" mat-button matTooltip="Delete" matTooltipPosition="above" (click)="deleteNegociation(element.id!)">
+                                    <i class="material-symbols-outlined">
+                                        delete
+                                    </i>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="text-white"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="text-white"></tr>
+
+                </table>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<div class="row">
+    <div class="col-lg-7 col-md-12">
+
+        <!-- Negociation Client Details -->
+        <mat-card class="daxa-card mb-25 border-radius bg-gradient border-none d-block">
+            <mat-card-header>
+                <mat-card-title>
+                    <h5 class="mt-0 mb-0 text-white">
+                        Client Details
+                    </h5>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p><strong>Client ID:</strong> {{dataSource.data[0]?.clientId}}</p>
+                <p><strong>Client Name:</strong> {{dataSource.data[0]?.clientName}}</p>
+                <!-- Add more client details as needed -->
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+    <div class="col-lg-5 col-md-12">
+
+        <!-- Negociation Admin Details -->
+        <mat-card class="daxa-card mb-25 border-radius bg-gradient border-none d-block">
+            <mat-card-header>
+                <mat-card-title>
+                    <h5 class="mt-0 mb-0 text-white">
+                        Admin Details
+                    </h5>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p><strong>Admin ID:</strong> {{dataSource.data[0]?.adminId}}</p>
+                <p><strong>Admin Name:</strong> {{dataSource.data[0]?.adminName}}</p>
+                <!-- Add more admin details as needed -->
+            </mat-card-content>
+        </mat-card>
+        
+    </div>
+    <div class="col-lg-12 col-xxxl-6">
+
+        <!-- Negociation Exigences -->
+        <mat-card class="daxa-card mb-25 border-radius bg-gradient border-none d-block">
+            <mat-card-header>
+                <mat-card-title>
+                    <h5 class="mt-0 mb-0 text-white">
+                        Exigences
+                    </h5>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{dataSource.data[0]?.exigences}}</p>
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+    <div class="col-lg-12 col-xxxl-6">
+        <div class="row">
+            <div class="col-md-8 col-lg-8">
+
+                <!-- Negociation Budget -->
+                <mat-card class="daxa-card mb-25 border-radius bg-gradient border-none d-block">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <h5 class="mt-0 mb-0 text-white">
+                                Budget Estime
+                            </h5>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>{{dataSource.data[0]?.budgetEstime}}</p>
+                    </mat-card-content>
+                </mat-card>
+
+            </div>
+            <div class="col-md-4 col-lg-4">
+
+                <!-- Negociation Statut -->
+                <mat-card class="daxa-card mb-25 border-radius bg-gradient border-none d-block">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <h5 class="mt-0 mb-0 text-white">
+                                Statut
+                            </h5>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>{{dataSource.data[0]?.statut}}</p>
+                    </mat-card-content>
+                </mat-card>
+                
+            </div>
+            <div class="col-lg-12">
+
+                <!-- Negociation Dates -->
+                <mat-card class="daxa-card mb-25 border-radius bg-gradient border-none d-block">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <h5 class="mt-0 mb-0 text-white">
+                                Dates
+                            </h5>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p><strong>Date Creation:</strong> {{dataSource.data[0]?.dateCreation}}</p>
+                        <p><strong>Date Fin:</strong> {{dataSource.data[0]?.dateFin}}</p>
+                    </mat-card-content>
+                </mat-card>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Phase de Negociation -->
+<div class="row">
+    <div class="col-lg-12">
+        <mat-card class="daxa-card mb-25 border-radius bg-gradient border-none d-block">
+            <mat-card-header>
+                <mat-card-title>
+                    <h5 class="mt-0 mb-0 text-white">
+                        Phase de Negociation
+                    </h5>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <form [formGroup]="phaseForm" (ngSubmit)="onAddPhase()">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-white">
+                                    Nom de Phase
+                                </label>
+                                <mat-form-field>
+                                    <mat-label>
+                                        Select Phase
+                                    </mat-label>
+                                    <mat-select formControlName="nomPhase">
+                                        <mat-option value="CLIENT_ADMIN">Client & Admin</mat-option>
+                                        <mat-option value="CLIENT_ARCHITECTE">Client & Architecte</mat-option>
+                                        <mat-option value="CLIENT_INGENIEUR_CIVIL">Client & Ingénieur Civil</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-white">
+                                    Statut
+                                </label>
+                                <mat-form-field>
+                                    <mat-label>
+                                        Select Status
+                                    </mat-label>
+                                    <mat-select formControlName="statut">
+                                        <mat-option value="EN_COURS">En cours</mat-option>
+                                        <mat-option value="TERMINE">Terminé</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-white">
+                                    Date Début
+                                </label>
+                                <mat-form-field>
+                                    <mat-label>
+                                        Choose a date
+                                    </mat-label>
+                                    <input matInput [matDatepicker]="dateDebut" formControlName="dateDebut">
+                                    <mat-datepicker-toggle matIconSuffix [for]="dateDebut"></mat-datepicker-toggle>
+                                    <mat-datepicker #dateDebut></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-white">
+                                    Date Fin
+                                </label>
+                                <mat-form-field>
+                                    <mat-label>
+                                        Choose a date
+                                    </mat-label>
+                                    <input matInput [matDatepicker]="dateFin" formControlName="dateFin">
+                                    <mat-datepicker-toggle matIconSuffix [for]="dateFin"></mat-datepicker-toggle>
+                                    <mat-datepicker #dateFin></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-box d-md-flex align-items-center justify-content-between">
+                        <button mat-button type="submit">
+                            Add Phase
+                        </button>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,160 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">
+        Add Negociation
+    </h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+        <li class="breadcrumb-item position-relative">
+            <a routerLink="/" class="d-inline-block position-relative">
+                <i class="ri-home-8-line"></i>
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item position-relative">
+            Negociation
+        </li>
+        <li class="breadcrumb-item position-relative">
+            Add Negociation
+        </li>
+    </ol>
+</div>
+
+<!-- Add Negociation -->
+<form [formGroup]="negociationForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-xxl-7 col-xxxl-8">
+            <mat-card class="daxa-card create-course-card mb-25 border-radius bg-white border-none d-block">
+                <mat-card-header>
+                    <mat-card-title>
+                        <h5 class="mb-0">
+                            Add a Negociation
+                        </h5>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">
+                                    Client ID
+                                </label>
+                                <mat-form-field>
+                                    <mat-label>
+                                        Client ID
+                                    </mat-label>
+                                    <input matInput formControlName="clientId" placeholder="E.g. 1">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">
+                                    Admin ID
+                                </label>
+                                <mat-form-field>
+                                    <mat-label>
+                                        Admin ID
+                                    </mat-label>
+                                    <input matInput formControlName="adminId" placeholder="E.g. 1">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">
+                                    Budget Estime
+                                </label>
+                                <mat-form-field>
+                                    <mat-label>
+                                        Budget Estime
+                                    </mat-label>
+                                    <input matInput formControlName="budgetEstime" placeholder="E.g. 1000">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">
+                                    Exigences
+                                </label>
+                                <mat-form-field>
+                                    <mat-label>
+                                        Exigences
+                                    </mat-label>
+                                    <input matInput formControlName="exigences" placeholder="E.g. Specific requirements">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">
+                                    Statut
+                                </label>
+                                <mat-form-field>
+                                    <mat-label>
+                                        Statut
+                                    </mat-label>
+                                    <input matInput formControlName="statut" placeholder="E.g. In Progress">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">
+                                    Date Creation
+                                </label>
+                                <mat-form-field>
+                                    <mat-label>
+                                        Choose a date
+                                    </mat-label>
+                                    <input matInput formControlName="dateCreation" [matDatepicker]="dateCreation">
+                                    <mat-datepicker-toggle matIconSuffix [for]="dateCreation"></mat-datepicker-toggle>
+                                    <mat-datepicker #dateCreation></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">
+                                    Date Fin
+                                </label>
+                                <mat-form-field>
+                                    <mat-label>
+                                        Choose a date
+                                    </mat-label>
+                                    <input matInput formControlName="dateFin" [matDatepicker]="dateFin">
+                                    <mat-datepicker-toggle matIconSuffix [for]="dateFin"></mat-datepicker-toggle>
+                                    <mat-datepicker #dateFin></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-xxl-5 col-xxxl-4">
+            <mat-card
+                class="daxa-card create-course-card mb-25 border-radius bg-white border-none d-block"
+                [class.component-dark-theme]="themeService.isDark()"
+            >
+                <mat-card-header>
+                    <mat-card-title>
+                        <h5 class="mb-0">
+                            Negociation Overview
+                        </h5>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="btn-box d-md-flex align-items-center justify-content-between">
+                        <button mat-button type="submit" [disabled]="negociationForm.invalid">
+                            Save Negociation
+                        </button>
+                        <button mat-button type="button">
+                            + Add More Field
+                        </button>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</form>

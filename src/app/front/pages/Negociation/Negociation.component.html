@@ -1,0 +1,51 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light3></app-header-light3>
+  <!-- header END -->
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- inner page banner -->
+   
+    <!-- inner page banner END -->
+    <!-- Negociation area -->
+    <div class="section-full content-inner overlay-black-dark" style="background-image:url(assets/images/background/bg1.jpg); background-position: 50% 50%;">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-5 text-center text-gray m-tb30">
+            <div class="dz_error">Negociation</div>
+          </div>
+          <div class="col-lg-7 m-b30">
+            <h2 class="error-head text-gray">Negociation Details</h2>
+            <p class="font-16 text-gray">Here are the details of the current negociation:</p>
+            <div class="dlab-divider bg-gray-dark"></div>
+            <ul class="text-gray">
+              <li>Nom Phase: {{ nomPhase }}</li>
+              <li>Statut: {{ statut }}</li>
+              <li>Date Debut: {{ dateDebut }}</li>
+              <li>Date Fin: {{ dateFin }}</li>
+              <li>Negociation ID: {{ negociationId }}</li>
+            </ul>
+            <div class="widget">
+              <div class="subscribe-form p-a0 col-lg-6 col-md-6">
+                <form>
+                  <div class="input-group">
+                    <input name="text" class="form-control radius-no" placeholder="Search For Pages" type="text">
+                    <span class="input-group-btn">
+                      <button type="submit" class="site-button radius-no">SEARCH</button>
+                    </span>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Negociation area END -->
+  </div>
+  <!-- Content END-->
+  <!-- Footer -->
+  <app-footer13></app-footer13>
+  <!-- Footer End -->
+  <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+</div>
