@@ -1,0 +1,153 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">
+        Maintenances List
+    </h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+        <li class="breadcrumb-item position-relative">
+            <a routerLink="/" class="d-inline-block position-relative">
+                <i class="ri-home-8-line"></i>
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item position-relative">
+            Maintenance Management
+        </li>
+        <li class="breadcrumb-item position-relative">
+            Maintenances List
+        </li>
+    </ol>
+</div>
+
+<!-- All Maintenances -->
+<mat-card
+    class="daxa-card all-maintenances-card mb-25 border-radius bg-white border-none d-block"
+    [class.rtl-enabled]="themeService.isRTLEnabled()"
+>
+    <mat-card-header>
+        <mat-card-title>
+            <h5 class="mb-0">
+                All Maintenances
+            </h5>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <a mat-button class="add-new-btn" routerLink="/front/create-maintenance">
+                + Add New Maintenance
+            </a>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <!-- Search input for filtering -->
+                <input type="text" class="form-control" placeholder="Rechercher 🔎 ..." [(ngModel)]="searchQuery" (input)="applySearchFilter()">
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>
+                        ID
+                        <input type="text" (input)="applyColumnFilter($event, 'id')" placeholder=" Filter ID">
+                    </th>
+                    <td mat-cell *matCellDef="let maintenance">
+                        {{maintenance.id}}
+                    </td>
+                </ng-container>
+
+                <!-- Title Column -->
+                <ng-container matColumnDef="title">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Title
+                        <input type="text" (input)="applyColumnFilter($event, 'title')" placeholder=" Filter Title">
+                    </th>
+                    <td mat-cell *matCellDef="let maintenance">
+                        {{maintenance.title}}
+                    </td>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Description
+                        <input type="text" (input)="applyColumnFilter($event, 'description')" placeholder=" Filter Description">
+                    </th>
+                    <td mat-cell *matCellDef="let maintenance">
+                        {{maintenance.description}}
+                    </td>
+                </ng-container>
+
+                <!-- Image Column -->
+                <ng-container matColumnDef="image">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Image
+                    </th>
+                    <td mat-cell *matCellDef="let maintenance">
+                        <img [src]="maintenance.image" alt="Maintenance Image" width="50">
+                    </td>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Email
+                        <input type="text" (input)="applyColumnFilter($event, 'email')" placeholder=" Filter Email">
+                    </th>
+                    <td mat-cell *matCellDef="let maintenance">
+                        {{maintenance.email}}
+                    </td>
+                </ng-container>
+
+                <!-- Contrat Column -->
+                <ng-container matColumnDef="contrat">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Contrat
+                        <input type="text" (input)="applyColumnFilter($event, 'contrat')" placeholder=" Filter Contrat">
+                    </th>
+                    <td mat-cell *matCellDef="let maintenance">
+                        {{maintenance.contrat?.id}}
+                    </td>
+                </ng-container>
+
+                <!-- Status Column -->
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Status
+                        <input type="text" (input)="applyColumnFilter($event, 'status')" placeholder=" Filter Status">
+                    </th>
+                    <td mat-cell *matCellDef="let maintenance">
+                        {{maintenance.status}}
+                    </td>
+                </ng-container>
+
+                <!-- Action Column -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Action
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="action-info">
+                            <button type="button" mat-button matTooltip="Update Maintenance" matTooltipPosition="above" (click)="updateMaintenance(element.id)">
+                                <i class="material-symbols-outlined">
+                                    edit
+                                </i>
+                            </button>
+                            <button type="button" mat-button matTooltip="Delete Maintenance" matTooltipPosition="above" (click)="deleteMaintenance(element.id)">
+                                <i class="material-symbols-outlined">
+                                    delete
+                                </i>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+    </mat-card-content>
+</mat-card>

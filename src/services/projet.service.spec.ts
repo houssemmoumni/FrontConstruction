@@ -26,8 +26,14 @@ describe('ProjetService', () => {
 
     it('should get all projets', () => {
         const projetList: projet[] = [
-            { id: 1, image: new Blob() },
-            { id: 2, image: new Blob() }
+            {
+                id: 1, image: new Blob(),
+                title: undefined
+            },
+            {
+                id: 2, image: new Blob(),
+                title: undefined
+            }
         ];
 
         service.getAllProjets().subscribe(response => {

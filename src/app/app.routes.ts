@@ -166,6 +166,8 @@ import { ContratPageComponent } from './pages/contrat-page/contrat-page.componen
 import { PmCreateContratComponent } from './pages/contrat-page/pm-create-contrat/pm-create-contrat.component';
 import { PmContratListComponent } from './pages/contrat-page/pm-contrats-list/pm-contrat-list.component';
 import { PmUpdateContratComponent } from './pages/contrat-page/pm-update-contrat/pm-update-contrat.component';
+import { PmMaintenanceListComponent } from './pages/maintenance-page/pm-maintenances-list/pm-maintenance-list.component';
+import { PmUpdateMaintenanceComponent } from './pages/maintenance-page/pm-update-maintenance/pm-update-maintenance.component';
 import { CCreateDealComponent } from './pages/crm-page/c-create-deal/c-create-deal.component';
 import { CDealsComponent } from './pages/crm-page/c-deals/c-deals.component';
 import { CLeadsComponent } from './pages/crm-page/c-leads/c-leads.component';
@@ -272,6 +274,8 @@ import { HomeShipIndustryComponent } from './front/home-ship-industry/home-ship-
 import { HomeSolarPlantComponent } from './front/home-solar-plant/home-solar-plant.component';
 import { HomeSteelPlantComponent } from './front/home-steel-plant/home-steel-plant.component';
 import { IndexComponent } from './front/index/index.component';
+import { CreateMaintenanceComponent } from './front/pages/maintenance/create-maintenance/create-maintenance.component';
+
 
 export const routes: Routes = [
     { path: '', component: EcommerceComponent },
@@ -373,6 +377,23 @@ export const routes: Routes = [
             { path: 'contrats-list', component: PmContratListComponent },
             { path: 'create-contrat', component: PmCreateContratComponent },
             { path: 'update-contrat/:id', component: PmUpdateContratComponent },
+
+            //{ path: 'clients', component: PmClientsComponent },
+            //{ path: 'teams', component: PmTeamsComponent },
+            //{ path: 'kanban-board', component: PmKanbanBoardComponent },
+            //{ path: 'users', component: PmUsersComponent },
+            //{ path: 'create-user', component: PmCreateUserComponent },
+            //{ path: 'edit-user', component: PmEditUserComponent },
+        ],
+    },
+    {
+        path: 'maintenance-page',
+        component: ContratPageComponent,
+        children: [
+            { path: '', component: PmProjectOverviewComponent },
+            { path: 'maintenances-list', component: PmMaintenanceListComponent },
+            { path: 'front/create-maintenance', component: CreateMaintenanceComponent },
+            { path: 'update-maintenance/:id', component: PmUpdateMaintenanceComponent },
             //{ path: 'clients', component: PmClientsComponent },
             //{ path: 'teams', component: PmTeamsComponent },
             //{ path: 'kanban-board', component: PmKanbanBoardComponent },
@@ -592,6 +613,7 @@ export const routes: Routes = [
     // home ---
     { path: 'fron/home', component: IndexComponent },
     { path: 'front/index', component: IndexComponent },
+    { path: 'front/create-maintenance', component: CreateMaintenanceComponent },
     { path: 'front/index-2', component: HomeOilPlantComponent },
     { path: 'front/home-oil-plant', component: HomeOilPlantComponent },
     { path: 'front/index-3', component: HomeSteelPlantComponent },

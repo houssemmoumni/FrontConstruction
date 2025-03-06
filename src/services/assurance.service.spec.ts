@@ -19,6 +19,7 @@ describe('AssuranceService', () => {
       name: 'Test Assurance',
       description: 'Test Description',
       adresse: 'Test Address',
+      email: 'test@example.com',
       telephone: '123456789',
       fax: '987654321',
       logo: 'test-logo.png',

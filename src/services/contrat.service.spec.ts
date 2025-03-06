@@ -30,7 +30,10 @@ describe('ContratService', () => {
             date_signature: '2023-10-01',
             date_expiration: '2024-10-01',
             assurance: { id: 1, name: 'Test Assurance', description: 'Test Description', adresse: 'Test Address', email: 'test@example.com', telephone: '123456789', fax: '987654321', logo: 'test-logo.png', siteWeb: 'http://test.com' },
-            projet: { id: 1, image: new Blob() }
+            projet: {
+                id: 1, image: new Blob(),
+                title: undefined
+            }
         };
 
         service.createContrat(contratData).subscribe(response => {
@@ -45,8 +48,14 @@ describe('ContratService', () => {
 
     it('should get all contrats', () => {
         const contratList: contrat[] = [
-            { contratcondition: 'Condition 1', date_signature: '2023-10-01', date_expiration: '2024-10-01', assurance: { id: 1, name: 'Assurance 1', description: 'Description 1', adresse: 'Address 1', email: 'email1@example.com', telephone: '123456789', fax: '987654321', logo: 'logo1.png', siteWeb: 'http://site1.com' }, projet: { id: 1,image: new Blob() } },
-            { contratcondition: 'Condition 2', date_signature: '2023-11-01', date_expiration: '2024-11-01', assurance: { id: 2, name: 'Assurance 2', description: 'Description 2', adresse: 'Address 2', email: 'email2@example.com', telephone: '123456789', fax: '987654321', logo: 'logo2.png', siteWeb: 'http://site2.com' }, projet: { id: 2,image: new Blob() } }
+            { contratcondition: 'Condition 1', date_signature: '2023-10-01', date_expiration: '2024-10-01', assurance: { id: 1, name: 'Assurance 1', description: 'Description 1', adresse: 'Address 1', email: 'email1@example.com', telephone: '123456789', fax: '987654321', logo: 'logo1.png', siteWeb: 'http://site1.com' }, projet: {
+                id: 1, image: new Blob(),
+                title: undefined
+            } },
+            { contratcondition: 'Condition 2', date_signature: '2023-11-01', date_expiration: '2024-11-01', assurance: { id: 2, name: 'Assurance 2', description: 'Description 2', adresse: 'Address 2', email: 'email2@example.com', telephone: '123456789', fax: '987654321', logo: 'logo2.png', siteWeb: 'http://site2.com' }, projet: {
+                id: 2, image: new Blob(),
+                title: undefined
+            } }
         ];
 
         service.getAllContrats().subscribe(response => {
@@ -60,7 +69,10 @@ describe('ContratService', () => {
     });
 
     it('should get a contrat by id', () => {
-        const contratData: contrat = { contratcondition: 'Condition 1', date_signature: '2023-10-01', date_expiration: '2024-10-01', assurance: { id: 1, name: 'Assurance 1', description: 'Description 1', adresse: 'Address 1', email: 'email1@example.com', telephone: '123456789', fax: '987654321', logo: 'logo1.png', siteWeb: 'http://site1.com' }, projet: { id: 1,image: new Blob() } };
+        const contratData: contrat = { contratcondition: 'Condition 1', date_signature: '2023-10-01', date_expiration: '2024-10-01', assurance: { id: 1, name: 'Assurance 1', description: 'Description 1', adresse: 'Address 1', email: 'email1@example.com', telephone: '123456789', fax: '987654321', logo: 'logo1.png', siteWeb: 'http://site1.com' }, projet: {
+            id: 1, image: new Blob(),
+            title: undefined
+        } };
 
         service.getContratById(1).subscribe(response => {
             expect(response).toEqual(contratData);
@@ -72,7 +84,10 @@ describe('ContratService', () => {
     });
 
     it('should update a contrat', () => {
-        const contratData: contrat = { contratcondition: 'Updated Condition', date_signature: '2023-10-01', date_expiration: '2024-10-01', assurance: { id: 1, name: 'Updated Assurance', description: 'Updated Description', adresse: 'Updated Address', email: 'updated@example.com', telephone: '123456789', fax: '987654321', logo: 'updated-logo.png', siteWeb: 'http://updated.com' }, projet: { id: 1,image: new Blob() } };
+        const contratData: contrat = { contratcondition: 'Updated Condition', date_signature: '2023-10-01', date_expiration: '2024-10-01', assurance: { id: 1, name: 'Updated Assurance', description: 'Updated Description', adresse: 'Updated Address', email: 'updated@example.com', telephone: '123456789', fax: '987654321', logo: 'updated-logo.png', siteWeb: 'http://updated.com' }, projet: {
+            id: 1, image: new Blob(),
+            title: undefined
+        } };
 
         service.updateContrat(1, contratData).subscribe(response => {
             expect(response).toEqual(contratData);
