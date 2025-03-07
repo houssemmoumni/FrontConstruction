@@ -1,353 +1,185 @@
 .mat-mdc-card {
     &.daxa-card {
+      &.job-offers-card {
+        .mat-mdc-card-content {
+          // Search Bar (Smaller and Aligned to the Right)
+          .search-bar {
+            max-width: 200px; // Smaller width
+            margin-left: auto; // Align to the right
+            margin-right: 0;
+            margin-bottom: 20px;
+
+            .small-search-bar {
+              width: 100%;
+
+              .mat-form-field-wrapper {
+                padding-bottom: 0; // Remove extra padding
+              }
+
+              .mat-form-field-infix {
+                padding: 0.5em 0; // Smaller padding
+                border-top: 0; // Remove top border
+              }
+
+              .mat-form-field-outline {
+                border-radius: 20px; // Rounded corners
+              }
+
+              .mat-input-element {
+                font-size: 14px; // Smaller font size
+              }
+
+              .mat-icon {
+                font-size: 18px; // Smaller icon size
+              }
+            }
+          }
+
+          // Job Offers Table
+          .job-offers-table {
+            margin: {
+              left: -20px;
+              right: -20px;
+            };
+
+            .styled-table {
+              width: 100%;
+              border-collapse: collapse; // Remove space between cells
+              border-spacing: 0;
+
+              // Table Header
+              thead {
+                tr {
+                  th {
+                    background-color: #e7effd;
+                    white-space: nowrap;
+                    padding: 17px 20px;
+                    text-align: left;
+                    border: 1px solid #e0e0e0; // Add border to header cells
+
+                    &:first-child {
+                      border-left: none; // Remove left border for first cell
+                    }
+
+                    &:last-child {
+                      border-right: none; // Remove right border for last cell
+                    }
+                  }
+                }
+              }
+
+              // Table Body
+              tbody {
+                tr {
+                  td {
+                    border: 1px solid #e0e0e0; // Add border to body cells
+                    white-space: nowrap;
+                    padding: 18px 20px;
+
+                    // Description Container (Scrollable)
+                    .description-container {
+                      max-width: 300px; // Fixed width for description
+                      max-height: 100px; // Fixed height
+                      overflow-y: auto; // Add scrollbar
+                      word-wrap: break-word; // Wrap text
+                      white-space: pre-wrap; // Preserve line breaks
+
+                      .description-content {
+                        padding-right: 8px; // Space for scrollbar
+                      }
+
+                      // Custom Scrollbar
+                      &::-webkit-scrollbar {
+                        width: 6px;
+                      }
+
+                      &::-webkit-scrollbar-track {
+                        background: #f1f1f1;
+                        border-radius: 3px;
+                      }
+
+                      &::-webkit-scrollbar-thumb {
+                        background: #888;
+                        border-radius: 3px;
+                      }
+
+                      &::-webkit-scrollbar-thumb:hover {
+                        background: #555;
+                      }
+                    }
+
+                    // Badge Styling
+                    .daxa-badge {
+                      padding: 3px 11px;
+                      border-radius: 3px;
+                      color: var(--successColor);
+                      background: rgba(46, 212, 126, 0.10);
+
+                      &.deactive {
+                        color: var(--dangerColor);
+                        background: rgba(231, 76, 60, 0.10);
+                      }
+                    }
+
+                    &:first-child {
+                      border-left: none; // Remove left border for first cell
+                    }
+
+                    &:last-child {
+                      border-right: none; // Remove right border for last cell
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Action Buttons Styling
+  ::ng-deep {
+    .mat-mdc-card {
+      &.daxa-card {
         &.job-offers-card {
-            .mat-mdc-card-content {
-                .job-offers-table {
-                    margin: {
-                        left: -20px;
-                        right: -20px;
-                    };
-                    table {
-                        width: 100%;
-                        border-spacing: 0;
+          .mat-mdc-card-content {
+            .job-offers-table {
+              table {
+                tbody {
+                  tr {
+                    td {
+                      .action-info {
+                        display: flex;
+                        align-items: center;
+                        justify-content: end;
 
-                        thead {
-                            tr {
-                                th {
-                                    background-color: #e7effd;
-                                    white-space: nowrap;
-                                    padding: 17px 20px;
-                                    text-align: left;
+                        .mat-mdc-button {
+                          padding: 0;
+                          width: auto;
+                          height: auto;
+                          line-height: 1;
+                          min-width: auto;
+                          border-radius: 0;
 
-                                    &:first-child {
-                                        padding-right: 0;
-                                    }
-                                    &:last-child {
-                                        text-align: right;
-                                    }
-                                }
+                          .mdc-button__label {
+                            mat-icon {
+                              font-size: 16px;
                             }
+                          }
+
+                          &:not(:first-child) {
+                            margin-left: 12px;
+                          }
                         }
-                        tbody {
-                            tr {
-                                td {
-                                    border-bottom: 1px dashed #e0e0e0;
-                                    white-space: nowrap;
-                                    padding: 18px 20px;
-
-                                    .info {
-                                        .image {
-                                            width: 35px;
-                                            line-height: .01;
-                                            margin-right: 12px;
-
-                                            img {
-                                                border-radius: 50%;
-                                            }
-                                        }
-                                    }
-                                    .daxa-badge {
-                                        padding: 3px 11px;
-                                        border-radius: 3px;
-                                        color: var(--successColor);
-                                        background: rgba(46, 212, 126, 0.10);
-
-                                        &.deactive {
-                                            color: var(--dangerColor);
-                                            background: rgba(231, 76, 60, 0.10);
-                                        }
-                                    }
-                                    &:first-child {
-                                        padding-right: 0;
-                                    }
-                                    &:last-child {
-                                        text-align: right;
-                                    }
-                                }
-                            }
-                        }
+                      }
                     }
+                  }
                 }
+              }
             }
-            &.component-dark-theme {
-                .mat-mdc-card-content {
-                    .job-offers-table {
-                        table {
-                            thead {
-                                tr {
-                                    th {
-                                        background-color: #131920;
-                                    }
-                                }
-                            }
-                            tbody {
-                                tr {
-                                    td {
-                                        border-color: rgba(255, 255, 255, 0.09);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            &.rtl-enabled {
-                .mat-mdc-card-content {
-                    .job-offers-table {
-                        table {
-                            thead {
-                                tr {
-                                    th {
-                                        text-align: right;
-
-                                        &:first-child {
-                                            padding: {
-                                                right: 20px;
-                                                left: 0;
-                                            };
-                                        }
-                                        &:last-child {
-                                            text-align: left;
-                                        }
-                                    }
-                                }
-                            }
-                            tbody {
-                                tr {
-                                    td {
-                                        .info {
-                                            .image {
-                                                margin: {
-                                                    right: 0;
-                                                    left: 12px;
-                                                };
-                                            }
-                                        }
-                                        &:first-child {
-                                            padding: {
-                                                right: 20px;
-                                                left: 0;
-                                            };
-                                        }
-                                        &:last-child {
-                                            text-align: left;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+          }
         }
+      }
     }
-}
-::ng-deep {
-    .mat-mdc-card {
-        &.daxa-card {
-            &.job-offers-card {
-                .mat-mdc-card-content {
-                    .job-offers-table {
-                        table {
-                            tbody {
-                                tr {
-                                    td {
-                                        .action-info {
-                                            display: flex;
-                                            align-items: center;
-                                            justify-content: end;
-
-                                            .mat-mdc-button {
-                                                padding: 0;
-                                                width: auto;
-                                                height: auto;
-                                                line-height: 1;
-                                                min-width: auto;
-                                                border-radius: 0;
-
-                                                .mdc-button__label {
-                                                    mat-icon {
-                                                        font-size: 16px;
-                                                    }
-                                                }
-                                                &:not(:first-child) {
-                                                    margin-left: 12px;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                &.rtl-enabled {
-                    .mat-mdc-card-content {
-                        .job-offers-table {
-                            table {
-                                tbody {
-                                    tr {
-                                        td {
-                                            .action-info {
-                                                .mat-mdc-button {
-                                                    &:not(:first-child) {
-                                                        margin: {
-                                                            left: 0;
-                                                            right: 12px;
-                                                        };
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-/* Max width 767px */
-@media only screen and (max-width : 767px) {
-
-    .mat-mdc-card {
-        &.daxa-card {
-            &.job-offers-card {
-                .mat-mdc-card-content {
-                    .job-offers-table {
-                        margin: {
-                            left: -15px;
-                            right: -15px;
-                        };
-                        table {
-                            thead {
-                                tr {
-                                    th {
-                                        padding: 15px;
-                                    }
-                                }
-                            }
-                            tbody {
-                                tr {
-                                    td {
-                                        padding: 15px;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                &.rtl-enabled {
-                    .mat-mdc-card-content {
-                        .job-offers-table {
-                            table {
-                                thead {
-                                    tr {
-                                        th {
-                                            &:first-child {
-                                                padding-right: 15px;
-                                            }
-                                        }
-                                    }
-                                }
-                                tbody {
-                                    tr {
-                                        td {
-                                            &:first-child {
-                                                padding-right: 15px;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-}
-
-/* Min width 576px to Max width 767px */
-@media only screen and (min-width : 576px) and (max-width : 767px) {
-
-    .mat-mdc-card {
-        &.daxa-card {
-            &.job-offers-card {
-                .mat-mdc-card-content {
-                    .job-offers-table {
-                        margin: {
-                            left: -20px;
-                            right: -20px;
-                        };
-                        table {
-                            thead {
-                                tr {
-                                    th {
-                                        padding: {
-                                            left: 20px;
-                                            right: 20px;
-                                        };
-                                    }
-                                }
-                            }
-                            tbody {
-                                tr {
-                                    td {
-                                        padding: {
-                                            left: 20px;
-                                            right: 20px;
-                                        };
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                &.rtl-enabled {
-                    .mat-mdc-card-content {
-                        .job-offers-table {
-                            table {
-                                thead {
-                                    tr {
-                                        th {
-                                            &:first-child {
-                                                padding-right: 20px;
-                                            }
-                                        }
-                                    }
-                                }
-                                tbody {
-                                    tr {
-                                        td {
-                                            &:first-child {
-                                                padding-right: 20px;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-}
-
-/* Min width 768px to Max width 991px */
-@media only screen and (min-width : 768px) and (max-width : 991px) {}
-
-/* Min width 992px to Max width 1199px */
-@media only screen and (min-width : 992px) and (max-width : 1199px) {}
-
-/* Min width 1200px to Max width 1399px */
-@media only screen and (min-width: 1200px) and (max-width: 1399px) {}
-
-/* Min width 1600px */
-@media only screen and (min-width: 1600px) {}
+  }

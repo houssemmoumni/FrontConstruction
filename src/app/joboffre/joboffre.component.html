@@ -21,6 +21,12 @@
           <mat-icon>add</mat-icon> Ajouter une Offre
         </button>
       </div>
+      <div class="search-bar mb-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput [(ngModel)]="searchText" (ngModelChange)="applyFilter()" placeholder="Rechercher par titre ou description">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
       <div class="job-offers-table">
         <div class="table-responsive">
           <table>
@@ -33,15 +39,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let offer of jobOffers">
+              <!-- Afficher uniquement les éléments de la page actuelle -->
+              <tr *ngFor="let offer of paginatedJobOffers">
                 <td class="text-body">{{ offer.title }}</td>
                 <td class="text-body">{{ offer.description }}</td>
                 <td>
-                  <span
-                    class="daxa-badge d-inline-block"
-                    [ngClass]="{ deactive: offer.Status === 'CLOSED' }"
-                  >
-                    {{ offer.Status === 'OPEN' ? 'Ouverte' : 'Fermée' }}
+                  <span class="daxa-badge d-inline-block"
+                        [ngClass]="{ 'deactive': offer.status === 'CLOSED' }">
+                    {{ offer.status === 'OPEN' ? 'Ouverte' : 'Fermée' }}
                   </span>
                 </td>
                 <td>
@@ -52,8 +57,7 @@
                       mat-button
                       matTooltip="Modifier"
                       matTooltipPosition="above"
-                      (click)="editOffer(offer)"
-                    >
+                      (click)="editOffer(offer)">
                       <mat-icon>edit</mat-icon>
                     </button>
                     <button
@@ -62,8 +66,7 @@
                       mat-button
                       matTooltip="Supprimer"
                       matTooltipPosition="above"
-                      (click)="deleteOffer(offer)"
-                    >
+                      (click)="deleteOffer(offer)">
                       <mat-icon>delete</mat-icon>
                     </button>
                     <button
@@ -73,8 +76,7 @@
                       matTooltip="Publier"
                       matTooltipPosition="above"
                       (click)="publishOffer(offer)"
-                      [disabled]="offer.Status === 'PUBLISHED'"
-                    >
+                      [disabled]="offer.status === 'PUBLISHED'">
                       <mat-icon>check</mat-icon>
                     </button>
                   </div>
@@ -84,8 +86,14 @@
           </table>
         </div>
       </div>
-      <ng-template *ngIf="jobOffers.length === 0">
+      <ng-template *ngIf="filteredJobOffers.length === 0">
         <div class="alert alert-info">Aucune offre d'emploi disponible pour le moment.</div>
       </ng-template>
+      <!-- Pagination -->
+      <mat-paginator [length]="filteredJobOffers.length"
+                     [pageSize]="pageSize"
+                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     (page)="onPageChange($event)">
+      </mat-paginator>
     </mat-card-content>
   </mat-card>

@@ -1,6 +1,6 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JobOffer } from '../models/job-offer.model';
 import { JobOfferService } from '../services/job-offer.service';
@@ -14,12 +14,11 @@ import { JobOfferService } from '../services/job-offer.service';
 })
 export class AddJobComponent implements OnInit {
     jobOffer: JobOffer = {
-                         // Use 0 or undefined for new offers
         title: '',
         description: '',
-        Status: '',
+        status: 'OPEN', // ✅ Correction ici
         postedDate: '',
-        publish: false           // Add this to match the model
+        publish: false
     };
 
     constructor(
@@ -37,29 +36,23 @@ export class AddJobComponent implements OnInit {
         }
     }
 
-    onSubmit() {
+    onSubmit(form: NgForm) {
+        if (form.invalid) {
+            return;
+        }
 
-        // console.log(this.jobOffer);
         if (!this.jobOffer.postedDate) {
-            console.log('Formulaire valide', this.jobOffer);
-            this.jobOffer.postedDate = new Date().toISOString().split('T')[0];  // Set today's date
+            this.jobOffer.postedDate = new Date().toISOString().split('T')[0];
         }
 
         if (this.jobOffer.id) {
             this.jobOfferService.updateJobOffer(this.jobOffer.id, this.jobOffer).subscribe(() => {
                 this.router.navigate(['/joboffre']);
             });
-
-
-
         } else {
             this.jobOfferService.addJobOffer(this.jobOffer).subscribe(() => {
-                console.log(this.jobOffer)
                 this.router.navigate(['/joboffre']);
             });
         }
     }
 }
-
-
-

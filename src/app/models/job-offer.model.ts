@@ -4,6 +4,6 @@ export interface JobOffer {
     description?: string;
     postedDate?: string;
     publish?: boolean;
-    Status?: string;
+    status?: string; 
     recruiter?: any;
-  }
+}

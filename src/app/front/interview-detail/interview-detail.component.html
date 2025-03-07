@@ -1,0 +1,10 @@
+<div *ngIf="interview; else noInterview">
+    <h2>Détails de l'Entretien</h2>
+    <p><strong>Date :</strong> {{ interview.interviewDate | date: 'medium' }}</p>
+    <p><strong>Feedback :</strong> {{ interview.feedback }}</p>
+    <p><strong>Statut :</strong> {{ interview.status }}</p>
+  </div>
+
+  <ng-template #noInterview>
+    <p>❌ Entretien non trouvé.</p>
+  </ng-template>

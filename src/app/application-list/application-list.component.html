@@ -1,40 +1,103 @@
-<h2>Liste des Candidatures</h2>
+<!-- Breadcrumb -->
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">
+      Liste des Candidatures
+    </h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+      <li class="breadcrumb-item position-relative">
+        <a routerLink="/" class="d-inline-block position-relative">
+          <i class="ri-home-8-line"></i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item position-relative">
+        Candidatures
+      </li>
+      <li class="breadcrumb-item position-relative">
+        Liste
+      </li>
+    </ol>
+  </div>
 
-<table class="table table-bordered">
-  <thead class="thead-dark">
-    <tr>
-      <th>Nom Complet</th>
-      <th>Email</th>
-      <th>Offre d'Emploi</th>
-      <th>Statut</th>
-      <th>CV</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let application of applications">
-      <td>{{ application.candidate.firstName }} {{ application.candidate.lastName }}</td>
-      <td>{{ application.candidate.email }}</td>
-      <td>{{ application.jobOffer.title }}</td>
-      <td>{{ application.status }}</td>
-      <td>
-        <button
-          *ngIf="application.resume"
-          class="btn btn-primary"
-          (click)="downloadResume(application.resume, application.candidate.firstName + '_' + application.candidate.lastName)"
-        >
-          Télécharger CV
-        </button>
-        <span *ngIf="!application.resume">Pas de CV</span>
-      </td>
-      <td>
-        <button class="btn btn-success" (click)="updateStatus(application.id, 'ACCEPTED')">
-          Accepter
-        </button>
-        <button class="btn btn-danger" (click)="updateStatus(application.id, 'REJECTED')">
-          Rejeter
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  <!-- Search Bar and Status Filter -->
+  <div class="d-flex justify-content-between mb-4">
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <mat-form-field appearance="outline">
+        <input matInput [(ngModel)]="searchText" (ngModelChange)="applyFilter()" placeholder="Rechercher par nom, email ou offre">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <!-- Status Filter -->
+    <div class="status-filter">
+      <mat-form-field appearance="outline">
+        <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="applyFilter()" placeholder="Filtrer par statut">
+          <mat-option value="ALL">Tous</mat-option>
+          <mat-option value="ACCEPTED">Accepté</mat-option>
+          <mat-option value="REJECTED">Rejeté</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Nom Complet</th>
+          <th>Email</th>
+          <th>Offre d'Emploi</th>
+          <th>Statut</th>
+          <th>CV</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let application of paginatedApplications">
+          <td>{{ application.candidate.firstName }} {{ application.candidate.lastName }}</td>
+          <td>{{ application.candidate.email }}</td>
+          <td>{{ application.jobOffer.title }}</td>
+          <td>
+            <span [ngClass]="{
+              'text-success': application.status === 'ACCEPTED',
+              'text-danger': application.status === 'REJECTED'
+            }">
+              {{ application.status }}
+            </span>
+          </td>
+          <td>
+            <button
+              *ngIf="application.resume"
+              class="btn btn-primary"
+              (click)="downloadResume(application.resume, application.candidate.firstName + '_' + application.candidate.lastName)"
+            >
+              Télécharger CV
+            </button>
+            <span *ngIf="!application.resume">Pas de CV</span>
+          </td>
+          <td>
+            <button class="btn btn-success" (click)="updateStatus(application.id, 'ACCEPTED')">
+              Accepter
+            </button>
+            <button class="btn btn-danger" (click)="updateStatus(application.id, 'REJECTED')">
+              Rejeter
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <mat-paginator [length]="filteredApplications.length"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="[5, 10, 25, 100]"
+                 (page)="onPageChange($event)">
+  </mat-paginator>
+
+  <!-- No Data Message -->
+  <div *ngIf="filteredApplications.length === 0" class="alert alert-info mt-4">
+    Aucune candidature trouvée.
+  </div>

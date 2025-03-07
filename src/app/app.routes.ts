@@ -199,7 +199,10 @@ import { JoboffreComponent } from './joboffre/joboffre.component';
 import { AddJobComponent } from './addjob/addjob.component';
 import { JobApplicationFormComponent } from './front/job-application-form/job-application-form.component';
 import { ApplicationListComponent } from './application-list/application-list.component';
-import { InterviewDetailsComponent } from './front/interview-details/interview-details.component';
+// import { NotificationBellComponent } from './front/notification-bell/notification-bell.component';
+import { InterviewDetailComponent } from './front/interview-detail/interview-detail.component';
+
+// import { Interview } from '../../models/interview.model';
 
 
 //front
@@ -283,7 +286,7 @@ export const routes: Routes = [
     { path: 'addjob', component: AddJobComponent },
     { path: 'addjob/:id', component: AddJobComponent },
     { path: 'applicationlist', component: ApplicationListComponent },
-    {path: 'interview/:id',component: InterviewDetailsComponent},
+    {path: 'interview/:id', component: InterviewDetailComponent},
 
 
     // { path: '', redirectTo: '/candidatelist', pathMatch: 'full' }

@@ -12,41 +12,36 @@ export class JobOfferService {
   constructor(private http: HttpClient) {}
 
   // Publier une offre d'emploi
- // Service method
-// Service method
-publishJobOffer(id: number): Observable<JobOffer> {
+  publishJobOffer(id: number): Observable<JobOffer> {
     return this.http.put<JobOffer>(`${this.apiUrl}/${id}/publish`, {});
   }
-
-
-
 
   // Récupérer toutes les offres d'emploi
   getJobOffers(): Observable<JobOffer[]> {
     return this.http.get<JobOffer[]>(this.apiUrl);
   }
 
-  // Récupérer une offre d'emploi par ID
+  // Récupérer une offre par ID
   getJobOfferById(id: number): Observable<JobOffer> {
     return this.http.get<JobOffer>(`${this.apiUrl}/${id}`);
   }
 
-  // Ajouter une nouvelle offre d'emploi
+  // Ajouter une offre
   addJobOffer(jobOffer: JobOffer): Observable<JobOffer> {
     return this.http.post<JobOffer>(this.apiUrl, jobOffer);
   }
 
-  // Mettre à jour une offre d'emploi existante
+  // Mettre à jour une offre
   updateJobOffer(id: number, jobOffer: JobOffer): Observable<JobOffer> {
     return this.http.put<JobOffer>(`${this.apiUrl}/${id}`, jobOffer);
   }
 
-  // Supprimer une offre d'emploi
+  // Supprimer une offre
   deleteJobOffer(id: number | undefined): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Récupérer les offres d'emploi publiées
+  // Récupérer les offres publiées
   getPublishedJobOffers(): Observable<JobOffer[]> {
     return this.http.get<JobOffer[]>(`${this.apiUrl}/published`);
   }

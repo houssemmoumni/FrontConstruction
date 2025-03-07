@@ -1,29 +1,113 @@
-table {
+/* Table Styles */
+.table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+      color: #333;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #e9ecef;
+      }
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
   }
 
-  th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+  /* Search Bar */
+  .search-bar {
+    max-width: 400px;
+    margin-bottom: 20px;
+
+    .mat-form-field {
+      width: 100%;
+    }
   }
 
-  th {
-    background-color: #f2f2f2;
-    font-weight: bold;
+  /* Pagination */
+  .mat-paginator {
+    margin-top: 20px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 10px;
   }
 
-  tr:hover {
-    background-color: #f5f5f5;
+  /* Status Colors */
+  .text-success {
+    color: #28a745;
   }
 
-  a {
-    color: #007bff;
-    text-decoration: none;
+  .text-warning {
+    color: #ffc107;
   }
 
-  a:hover {
-    text-decoration: underline;
+  .text-danger {
+    color: #dc3545;
+  }
+
+  /* Buttons */
+  .btn {
+    margin-right: 5px;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &.btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+      color: #fff;
+
+      &:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+      }
+    }
+
+    &.btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+      color: #fff;
+
+      &:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+      }
+    }
+
+    &.btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+      color: #fff;
+
+      &:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+      }
+    }
+  }
+
+  /* Alert Message */
+  .alert {
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 20px;
+
+    &.alert-info {
+      background-color: #d1ecf1;
+      border-color: #bee
+    }
   }

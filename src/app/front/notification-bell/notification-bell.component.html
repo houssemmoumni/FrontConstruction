@@ -12,7 +12,7 @@
       </div>
       <div class="notification-content">
         <p>{{ notification.message }}</p>
-        <a *ngIf="notification.interview_id" [routerLink]="['/interview', notification.interview_id]">Voir l'entretien</a>
+        <a *ngIf="notification.interview_id" (click)="viewInterview(notification.interview_id)">Voir l'entretien</a>
         <button *ngIf="!notification.is_read" (click)="markAsRead(notification)" class="mark-as-read">
           Marquer comme lu
         </button>
