@@ -9,6 +9,7 @@
     "test": "ng test",
     "serve:ssr:daxa": "node dist/daxa/server/server.mjs"
   },
+  
   "private": true,
   "dependencies": {
     "@angular/animations": "^19.0.5",

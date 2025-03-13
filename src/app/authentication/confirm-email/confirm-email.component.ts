@@ -10,7 +10,7 @@ import { CustomizerSettingsService } from '../../customizer-settings/customizer-
     styleUrl: './confirm-email.component.scss'
 })
 export class ConfirmEmailComponent {
-
+//jj
     constructor(
         public themeService: CustomizerSettingsService
     ) {}
