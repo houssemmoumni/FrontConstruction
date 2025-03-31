@@ -40,12 +40,12 @@ export class Grid2Component implements OnInit {
     gridClass: "col-lg-4 col-md-6"
   };
 
-  blogList: any[] = [];
-  displayedBlogs: any[] = [];
-  currentPage: number = 1;
-  itemsPerPage: number = 2;
-  searchQuery: string = '';
-  selectedItem: any = null;
+  blogList: any[] = []; // Liste des offres d'emploi
+  displayedBlogs: any[] = []; // Offres d'emploi à afficher
+  currentPage: number = 1; // Page actuelle
+  itemsPerPage: number = 2; // Nombre d'éléments par page
+  searchQuery: string = ''; // Texte de recherche
+  selectedItem: any = null; // Élément sélectionné pour afficher la description complète
   notifications: any[] = []; // Liste des notifications
   showNotifications: boolean = false; // Contrôle l'affichage de la boîte de notifications
   unreadNotificationsCount: number = 0; // Nombre de notifications non lues
@@ -56,15 +56,16 @@ export class Grid2Component implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.fetchPublishedJobOffers();
-    this.checkApplicationStatus(); // Vérifiez le statut des candidatures
+    this.fetchPublishedJobOffers(); // Charge les offres d'emploi publiées
+    this.checkApplicationStatus(); // Vérifie le statut des candidatures
   }
 
+  // Charge les offres d'emploi publiées
   fetchPublishedJobOffers() {
     this.jobOfferService.getJobOffers().subscribe({
       next: (data) => {
-        this.blogList = data.filter(offer => offer.publish);
-        this.updateDisplayedBlogs();
+        this.blogList = data.filter(offer => offer.publish); // Filtre les offres publiées
+        this.updateDisplayedBlogs(); // Met à jour les offres affichées
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des offres publiées :', error);
@@ -72,8 +73,9 @@ export class Grid2Component implements OnInit {
     });
   }
 
+  // Vérifie le statut des candidatures
   checkApplicationStatus() {
-    const candidateId = 1; // Remplacez par l'ID du candidat connecté
+    const candidateId = 1; // Remplace par l'ID du candidat connecté
     this.candidateService.getAllApplications().subscribe({
       next: (applications) => {
         applications.forEach(application => {
@@ -81,7 +83,7 @@ export class Grid2Component implements OnInit {
             this.notifications.push({
               type: 'success',
               message: `Félicitations ! Vous avez été accepté pour l'offre "${application.jobOffer.title}".`,
-              link: `/interview/${application.id}`, // Lien vers l'entretien
+              link: `/interviews/candidate/${application.id}`, // Lien vers l'entretien
               read: false // Marquer comme non lu
             });
           } else if (application.status === 'REJECTED') {
@@ -93,7 +95,7 @@ export class Grid2Component implements OnInit {
             });
           }
         });
-        this.updateUnreadNotificationsCount(); // Mettre à jour le nombre de notifications non lues
+        this.updateUnreadNotificationsCount(); // Met à jour le nombre de notifications non lues
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des candidatures :', error);
@@ -114,29 +116,34 @@ export class Grid2Component implements OnInit {
   // Marque une notification comme lue
   markAsRead(notification: any) {
     notification.read = true;
-    this.updateUnreadNotificationsCount(); // Mettre à jour le compteur après avoir marqué comme lu
+    this.updateUnreadNotificationsCount(); // Met à jour le compteur après avoir marqué comme lu
   }
 
+  // Met à jour les offres d'emploi affichées
   updateDisplayedBlogs(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.displayedBlogs = this.blogList.slice(startIndex, endIndex);
   }
 
+  // Change la page actuelle
   changePage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
     this.updateDisplayedBlogs();
   }
 
+  // Retourne le nombre total de pages
   get totalPages(): number {
     return Math.ceil(this.blogList.length / this.itemsPerPage);
   }
 
+  // Retourne la liste des pages
   get pages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
+  // Filtre les offres par date
   filterByDate(range: string): void {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -192,6 +199,7 @@ export class Grid2Component implements OnInit {
     this.currentPage = 1;
   }
 
+  // Applique le filtre de recherche
   applySearchFilter(): void {
     if (this.searchQuery) {
       this.blogList = this.blogList.filter(offer =>
@@ -205,6 +213,7 @@ export class Grid2Component implements OnInit {
     this.updateDisplayedBlogs();
   }
 
+  // Affiche ou masque la description complète
   showFullDescription(item: any): void {
     if (this.selectedItem === item) {
       this.selectedItem = null;
@@ -213,6 +222,7 @@ export class Grid2Component implements OnInit {
     }
   }
 
+  // Fait défiler la page vers le haut
   scroll_top() {
     window.scroll({
       top: 0,

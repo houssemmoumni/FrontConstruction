@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CandidateService } from '../services/candidate.service';
-import { ApplicationDTO } from '../models/application.dto';
+import { CandidateService } from '../services/candidate.service'; // Ensure this path is correct
+import { ApplicationDTO } from '../models/application.dto'; // Ensure this path is correct
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-application-list',
@@ -23,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   templateUrl: './application-list.component.html',
   styleUrls: ['./application-list.component.scss'],
+  providers: [CandidateService], // Add CandidateService to providers
 })
 export class ApplicationListComponent implements OnInit {
   applications: ApplicationDTO[] = []; // Liste complète des candidatures
@@ -42,11 +43,11 @@ export class ApplicationListComponent implements OnInit {
   // Charger les candidatures
   loadApplications(): void {
     this.candidateService.getAllApplications().subscribe({
-      next: (data) => {
+      next: (data: ApplicationDTO[]) => {
         this.applications = data;
         this.applyFilter(); // Appliquer le filtre initial
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Erreur lors du chargement des candidatures :', err);
         alert('❌ Erreur lors du chargement des candidatures. Veuillez réessayer.');
       },
@@ -93,7 +94,7 @@ export class ApplicationListComponent implements OnInit {
         alert('✅ Statut mis à jour avec succès !');
         this.loadApplications(); // Recharger la liste des candidatures après la mise à jour
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Erreur lors de la mise à jour du statut :', err);
         alert('❌ Erreur lors de la mise à jour du statut. Veuillez réessayer.');
       },

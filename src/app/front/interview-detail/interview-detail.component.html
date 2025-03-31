@@ -1,10 +1,42 @@
-<div *ngIf="interview; else noInterview">
-    <h2>Détails de l'Entretien</h2>
-    <p><strong>Date :</strong> {{ interview.interviewDate | date: 'medium' }}</p>
-    <p><strong>Feedback :</strong> {{ interview.feedback }}</p>
-    <p><strong>Statut :</strong> {{ interview.status }}</p>
-  </div>
+<!-- src/app/front/interview-detail/interview-detail.component.html -->
+<div class="container mt-5">
+    <!-- En-tête de la page -->
+    <div class="text-center mb-5">
+      <h2 class="display-4 font-weight-bold text-primary">Entretiens pour la candidature ID : {{ applicationId }}</h2>
+      <p class="lead text-muted">Détails des entretiens planifiés pour cette candidature.</p>
+    </div>
 
-  <ng-template #noInterview>
-    <p>❌ Entretien non trouvé.</p>
-  </ng-template>
+    <!-- Liste des entretiens -->
+    <div *ngIf="interviews.length > 0; else noInterviews" class="row">
+      <div class="col-md-8 offset-md-2">
+        <div class="card shadow-sm mb-4" *ngFor="let interview of interviews">
+          <div class="card-body">
+            <h5 class="card-title text-primary">
+              <i class="fas fa-calendar-alt me-2"></i>Date de l'entretien
+            </h5>
+            <p class="card-text">{{ interview.interviewDate | date: 'dd/MM/yyyy à HH:mm' }}</p>
+
+            <h5 class="card-title text-primary mt-4">
+              <i class="fas fa-comment-dots me-2"></i>Feedback
+            </h5>
+            <p class="card-text">{{ interview.feedback || "Aucun feedback disponible pour le moment." }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message si aucun entretien trouvé -->
+    <ng-template #noInterviews>
+      <div class="alert alert-info text-center">
+        <i class="fas fa-info-circle me-2"></i>
+        {{ errorMessage || "Aucun entretien trouvé pour cette candidature." }}
+      </div>
+    </ng-template>
+    </div>
+
+    <!-- Bouton pour retourner à la liste des offres -->
+    <button class="btn btn-primary btn-lg" (click)="navigateToBlogGrid2()">
+        <i class="fas fa-arrow-left me-2"></i>Retour à la liste des offres
+      </button>
+
+

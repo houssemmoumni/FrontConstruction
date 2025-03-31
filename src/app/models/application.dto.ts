@@ -1,6 +1,7 @@
 export interface ApplicationDTO {
     id: number;
     candidate: {
+      id: number; // Ajoutez cette propriété
       firstName: string;
       lastName: string;
       email: string;
