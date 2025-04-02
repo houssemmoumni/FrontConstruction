@@ -3,137 +3,141 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "daxa": {
-            "projectType": "application",
-            "schematics": {
-                "@schematics/angular:component": {
-                    "style": "scss"
+      "daxa": {
+        "projectType": "application",
+        "schematics": {
+          "@schematics/angular:component": {
+            "style": "scss"
+          }
+        },
+        "root": "",
+        "sourceRoot": "src",
+        "prefix": "app",
+        "architect": {
+          "build": {
+            "builder": "@angular-devkit/build-angular:application",
+            "options": {
+              "outputPath": "dist/daxa",
+              "index": "src/index.html",
+              "browser": "src/main.ts",
+              "polyfills": [
+                "zone.js",
+                "src/polyfills.ts"
+              ],
+              "tsConfig": "tsconfig.app.json",
+              "inlineStyleLanguage": "scss",
+              "assets": [
+                "src/assets",
+                {
+                  "glob": "**/*",
+                  "input": "public"
                 }
+              ],
+              "styles": [
+                "@angular/material/prebuilt-themes/azure-blue.css",
+                "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
+                "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
+                "node_modules/remixicon/fonts/remixicon.css",
+                "src/styles.scss",
+                "src/assets/plugins/revolution/revolution/css/revolution.min.css"
+              ],
+              "scripts": [
+                "src/assets/js/jquery.min.js",
+                "node_modules/jquery/dist/jquery.min.js",
+                "node_modules/apexcharts/dist/apexcharts.min.js",
+                "src/assets/plugins/wow/wow.js",
+                "src/assets/plugins/bootstrap/js/popper.min.js",
+                "src/assets/plugins/bootstrap/js/bootstrap.min.js",
+                "src/assets/plugins/bootstrap/js/bootstrap-select.min.js",
+                "src/assets/plugins/bootstrap-touchspin/jquery.bootstrap-touchspin.js",
+                "src/assets/plugins/magnific-popup/magnific-popup.js",
+                "src/assets/plugins/counter/waypoints-min.js",
+                "src/assets/plugins/counter/counterup.min.js",
+                "src/assets/plugins/imagesloaded/imagesloaded.js",
+                "src/assets/plugins/masonry/masonry-3.1.4.js",
+                "src/assets/plugins/masonry/masonry.filter.js",
+                "src/assets/plugins/owl-carousel/owl.carousel.js",
+                "src/assets/plugins/lightgallery/js/lightgallery.js",
+                "src/assets/js/dz.carousel.js",
+                "src/assets/js/dz.ajax.js",
+                "src/assets/js/jquery.lazy.min.js",
+                "src/assets/plugins/revolution/revolution/js/jquery.themepunch.tools.min.js",
+                "src/assets/plugins/revolution/revolution/js/jquery.themepunch.revolution.min.js",
+                "src/assets/js/rev.slider.js",
+                "src/assets/js/jquery.star-rating-svg.js",
+                "src/assets/js/custom.js"
+              ],
+              "server": "src/main.server.ts",
+              "prerender": true,
+              "ssr": {
+                "entry": "server.ts"
+              }
             },
-            "root": "",
-            "sourceRoot": "src",
-            "prefix": "app",
-            "architect": {
-                "build": {
-                    "builder": "@angular-devkit/build-angular:application",
-                    "options": {
-                        "outputPath": "dist/daxa",
-                        "index": "src/index.html",
-                        "browser": "src/main.ts",
-                        "polyfills": ["zone.js"],
-                        "tsConfig": "tsconfig.app.json",
-                        "inlineStyleLanguage": "scss",
-                        "assets": [
-                            "src/assets",
-                            {
-                                "glob": "**/*",
-                                "input": "public"
-                            }
-                        ],
-                        "styles": [
-                            "@angular/material/prebuilt-themes/azure-blue.css",
-                            "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
-                            "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
-                            "node_modules/remixicon/fonts/remixicon.css",
-                            "src/styles.scss",
-                            "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
-                            "src/assets/plugins/revolution/revolution/css/revolution.min.css"
-                        ],
-                        "scripts": [
-                            "src/assets/js/jquery.min.js",
-                            "node_modules/jquery/dist/jquery.min.js",
-                            "node_modules/apexcharts/dist/apexcharts.min.js",
-                            "src/assets/plugins/wow/wow.js",
-                            "src/assets/plugins/bootstrap/js/popper.min.js",
-                            "src/assets/plugins/bootstrap/js/bootstrap.min.js",
-                            "src/assets/plugins/bootstrap/js/bootstrap-select.min.js",
-                            "src/assets/plugins/bootstrap-touchspin/jquery.bootstrap-touchspin.js",
-                            "src/assets/plugins/magnific-popup/magnific-popup.js",
-                            "src/assets/plugins/counter/waypoints-min.js",
-                            "src/assets/plugins/counter/counterup.min.js",
-                            "src/assets/plugins/imagesloaded/imagesloaded.js",
-                            "src/assets/plugins/masonry/masonry-3.1.4.js",
-                            "src/assets/plugins/masonry/masonry.filter.js",
-                            "src/assets/plugins/owl-carousel/owl.carousel.js",
-                            "src/assets/plugins/lightgallery/js/lightgallery.js",
-                            "src/assets/js/dz.carousel.js",
-                            "src/assets/js/dz.ajax.js",
-                            "src/assets/js/jquery.lazy.min.js",
-                            "src/assets/plugins/revolution/revolution/js/jquery.themepunch.tools.min.js",
-                            "src/assets/plugins/revolution/revolution/js/jquery.themepunch.revolution.min.js",
-                            "src/assets/js/rev.slider.js",
-                            "src/assets/js/jquery.star-rating-svg.js",
-                            "src/assets/js/custom.js"
-                        ],
-                        "server": "src/main.server.ts",
-                        "prerender": true,
-                        "ssr": {
-                            "entry": "server.ts"
-                        }
-                    },
-                    "configurations": {
-                        "production": {
-                            "budgets": [
-                                {
-                                    "type": "initial",
-                                    "maximumWarning": "10MB",
-                                    "maximumError": "20MB"
-                                },
-                                {
-                                    "type": "anyComponentStyle",
-                                    "maximumWarning": "2MB",
-                                    "maximumError": "4MB"
-                                }
-                            ],
-                            "outputHashing": "all"
-                        },
-                        "development": {
-                            "optimization": false,
-                            "extractLicenses": false,
-                            "sourceMap": true
-                        }
-                    },
-                    "defaultConfiguration": "production"
-                },
-                "serve": {
-                    "builder": "@angular-devkit/build-angular:dev-server",
-                    "configurations": {
-                        "production": {
-                            "buildTarget": "daxa:build:production"
-                        },
-                        "development": {
-                            "buildTarget": "daxa:build:development"
-                        }
-                    },
-                    "defaultConfiguration": "development"
-                },
-                "extract-i18n": {
-                    "builder": "@angular-devkit/build-angular:extract-i18n"
-                },
-                "test": {
-                    "builder": "@angular-devkit/build-angular:karma",
-                    "options": {
-                        "polyfills": ["zone.js", "zone.js/testing"],
-                        "tsConfig": "tsconfig.spec.json",
-                        "inlineStyleLanguage": "scss",
-                        "assets": [
-                            {
-                                "glob": "**/*",
-                                "input": "public"
-                            }
-                        ],
-                        "styles": [
-                            "@angular/material/prebuilt-themes/azure-blue.css",
-                            "src/styles.scss"
-                           
-                        ],
-                        "scripts": []
-                    }
+            "configurations": {
+              "production": {
+                "budgets": [
+                  {
+                    "type": "initial",
+                    "maximumWarning": "10MB",
+                    "maximumError": "20MB"
+                  },
+                  {
+                    "type": "anyComponentStyle",
+                    "maximumWarning": "2MB",
+                    "maximumError": "4MB"
+                  }
+                ],
+                "outputHashing": "all"
+              },
+              "development": {
+                "optimization": false,
+                "extractLicenses": false,
+                "sourceMap": true
+              }
+            },
+            "defaultConfiguration": "production"
+          },
+          "serve": {
+            "builder": "@angular-devkit/build-angular:dev-server",
+            "configurations": {
+              "production": {
+                "buildTarget": "daxa:build:production"
+              },
+              "development": {
+                "buildTarget": "daxa:build:development"
+              }
+            },
+            "defaultConfiguration": "development"
+          },
+          "extract-i18n": {
+            "builder": "@angular-devkit/build-angular:extract-i18n"
+          },
+          "test": {
+            "builder": "@angular-devkit/build-angular:karma",
+            "options": {
+              "polyfills": [
+                "zone.js",
+                "zone.js/testing"
+              ],
+              "tsConfig": "tsconfig.spec.json",
+              "inlineStyleLanguage": "scss",
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public"
                 }
+              ],
+              "styles": [
+                "@angular/material/prebuilt-themes/azure-blue.css",
+                "src/styles.scss"
+              ],
+              "scripts": []
             }
+          }
         }
+      }
     },
     "cli": {
-        "analytics": false
+      "analytics": false
     }
-}
+  }

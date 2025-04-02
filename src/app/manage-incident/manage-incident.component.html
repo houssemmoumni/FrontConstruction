@@ -1,5 +1,4 @@
-<!-- src/app/admin/manage-incidents/manage-incidents.component.html -->
-<div class="container">
+<!-- <div class="container">
     <h2>Gestion des Incidents</h2>
 
     <table class="table">
@@ -24,7 +23,7 @@
           </td>
           <td>
             <select class="form-control"
-                    (change)="assignTechnician(incident.id!, $event.target.value)">
+                    (change)="assignTechnician(incident.id, ($event.target as HTMLSelectElement)?.value)">
               <option value="">Non assigné</option>
               <option *ngFor="let tech of technicians" [value]="tech">
                 {{ tech }}
@@ -34,4 +33,4 @@
         </tr>
       </tbody>
     </table>
-  </div>
+</div> -->

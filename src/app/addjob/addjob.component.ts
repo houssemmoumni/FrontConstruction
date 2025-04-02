@@ -9,7 +9,7 @@ import { JobOfferService } from '../services/job-offer.service';
     selector: 'app-add-job',
     standalone: true,
     templateUrl: './addjob.component.html',
-    styleUrls: ['./addjob.component.css'],
+    styleUrls: ['./addjob.component.scss'],
     imports: [NgClass, NgFor, NgIf, FormsModule],
 })
 export class AddJobComponent implements OnInit {

@@ -200,12 +200,13 @@ import { ApplicationListComponent } from './application-list/application-list.co
 import { JobApplicationFormComponent } from './front/job-application-form/job-application-form.component';
 import { JoboffreComponent } from './joboffre/joboffre.component';
 // import { NotificationBellComponent } from './front/notification-bell/notification-bell.component';
+import { AdminNotificationsComponent } from './admin-notifications/admin-notifications.component';
 import { InterviewDetailComponent } from './front/interview-detail/interview-detail.component';
 import { ProjectComponent } from './project/project.component';
 
 import { DeclareIncidentComponent } from './front/declare-incident/declare-incident.component';
 // import { NotificationComponent } from './incident-notification/incident-notification.component';
-import { ManageIncidentsComponent } from './manage-incident/manage-incident.component';
+// import { ManageIncidentsComponent } from './manage-incident/manage-incident.component';
 
 
 // import { Interview } from '../../models/interview.model';
@@ -298,7 +299,9 @@ export const routes: Routes = [
     { path: 'declare-incident', component: DeclareIncidentComponent },
     //notification de l'incident
     // { path: 'notifications', component: NotificationComponent },
-    { path: 'manage-incidents', component: ManageIncidentsComponent },
+    { path: 'admin-notifications', component: AdminNotificationsComponent },
+
+    // { path: 'manage-incidents', component: ManageIncidentsComponent },
 
 
     // { path: '', redirectTo: '/candidatelist', pathMatch: 'full' }

@@ -11,7 +11,7 @@ import { Interview } from '../../models/interview.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './interview-detail.component.html',
-  styleUrls: ['./interview-detail.component.css'],
+  styleUrls: ['./interview-detail.component.scss'],
 })
 export class InterviewDetailComponent implements OnInit {
   interviews: Interview[] = []; // Liste des entretiens

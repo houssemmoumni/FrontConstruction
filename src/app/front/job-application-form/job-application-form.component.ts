@@ -7,7 +7,7 @@ import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-job-application-form',
   templateUrl: './job-application-form.component.html',
-  styleUrls: ['./job-application-form.component.css'],
+  styleUrls: ['./job-application-form.component.scss'],
   standalone: true,
   imports: [FormsModule, NgIf],
 })

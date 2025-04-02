@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../../services/project.service';
 import { IncidentService } from '../../services/incident.service';
+import { WebSocketService } from '../../services/websocket.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Project } from '../../models/project.model';
 import { IncidentForm } from '../../models/incident.model';
@@ -46,6 +47,7 @@ export class DeclareIncidentComponent implements OnInit {
   constructor(
     private projectService: ProjectService,
     private incidentService: IncidentService,
+    private wsService: WebSocketService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -86,6 +88,12 @@ export class DeclareIncidentComponent implements OnInit {
     this.isSubmitting = true;
     this.incidentService.createIncident(this.incident).subscribe({
       next: () => {
+        this.wsService.sendIncidentNotification({
+          description: this.incident.description,
+          severity: this.incident.severity as 'LOW' | 'MEDIUM' | 'HIGH',
+          reporterName: this.incident.reporterName,
+          projectId: this.incident.projectId
+        });
         this.showSuccess('Incident reported successfully!');
         this.cancelReport();
         this.isSubmitting = false;
