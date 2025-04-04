@@ -10,13 +10,17 @@ import { TaskResponse } from '../models/task-response';
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl = 'http://localhost:8051/api/v1/tasks';
+  private apiUrl = 'http://localhost:8222/api/v1/tasks';
 
 
   constructor(private http: HttpClient) { }
   getAllTasks(): Observable<TaskResponse[]> {
     return this.http.get<TaskResponse[]>(this.apiUrl);
   }
+  getAllTasksByUser(userId: number): Observable<TaskResponse[]> {
+    return this.http.get<TaskResponse[]>(`${this.apiUrl}/user/${userId}`);
+  }
+
 
   getTaskById(taskId: number): Observable<TaskResponse> {
     return this.http.get<TaskResponse>(`${this.apiUrl}/${taskId}`);
@@ -37,4 +41,9 @@ export class TaskService {
   assignTask(taskId: number, userId: number): Observable<Task> {
     return this.http.post<Task>(`${this.apiUrl}/assign`, { taskId, userId });
   }
+
+  getWorkerTasks(workerId: string): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.apiUrl}/worker/${workerId}`);
+  }
+  
 }

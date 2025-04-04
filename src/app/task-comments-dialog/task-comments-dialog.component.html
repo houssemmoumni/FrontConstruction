@@ -1,0 +1,27 @@
+<mat-dialog-content>
+    <div class="comments-header">
+        <h2>Comments for "{{ data.task.title }}"</h2>
+    </div>
+    
+    <div class="comments-container">
+        <div *ngFor="let comment of comments" class="comment-item">
+            <div class="comment-header">
+                <span class="comment-author">{{ comment.userName }} ({{ comment.userRole }})</span>
+                <span class="comment-date">{{ comment.timestamp | date:'medium' }}</span>
+            </div>
+            <div class="comment-content">{{ comment.text }}</div>
+        </div>
+        
+        <div *ngIf="comments.length === 0" class="no-comments">
+            No comments yet. Be the first to add one!
+        </div>
+    </div>
+    
+    <div class="comment-input">
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Add a comment</mat-label>
+            <textarea matInput [(ngModel)]="newComment" placeholder="Type your comment here..."></textarea>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="addComment()">Post Comment</button>
+    </div>
+</mat-dialog-content>

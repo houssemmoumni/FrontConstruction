@@ -31,10 +31,10 @@
             <mat-card-header>
                 <mat-card-title>
                     <h5 class="mt-0 text-white">
-                        To Do (04)
+                        To Do ({{toDo.length}})
                     </h5>
                     <span class="d-block text-white">
-                        This month add 04 new projects
+                        Tasks that need to be started
                     </span>
                 </mat-card-title>
                 <mat-card-subtitle>
@@ -58,41 +58,31 @@
             </mat-card-header>
         </mat-card>
         <div
-            cdkDropList
+            cdkDropList id="toDoList"
             [cdkDropListData]="toDo"
             (cdkDropListDropped)="drop($event)"
         >
-            @for (item of toDo; track item) {
+            @for (task of toDo; track task.id) {
                 <mat-card class="daxa-card kanban-board-card mb-25 border-radius bg-white border-none d-block" cdkDrag>
                     <mat-card-content>
                         <div class="head d-flex align-items-center justify-content-between">
-                            <span class="d-block fw-medium">
-                                {{item.title}}
-                            </span>
+                            <span class="d-block fw-medium">{{task.title}}</span>
                             <span class="d-block text-daxa">
-                                {{item.daysLeft}}
+                                Due: {{task.dueDate | date:'shortDate'}}
                             </span>
                         </div>
-                        <p>
-                            {{item.description}}
-                        </p>
-                        <span class="daxa-badge text-success d-inline-block">
-                            {{item.category}}
+                        <p>{{task.description}}</p>
+                        <span class="daxa-badge text-info d-inline-block">
+                            {{task.status}}
                         </span>
                         <div class="footer d-flex align-items-center justify-content-between">
                             <span class="date text-body d-block position-relative">
-                                <i class="material-symbols-outlined">
-                                    schedule
-                                </i>
-                                {{item.createdDate}}
+                                <i class="material-symbols-outlined">schedule</i>
+                                Assigned by: {{task.assignedBy}}
                             </span>
-                            <div class="users-list">
-                                <img [src]="item.img1" alt="user-image" *ngIf="item.img1">
-                                <img [src]="item.img2" alt="user-image" *ngIf="item.img2">
-                                <img [src]="item.img3" alt="user-image" *ngIf="item.img3">
-                                <img [src]="item.img4" alt="user-image" *ngIf="item.img4">
-                                <img [src]="item.img5" alt="user-image" *ngIf="item.img5">
-                            </div>
+                            <button mat-icon-button (click)="openCommentsDialog(task)" matTooltip="Comments">
+                                <mat-icon>chat_bubble</mat-icon>
+                            </button>
                         </div>
                     </mat-card-content>
                 </mat-card>
@@ -113,10 +103,10 @@
             <mat-card-header>
                 <mat-card-title>
                     <h5 class="mt-0 text-white">
-                        In Progress (07)
+                        In Progress ({{inProgress.length}})
                     </h5>
                     <span class="d-block text-white">
-                        This month progress 07 new projects
+                        Tasks currently being worked on
                     </span>
                 </mat-card-title>
                 <mat-card-subtitle>
@@ -140,41 +130,31 @@
             </mat-card-header>
         </mat-card>
         <div
-            cdkDropList
+            cdkDropList id="inProgressList"
             [cdkDropListData]="inProgress"
             (cdkDropListDropped)="drop($event)"
         >
-            @for (item of inProgress; track item) {
-                <mat-card class="daxa-card kanban-board-card mb-25 border-radius bg-white border-none d-block" cdkDrag>
-                    <mat-card-content>
-                        <div class="head d-flex align-items-center justify-content-between">
-                            <span class="d-block fw-medium">
-                                {{item.title}}
-                            </span>
-                            <span class="d-block text-warning">
-                                {{item.daysLeft}}
-                            </span>
-                        </div>
-                        <p>
-                            {{item.description}}
-                        </p>
-                        <span class="daxa-badge text-success d-inline-block">
-                            {{item.category}}
+        @for (task of inProgress; track task.id) {
+            <mat-card class="daxa-card kanban-board-card mb-25 border-radius bg-white border-none d-block" cdkDrag>
+                <mat-card-content>
+                    <div class="head d-flex align-items-center justify-content-between">
+                        <span class="d-block fw-medium">{{task.title}}</span>
+                        <span class="d-block text-warning">
+                            Due: {{task.dueDate | date:'shortDate'}}
                         </span>
-                        <div class="footer d-flex align-items-center justify-content-between">
-                            <span class="date text-body d-block position-relative">
-                                <i class="material-symbols-outlined">
-                                    schedule
-                                </i>
-                                {{item.createdDate}}
-                            </span>
-                            <div class="users-list">
-                                <img [src]="item.img1" alt="user-image" *ngIf="item.img1">
-                                <img [src]="item.img2" alt="user-image" *ngIf="item.img2">
-                                <img [src]="item.img3" alt="user-image" *ngIf="item.img3">
-                                <img [src]="item.img4" alt="user-image" *ngIf="item.img4">
-                                <img [src]="item.img5" alt="user-image" *ngIf="item.img5">
-                            </div>
+                    </div>
+                    <p>{{task.description}}</p>
+                    <span class="daxa-badge text-warning d-inline-block">
+                        {{task.status}}
+                    </span>
+                    <div class="footer d-flex align-items-center justify-content-between">
+                        <span class="date text-body d-block position-relative">
+                            <i class="material-symbols-outlined">schedule</i>
+                            Assigned by: {{task.assignedBy}}
+                        </span>
+                        <button mat-icon-button (click)="openCommentsDialog(task)" matTooltip="Comments">
+                            <mat-icon>chat_bubble</mat-icon>
+                        </button>
                         </div>
                     </mat-card-content>
                 </mat-card>
@@ -190,7 +170,7 @@
             </button>
         </div>
     </div>
-    <div class="col-sm-6 col-lg-4 col-xxxl-3">
+    <!-- <div class="col-sm-6 col-lg-4 col-xxxl-3">
         <mat-card class="daxa-card kanban-board-card mb-25 border-radius bg-gradient border-none d-block">
             <mat-card-header>
                 <mat-card-title>
@@ -220,8 +200,8 @@
                     </mat-menu>
                 </mat-card-subtitle>
             </mat-card-header>
-        </mat-card>
-        <div
+        </mat-card> -->
+        <!-- <div
             cdkDropList
             [cdkDropListData]="toReview"
             (cdkDropListDropped)="drop($event)"
@@ -261,8 +241,8 @@
                     </mat-card-content>
                 </mat-card>
             }
-        </div>
-        <div class="mb-25">
+        </div> -->
+        <!-- <div class="mb-25">
             <button
                 mat-button
                 class="add-another-task-btn"
@@ -271,16 +251,16 @@
                 + Add Another Task
             </button>
         </div>
-    </div>
+    </div> -->
     <div class="col-sm-6 col-lg-4 col-xxxl-3">
         <mat-card class="daxa-card kanban-board-card mb-25 border-radius bg-gradient border-none d-block">
             <mat-card-header>
                 <mat-card-title>
                     <h5 class="mt-0 text-white">
-                        To Completed (05)
+                        To Completed ({{completed.length}})
                     </h5>
                     <span class="d-block text-white">
-                        This month completed 05 projects
+                        Finished tasks
                     </span>
                 </mat-card-title>
                 <mat-card-subtitle>
@@ -304,41 +284,29 @@
             </mat-card-header>
         </mat-card>
         <div
-            cdkDropList
-            [cdkDropListData]="toCompleted"
+            cdkDropList id="completedList"
+            [cdkDropListData]="completed"
             (cdkDropListDropped)="drop($event)"
         >
-            @for (item of toCompleted; track item) {
-                <mat-card class="daxa-card kanban-board-card mb-25 border-radius bg-white border-none d-block" cdkDrag>
-                    <mat-card-content>
-                        <div class="head d-flex align-items-center justify-content-between">
-                            <span class="d-block fw-medium">
-                                {{item.title}}
-                            </span>
-                            <span class="d-block text-success">
-                                {{item.daysLeft}}
-                            </span>
-                        </div>
-                        <p>
-                            {{item.description}}
-                        </p>
-                        <span class="daxa-badge text-success d-inline-block">
-                            {{item.category}}
+        @for (task of completed; track task.id) {
+            <mat-card class="daxa-card kanban-board-card mb-25 border-radius bg-white border-none d-block" cdkDrag>
+                <mat-card-content>
+                    <div class="head d-flex align-items-center justify-content-between">
+                        <span class="d-block fw-medium">{{task.title}}</span>
+                        <span class="d-block text-success">Completed</span>
+                    </div>
+                    <p>{{task.description}}</p>
+                    <span class="daxa-badge text-success d-inline-block">
+                        {{task.status}}
+                    </span>
+                    <div class="footer d-flex align-items-center justify-content-between">
+                        <span class="date text-body d-block position-relative">
+                            <i class="material-symbols-outlined">schedule</i>
+                            Assigned by: {{task.assignedBy}}
                         </span>
-                        <div class="footer d-flex align-items-center justify-content-between">
-                            <span class="date text-body d-block position-relative">
-                                <i class="material-symbols-outlined">
-                                    schedule
-                                </i>
-                                {{item.createdDate}}
-                            </span>
-                            <div class="users-list">
-                                <img [src]="item.img1" alt="user-image" *ngIf="item.img1">
-                                <img [src]="item.img2" alt="user-image" *ngIf="item.img2">
-                                <img [src]="item.img3" alt="user-image" *ngIf="item.img3">
-                                <img [src]="item.img4" alt="user-image" *ngIf="item.img4">
-                                <img [src]="item.img5" alt="user-image" *ngIf="item.img5">
-                            </div>
+                        <button mat-icon-button (click)="openCommentsDialog(task)" matTooltip="Comments">
+                            <mat-icon>chat_bubble</mat-icon>
+                        </button>
                         </div>
                     </mat-card-content>
                 </mat-card>

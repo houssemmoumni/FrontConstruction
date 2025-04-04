@@ -33,7 +33,7 @@
                     <td class="product-item-name">{{ item.material.name}}</td>
                     <td class="product-item-price">{{item.material.price | currency}}</td>
                     <td class="product-item-quantity">
-                      <div class="quantity btn-quantity max-w80">
+                      <div class="quantity ">
                         <button (click)="decrementQuantity(item)" [disabled]="item.quantity === 1">-</button>
                         <input type="text" [value]="item.quantity" readonly />
                         <button (click)="incrementQuantity(item)">+</button>
@@ -52,70 +52,57 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-lg-6 m-b15">
+        <!-- <div class="row">
+          <div class="col-lg-6 m-b15" >
             <form class="shop-form">
-              <h5>Calculate Shipping</h5>
+              <h5>Payment Details</h5>
               <div class="form-group">
-                <select>
-                  <option value="">Credit Card Type</option>
-                  <option value="">Another option</option>
-                  <option value="">A option</option>
-                  <option value="">Potato</option>
-                </select>
+                <label for="card-element">Credit or Debit Card</label>
+                <div id="card-element" class="form-control"></div>
+                <div id="card-errors" role="alert" class="text-danger"></div>
               </div>
-              <div class="row">
-                <div class="form-group col-lg-6">
-                  <input type="text" class="form-control" placeholder="Credit Card Number">
-                </div>
-                <div class="form-group col-lg-6">
-                  <input type="text" class="form-control" placeholder="Card Verification Number">
-                </div>
+              End Stripe Card Element -->
+              <!-- <div class="form-group">
+                <button class="site-button" type="button" (click)="handlePayment()">Pay Now</button>
               </div>
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Coupon Code">
-              </div>
-              <div class="form-group">
-                <button class="site-button" type="button">Apply Coupon</button>
-              </div>
-            </form>
+            </form> -->
           </div>
           <div class="col-lg-6 m-b15">
             <h5>Cart Subtotal</h5>
             <table class="table-bordered check-tbl">
               <tbody>
-                <tr>
+                <!-- <tr>
                   <td>Order Subtotal</td>
                   <td>$125.96</td>
-                </tr>
+                </tr> -->
                 <tr>
                   <td>Shipping</td>
                   <td>Free Shipping</td>
                 </tr>
-                <tr>
+                <!-- <tr>
                   <td>Coupon</td>
                   <td>$28.00</td>
-                </tr>
+                </tr> -->
                 <tr>
                   <td>Total</td>
-                  <td>$506.00</td>
+                  <td>{{ totalPrice | currency }}</td>
                 </tr>
               </tbody>
             </table>
             <div class="form-group">
-              <button class="site-button" type="button">Proceed to Checkout</button>
+              <button class="site-button" type="button" (click)="togglePaymentDetails()" >Proceed to Checkout</button>
             </div>
           </div>
         </div>
       </div>
       <!-- Product END -->
     </div>
+     <div id="card-element"></div>
+  <button (click)="handlePayment()">Pay</button> 
     <!-- Shop Service info -->
     <app-icon-box3></app-icon-box3>
     <!-- Shop Service info End -->
-  </div>
   <!-- Footer -->
   <app-footer19></app-footer19>
 
  <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
-</div>

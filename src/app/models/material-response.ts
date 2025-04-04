@@ -12,4 +12,6 @@ export interface MaterialResponse {
     categoryName: string;
     status?: MaterialStatus;
     image: Image;
+    dominantColor?: string; // Add this property
+
 }

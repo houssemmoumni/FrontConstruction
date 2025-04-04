@@ -8,18 +8,53 @@
     <app-banner1 [data]="banner"></app-banner1>
     <!-- inner page banner END -->
     <!-- contact area -->
+    <div class="container my-4">
+      <div class="row justify-content-between align-items-center">
+        <!-- Search Box -->
+        <div class="col-lg-6">
+          <div class="search-box">
+            <input
+              type="text"
+              class="form-control search-input"
+              placeholder="Search by name or category..."
+              [(ngModel)]="searchText"
+              (input)="filterMaterials()"
+            />
+            <i class="fa fa-search search-icon"></i>
+          </div>
+        </div>
+
+        <!-- Sort Dropdown -->
+        <div class="col-lg-6 text-lg-right">
+          <label for="sort" class="sort-label">Sort by:</label>
+          <div class="custom-dropdown">
+            <select id="sort" class="form-control custom-select" [(ngModel)]="sortBy" (change)="sortMaterials()">
+              <option value="none">None</option>
+              <option value="priceLowToHigh">⬇ Price: Low to High</option>
+              <option value="priceHighToLow">⬆ Price: High to Low</option>
+              <option value="nameAsc">🔠 Name: A to Z</option>
+              <option value="nameDesc">🔠 Name: Z to A</option>
+              <option value="status">📌 Status</option>
+            </select>
+            <span class="custom-arrow">▼</span>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="section-full content-inner">
+
       <!-- Product -->
       <div class="container">
         <div class="row">
-          <div class="col-lg-3 col-md-4 col-sm-6" *ngFor="let item of materials; trackBy: trackById">
+          
+          <div class="col-lg-3 col-md-4 col-sm-6" *ngFor="let item of filteredMaterials; trackBy: trackById">
             <div class="item-box m-b10">
               <div class="item-img">
                 <img src="{{item.image.url}}" alt="" />
                 <div class="item-info-in">
 									<ul>
 										<li><a href="javascript:void(0);" (click)="addToCart(item); $event.preventDefault();"><i class="ti-shopping-cart"></i></a></li>
-										<li><a href="javascript:void(0);"><i class="ti-eye"></i></a></li>
+										<li><a href="javascript:void(0);"(click)="viewMaterialDetail(item); $event.preventDefault();"><i class="ti-eye"></i></a></li>
 										<li><a href="javascript:void(0);" (click)="toggleWishlist(item); $event.preventDefault();"><i class="fa-solid fa-heart" [ngClass]="{ 'text-danger': isInWishlist(item.id), 'text-secondary': !isInWishlist(item.id) }"></i>
 
                             </a></li>
@@ -29,6 +64,18 @@
               <div class="item-info text-center text-black p-a10">
                 <h6 class="item-title font-weight-500">
                   <a [routerLink]="['/shop-product-details']">{{ item.name }}</a>
+                </h6>
+                <h6 class="item-category">
+                  <span class="text-muted">Category: {{ item.categoryName|| 'Unknown' }}</span>
+                </h6>
+                <h6 class="item-status">
+                  <span [ngClass]="{
+                    'text-success': item.status === 'DISPONIBLE',
+                    'text-warning': item.status === 'A_LOUER',
+                    'text-danger': item.status === 'NON_DISPONIBLE'
+                  }">
+                    Status: {{ item.status|| 'Unknown' }}
+                  </span>
                 </h6>
                
                 <h4 class="item-price">

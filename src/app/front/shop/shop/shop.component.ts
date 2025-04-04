@@ -12,6 +12,9 @@ import { CartService } from '../../../services/cart.service';
 import { Material } from '../../../models/material';
 import { MaterialStatus } from '../../../models/material-status';
 import { WishlistService } from '../../../services/wishlist.service';
+import { FormsModule } from '@angular/forms'; // <-- Add this import
+
+
 
 
 
@@ -26,6 +29,8 @@ interface type {
     selector: 'app-shop',
     imports: [
       CommonModule,  // <-- add this
+      FormsModule, // <-- Add FormsModule here
+
         RouterLink,
         NgClass,
         CurrencyPipe,
@@ -44,6 +49,13 @@ export class ShopComponent implements OnInit {
     title: "Shop Grid 4",
   }
   materials: MaterialResponse[] = [];
+  MaterialStatus = MaterialStatus; // Expose enum to template
+  filteredMaterials: any[] = []; // Filtered materials array
+  searchText: string = '';
+  sortBy: string = 'none'; // Default sorting option
+
+
+
   constructor(private materialService: MaterialService,private cartService: CartService,  private router: Router,       private wishlistService: WishlistService // Correct injection
     // Inject WishlistService
 
@@ -146,11 +158,25 @@ export class ShopComponent implements OnInit {
 
   ngOnInit(): void {
 this.loadMaterial()
+this.filteredMaterials = this.materials; // Initialize filteredMaterials with all materials
+
+}
+filterMaterials(): void {
+  if (!this.searchText) {
+    this.filteredMaterials = this.materials;
+  } else {
+    this.filteredMaterials = this.materials.filter(item =>
+      item.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      item.categoryName.toLowerCase().includes(this.searchText.toLowerCase())
+    );
+  }
 }
 
 loadMaterial() {
   this.materialService.getAllMaterials().subscribe(data => {
     this.materials = data;
+    this.filteredMaterials = data; // Update filteredMaterials with the fetched data
+
   });
 }
 trackById(index: number, item: MaterialResponse): number {
@@ -205,9 +231,35 @@ toggleWishlist(item: MaterialResponse) {
     this.wishlistService.addToWishlist(material);
   }
 }
-
+sortMaterials(): void {
+  switch (this.sortBy) {
+    case 'priceLowToHigh':
+      this.filteredMaterials.sort((a, b) => a.price - b.price);
+      break;
+    case 'priceHighToLow':
+      this.filteredMaterials.sort((a, b) => b.price - a.price);
+      break;
+    case 'nameAsc':
+      this.filteredMaterials.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    case 'nameDesc':
+      this.filteredMaterials.sort((a, b) => b.name.localeCompare(a.name));
+      break;
+    case 'status':
+      this.filteredMaterials.sort((a, b) => a.status.localeCompare(b.status));
+      break;
+    default:
+      // No sorting
+      break;
+  }
+}
 // Check if item is in wishlist
 isInWishlist(itemId: number): boolean {
   return this.wishlistService.isInWishlist(itemId);
+}
+
+viewMaterialDetail(item: MaterialResponse) {
+  // Navigate to the material detail page with the item's ID
+  this.router.navigate(['/front/shop-product-details', item.id]);
 }
 }

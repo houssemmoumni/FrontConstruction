@@ -307,7 +307,7 @@ export const routes: Routes = [
         children: [
             { path: '', component: EProductsGridComponent },
             { path: 'products-list', component: EProductsListComponent },
-            { path: 'product-details', component: EProductDetailsComponent },
+            { path: 'product-details/:id', component: EProductDetailsComponent },
             { path: 'create-product', component: ECreateProductComponent },
             {path: 'edit-product/:id', component: EEditProductComponent},
             { path: 'orders', component: EOrdersComponent },
@@ -657,7 +657,7 @@ export const routes: Routes = [
     { path: 'front/shop', component: ShopComponent },
     { path: 'front/shop-sidebar', component: ShopSidebarComponent },
     {
-        path: 'front/shop-product-details',
+        path: 'front/shop-product-details/:id',
         component: ShopProductDetailsComponent,
     },
     { path: 'front/shop-cart', component: ShopCartComponent },

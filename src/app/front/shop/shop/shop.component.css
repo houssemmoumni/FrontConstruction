@@ -3,6 +3,129 @@
     padding: 5px; /* Adjust padding to make the background visible */
     border-radius: 50%; /* Optional: Makes it circular */
 }
+.item-box {
+    width: 90%;
+    height: 350px; /* Adjust based on your design */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out; /* Smooth transform */
+  }
 
+  .item-box:hover {
+    transform: scale(1.05); /* Slightly enlarges the box on hover */
+  }
+  
+  .item-img {
+    width: 100%;
+    height: 250px; /* Adjust as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative; /* To position the hover effect correctly */
+
+  }
+  
+  .item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the space properly */
+    transition: transform 0.3s ease-in-out; /* Smooth transform on hover */
+
+  }
+  .item-img:hover img {
+    transform: scale(1.1); /* Zoom in effect on image hover */
+  }
+  
+  .item-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+/* Search & Sort Container */
+.container.my-4 {
+  padding: 20px;
+}
+
+/* Search Box */
+.search-box {
+  position: relative;
+  width: 100%;
+  max-width: 350px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.search-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  cursor: pointer;
+}
+
+/* Sort Dropdown */
+.sort-box {
+  display: flex;
+  align-items: center;
+}
+
+.sort-label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  appearance: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.custom-arrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  pointer-events: none;
+}
+
+.custom-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+  
+  
 
   

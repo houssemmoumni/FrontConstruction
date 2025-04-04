@@ -1,134 +1,136 @@
-<!-- Breadcrumb -->
-<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
-    <h5 class="mb-0">
-        Edit Material
-    </h5>
-    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
-        <li class="breadcrumb-item position-relative">
-            <a routerLink="/" class="d-inline-block position-relative">
-                <i class="ri-home-8-line"></i>
-                Dashboard
-            </a>
-        </li>
-        <li class="breadcrumb-item position-relative">
-            E-Commerce
-        </li>
-        <li class="breadcrumb-item position-relative">
-            Edit Material
-        </li>
-    </ol>
-</div>
-
-<!-- Edit Material -->
-<mat-card
-    class="daxa-card edit-material-card mb-25 border-radius bg-white border-none d-block"
-    [class.rtl-enabled]="themeService.isRTLEnabled()"
->
-    <mat-card-content>
-        <form>
+<form #materialForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-lg-8">
+            <h5 class="title mt-0">
+                Edit Material
+            </h5>
             <div class="row">
-                <div class="col-lg-8">
-                    <h5 class="title mt-0">
-                        Edit Material
-                    </h5>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="mb-25">
-                                <label class="main-label d-block lh-1 text-black">
-                                    Material Name
-                                </label>
-                                <mat-form-field>
-                                    <mat-label>
-                                        Material Name
-                                    </mat-label>
-                                    <input matInput placeholder="E.g. Steel" [(ngModel)]="material.name" name="name" required>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="mb-25">
-                                <label class="main-label d-block lh-1 text-black">
-                                    Category
-                                </label>
-                                <mat-form-field>
-                                    <mat-label>
-                                        Select Category
-                                    </mat-label>
-                                    <mat-select [(ngModel)]="material.categoryId" name="categoryId" required>
-                                        <mat-option *ngFor="let category of categories" [value]="category.id">
-                                            {{ category.name }}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="mb-25">
-                                <label class="main-label d-block lh-1 text-black">
-                                    Description
-                                </label>
-                                <mat-form-field class="textarea">
-                                    <mat-label>
-                                        Write here....
-                                    </mat-label>
-                                    <textarea matInput placeholder="E.g. High-quality steel for construction" [(ngModel)]="material.description" name="description" required></textarea>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="mb-25">
-                                <label class="main-label d-block lh-1 text-black">
-                                    Available Quantity
-                                </label>
-                                <mat-form-field>
-                                    <mat-label>
-                                        Available Quantity
-                                    </mat-label>
-                                    <input matInput type="number" placeholder="E.g. 100" [(ngModel)]="material.availableQuantity" name="availableQuantity" required>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="mb-25">
-                                <label class="main-label d-block lh-1 text-black">
-                                    Price
-                                </label>
-                                <mat-form-field>
-                                    <mat-label>
-                                        Price
-                                    </mat-label>
-                                    <input matInput type="number" placeholder="E.g. 50" [(ngModel)]="material.price" name="price" required>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="mb-25">
-                                <label class="main-label d-block lh-1 text-black">
-                                    Status
-                                </label>
-                                <mat-form-field>
-                                    <mat-label>
-                                        Select Status
-                                    </mat-label>
-                                    <mat-select [(ngModel)]="material.status" name="status" required>
-                                        <mat-option *ngFor="let status of materialStatuses" [value]="status">
-                                            {{ status }}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
+                <!-- Material Name -->
+                <div class="col-sm-6">
+                    <div class="mb-25">
+                        <label class="main-label d-block lh-1 text-black">
+                            Material Name
+                        </label>
+                        <mat-form-field>
+                            <mat-label>
+                                Material Name
+                            </mat-label>
+                            <input matInput placeholder="E.g. Steel" [(ngModel)]="material.name" name="name" required>
+                            <mat-error *ngIf="materialForm.controls['name']?.errors?.['required'] && materialForm.controls['name']?.touched">
+                                Material Name is required.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="col-sm-6">
+                    <div class="mb-25">
+                        <label class="main-label d-block lh-1 text-black">
+                            Category
+                        </label>
+                        <mat-form-field>
+                            <mat-label>
+                                Select Category
+                            </mat-label>
+                            <mat-select [(ngModel)]="material.categoryId" name="categoryId" required>
+                                <mat-option *ngFor="let category of categories" [value]="category.id">
+                                    {{ category.name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="materialForm.controls['categoryId']?.errors?.['required'] && materialForm.controls['categoryId']?.touched">
+                                Category is required.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="col-sm-12">
+                    <div class="mb-25">
+                        <label class="main-label d-block lh-1 text-black">
+                            Description
+                        </label>
+                        <mat-form-field class="textarea">
+                            <mat-label>
+                                Write here....
+                            </mat-label>
+                            <textarea matInput placeholder="E.g. High-quality steel for construction" [(ngModel)]="material.description" name="description" required></textarea>
+                            <mat-error *ngIf="materialForm.controls['description']?.errors?.['required'] && materialForm.controls['description']?.touched">
+                                Description is required.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- Available Quantity -->
+                <div class="col-sm-6">
+                    <div class="mb-25">
+                        <label class="main-label d-block lh-1 text-black">
+                            Available Quantity
+                        </label>
+                        <mat-form-field>
+                            <mat-label>
+                                Available Quantity
+                            </mat-label>
+                            <input matInput type="number" placeholder="E.g. 100" [(ngModel)]="material.availableQuantity" name="availableQuantity" required>
+                            <mat-error *ngIf="materialForm.controls['availableQuantity']?.errors?.['required'] && materialForm.controls['availableQuantity']?.touched">
+                                Available Quantity is required.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- Price -->
+                <div class="col-sm-6">
+                    <div class="mb-25">
+                        <label class="main-label d-block lh-1 text-black">
+                            Price
+                        </label>
+                        <mat-form-field>
+                            <mat-label>
+                                Price
+                            </mat-label>
+                            <input matInput type="number" placeholder="E.g. 50" [(ngModel)]="material.price" name="price" required>
+                            <mat-error *ngIf="materialForm.controls['price']?.errors?.['required'] && materialForm.controls['price']?.touched">
+                                Price is required.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="col-sm-6">
+                    <div class="mb-25">
+                        <label class="main-label d-block lh-1 text-black">
+                            Status
+                        </label>
+                        <mat-form-field>
+                            <mat-label>
+                                Select Status
+                            </mat-label>
+                            <mat-select [(ngModel)]="material.status" name="status" required>
+                                <mat-option *ngFor="let status of materialStatuses" [value]="status">
+                                    {{ status }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="materialForm.controls['status']?.errors?.['required'] && materialForm.controls['status']?.touched">
+                                Status is required.
+                            </mat-error>
+                        </mat-form-field>
                     </div>
                 </div>
             </div>
-            <div class="btn-box">
-                <button mat-button type="submit" (click)="onSubmit()">
-                    Update Material
-                </button>
-                <button mat-button type="button" (click)="onCancel()">
-                    Cancel
-                </button>
-            </div>
-        </form>
-    </mat-card-content>
-</mat-card>
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="btn-box">
+        <button mat-button type="submit" [disabled]="materialForm.invalid">
+            Update Material
+        </button>
+        <button mat-button type="button" (click)="onCancel()">
+            Cancel
+        </button>
+    </div>
+</form>

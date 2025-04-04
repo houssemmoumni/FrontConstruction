@@ -1,7 +1,8 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // <-- Add this import
 import { CommonModule } from '@angular/common'; // <-- Add this import
+import {MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -25,15 +26,24 @@ import { RoleType } from '../../../app/models/role-type'; // Import RoleType
 import { TaskStatus } from '../../../app/models/task-status'; // Ensure the correct model is imported
 import { TaskRequest } from '../../models/task-request';
 import { TaskResponse } from '../../models/task-response';
+import { TaskCommentsDialogComponent } from '../../../app/task-comments-dialog/task-comments-dialog.component';
+import { MatDialog } from '@angular/material/dialog'; // Import MatDialog
+import { MatIconModule } from '@angular/material/icon';
+
+
 @Component({
     selector: 'app-to-do-list',
-    imports: [    CommonModule, // <-- Add this line
+    imports: [    CommonModule,    MatPaginatorModule,    MatIconModule,  // Add this line
+        // <-- Add this import
+        // <-- Add this line
         MatCardModule, MatMenuModule, MatButtonModule, RouterLink,    FormsModule, // <-- Add this line
         MatTableModule, NgIf, MatCheckboxModule, MatTooltipModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule],
     templateUrl: './to-do-list.component.html',
     styleUrl: './to-do-list.component.scss'
 })
 export class ToDoListComponent implements OnInit{
+    @ViewChild(MatPaginator) paginator!: MatPaginator; // <-- Add this
+
     isEditMode = false; // Add this flag
     selectedTaskId!: number;
     minDate: Date;
@@ -52,13 +62,13 @@ export class ToDoListComponent implements OnInit{
     task: TaskRequest = {
         title: '',
         description: '',
-        assignedToId: 1,
+        assignedToId: 3,
         assignedById: 2, // Assuming assignedTo is a User with roles
         dueDate: new Date(),
     };
 
     constructor(
-        public themeService: CustomizerSettingsService,
+        public themeService: CustomizerSettingsService,private dialog: MatDialog,
         private taskService: TaskService,private userService: UserService // Set minDate to today
 
     ) { this.minDate = new Date();}
@@ -66,13 +76,23 @@ export class ToDoListComponent implements OnInit{
     ngOnInit(): void {
         this.fetchTasks();
         this.fetchOuvriers(); // Fetch Ouvriers for the assignedTo dropdown
-
+        this.dataSource.filterPredicate = (data: TaskResponse, filter: string) => {
+            const lowerCaseFilter = filter.trim().toLowerCase();
+            
+            // Convert status to string (handle undefined case)
+            const statusText = data.status ? data.status.toString().toLowerCase() : '';
+    
+            return data.title.toLowerCase().includes(lowerCaseFilter) || 
+                   statusText.includes(lowerCaseFilter);
+                };
     }
 
     fetchTasks() {
         this.taskService.getAllTasks().subscribe((tasks) => {
             console.log(tasks);
             this.dataSource.data = tasks;
+            this.dataSource.paginator = this.paginator; // <-- Connect the paginator
+
         });
     }
     fetchOuvriers(): void {
@@ -88,9 +108,16 @@ export class ToDoListComponent implements OnInit{
         );
     
     }
+    applyFilter(event: Event) {
+        const inputElement = event.target as HTMLInputElement;
+        if (inputElement) {
+            this.dataSource.filter = inputElement.value.trim().toLowerCase();
+        }
+    }
     addTask(task: TaskRequest): void 
     {console.log(task);
         this.taskService.createTask(task).subscribe(() => {
+            console.log(task)
             this.fetchTasks(); // Refresh the task list
             this.toggleClass(); // Close the popup
             this.resetTaskForm(); // Reset the form
@@ -164,7 +191,13 @@ export class ToDoListComponent implements OnInit{
     const selectedDate = event.value;
     
     // Extract only the YYYY-MM-DD part (removing timezone offsets)
-    this.task.dueDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+// Extract local YYYY-MM-DD without timezone conversion
+const year = selectedDate.getFullYear();
+const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); 
+const day = String(selectedDate.getDate()).padStart(2, '0'); 
+
+// Store as a string
+this.task.dueDate = `${year}-${month}-${day}`;    console.log(this.task.dueDate);
       }
 
     /** The label for the checkbox on the passed row */
@@ -175,11 +208,7 @@ export class ToDoListComponent implements OnInit{
         return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
     }
 
-    /** Apply search filter */
-    applyFilter(event: Event) {
-        const filterValue = (event.target as HTMLInputElement).value;
-        this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
+    
 
     /** Toggle class for styling */
     toggleClass() {
@@ -189,5 +218,12 @@ export class ToDoListComponent implements OnInit{
             this.resetTaskForm(); // Reset the form
         }
     }
+
+    openCommentsDialog(task: any): void {
+        this.dialog.open(TaskCommentsDialogComponent, {
+          width: '600px',
+          data: { task: task }
+        });
+      }
 }
 

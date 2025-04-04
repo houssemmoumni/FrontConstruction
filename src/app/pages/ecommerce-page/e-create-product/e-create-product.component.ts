@@ -31,6 +31,8 @@ import { MatSnackBar } from '@angular/material/snack-bar'; // Optional: For disp
     styleUrl: './e-create-product.component.scss'
 })
 export class ECreateProductComponent implements OnInit{
+    form!: FormGroup;
+
 
     // Text Editor
     editor!: Editor | null;  // Make it nullable
@@ -53,7 +55,6 @@ export class ECreateProductComponent implements OnInit{
         status: MaterialStatus.DISPONIBLE // Default status
     };
     selectedFile!: File;
-    materialForm: FormGroup;
 
     categories: Category[] = [];
 
@@ -68,6 +69,14 @@ export class ECreateProductComponent implements OnInit{
             // Initialize the editor only in the browser
             this.editor = new Editor();
         }
+        this.form = this.fb.group({
+            name: ['', Validators.required],
+            description: ['', Validators.required],
+            availableQuantity: [0, [Validators.required, Validators.min(1)]],
+            price: [0, [Validators.required, Validators.min(1)]],
+            categoryId: ['', Validators.required],
+            status: ['', Validators.required],
+        });
         this.materialService.getAllCategories().subscribe({
             next: (data) => {
                 this.categories = data;
@@ -93,31 +102,30 @@ export class ECreateProductComponent implements OnInit{
         private fb: FormBuilder,
 
 
-    ) { this.materialForm = this.fb.group({
-        name: ['', Validators.required],
-        categoryId: [null, Validators.required],
-        description: ['', Validators.required],
-        availableQuantity: [0, [Validators.required, Validators.min(0)]],
-        price: [0, [Validators.required, Validators.min(0)]],
-        status: [MaterialStatus.DISPONIBLE, Validators.required],
-        file: [null, Validators.required]
-    });}
+    ) {}
     onFileSelected(event: any): void {
         const file: File = event.target.files[0];
         if (file) {
             this.selectedFile = file;
+
         }
     }
     onSubmit(): void {
-        if (this.materialForm.invalid) {
-            this.snackBar.open('Please fill out all required fields correctly.', 'Close', { duration: 3000 });
-            return;
-        }
-        if (!this.selectedFile) {
-            console.error('No file selected');
+
+        if (this.form.invalid) {
+            this.snackBar.open('Please fill all required fields.', 'Close', { duration: 3000 });
             return;
         }
     
+        // Update the material object with form values
+        this.material = {
+            name: this.form.value.name,
+            description: this.form.value.description,
+            availableQuantity: this.form.value.availableQuantity,
+            price: this.form.value.price,
+            categoryId: this.form.value.categoryId,
+            status: this.form.value.status,
+        };
         const formData = new FormData();
         
         formData.append('request', new Blob([JSON.stringify(this.material)], { type: 'application/json' }));
@@ -135,7 +143,7 @@ export class ECreateProductComponent implements OnInit{
             }
         });
     }
-
+   
     onCancel(): void {
         this.router.navigate(['/ecommerce-page/products-list']); // Navigate to materials list
     }

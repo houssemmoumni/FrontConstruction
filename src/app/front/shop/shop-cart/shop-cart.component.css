@@ -1,0 +1,44 @@
+/* Style the Stripe card element */
+#card-element {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+  }
+  
+  /* Style Stripe card errors */
+  #card-errors {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #dc3545;
+  }
+  .quantity {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100px;
+    overflow: hidden;
+  }
+  
+  .quantity button {
+    background-color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .quantity input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    font-size: 16px;
+  }
+  
+  .quantity button:hover {
+    background-color: #f0f0f0;
+  }
+  

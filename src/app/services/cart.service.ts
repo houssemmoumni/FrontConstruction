@@ -13,7 +13,11 @@ export class CartService {
   totalPrice: number = 0;
   totalQuantity: number = 0;
 
-  constructor() { }
+  constructor() { if (typeof window !== 'undefined' && localStorage.getItem(this.CART_KEY)) {
+    this.cartItems = JSON.parse(localStorage.getItem(this.CART_KEY)!);
+  }
+ }
+ 
   addToCart(material: Material) {
     const existingItem = this.cartItems.find((item) => item.material.id === material.id);
 
@@ -45,7 +49,9 @@ export class CartService {
 
   // Save cart to local storage
   private saveCart() {
-    localStorage.setItem(this.CART_KEY, JSON.stringify(this.cartItems));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(this.CART_KEY, JSON.stringify(this.cartItems));
+    }
   }
 
   // Compute total price and quantity
@@ -63,7 +69,9 @@ export class CartService {
   // Clear cart
   clearCart() {
     this.cartItems = [];
-    localStorage.removeItem(this.CART_KEY);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(this.CART_KEY);
+    }
     this.computeCartTotals();
   }
   decrementQuantity(item: CartItem) {
