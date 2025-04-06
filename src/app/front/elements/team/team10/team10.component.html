@@ -1,0 +1,32 @@
+<div class="section-full bg-gray content-inner bg-img-fix overlay-black-dark" style="background-image:url(assets/images/background/bg2.jpg);">
+  <ng-template ngFor let-teamData [ngForOf]="data">
+    <div class="container">
+      <div class="section-head style2 text-white text-center">
+        <h2 class="title">{{teamData.section_title}}</h2>
+        <p>{{teamData.section_description}}</p>
+      </div>
+      <div class="row">
+        @for(team of teamData.team; track team){
+        <div class="col-lg-3 col-md-6 col-sm-6 wow fadeInLeft" data-wow-duration="2s" data-wow-delay="0.3s" >
+          <div class="dlab-box m-b30 fly-box-ho dlab-img-effect on-color">
+            <div class="dlab-media dlab-img-overlay2 dlab-img-effect text-center">
+              <a href="javascript:void(0);"> <img width="358" height="460" src="{{team.image}}" alt=""> </a>
+              <div class="dlab-info-has ">
+                <ul class="dlab-social-icon dlab-social-icon-lg border">
+                  @for(social of team.social_link; track social){
+                  <li><a target="_blank" title="{{social.title}}" href="{{social.link}}" class="fa {{social.icon_class}}"></a></li>
+                  }
+                </ul>
+              </div>
+            </div>
+            <div class="p-lr10 p-tb20 text-black bg-white text-center">
+              <h5 class="dlab-title m-t0 m-b5"><a [routerLink]="['/team-1']">{{team.name}}</a></h5>
+              <span class="dlab-member-position">{{team.role}}</span>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </ng-template>
+</div>

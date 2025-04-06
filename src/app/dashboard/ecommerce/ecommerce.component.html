@@ -1,0 +1,68 @@
+<div class="admin-wrapper container p-4">
+  <!-- Top Bar -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold text-dark mb-1">👋 Welcome to the Back Office</h2>
+      <p class="text-muted small">
+        Logged in as <strong>{{ username }}</strong> (<em>{{ email }}</em>)
+      </p>
+    </div>
+    <input class="form-control w-25 shadow-sm" placeholder="🔍 Search users..."  />
+  </div>
+
+  <!-- Section Title -->
+  <h4 class="fw-semibold mb-3 text-primary">🛠️ User Management</h4>
+
+  <!-- User Table -->
+  <div class="table-responsive bg-white shadow-sm rounded-3 p-3">
+    <table class="table align-middle table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Login</th>
+          <th>Email</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Role</th>
+          <th *ngIf="userRole !== 'chef_projet'" class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userList ">
+          <td>{{ user.login }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>
+            <span class="badge text-uppercase fw-bold"
+              [ngClass]="{
+                'bg-primary text-white': user.role === 'admin',
+                'bg-secondary text-white': user.role === 'user',
+                'bg-warning text-dark': user.role === 'chef_projet',
+                'bg-info text-white': user.role === 'architecte',
+                'bg-success text-white': user.role === 'ouvrier'
+              }">
+              {{ user.role }}
+            </span>
+          </td>
+          <td *ngIf="userRole !== 'chef_projet'" class="text-center">
+          
+            <button class="btn btn-sm btn-warning d-flex align-items-center gap-1" 
+            [routerLink]="['/admins/update-user', user.email]" 
+            title="Edit User">
+      <i class="fas fa-pen"></i>
+      <span>Edit</span>
+    </button>
+
+    <!-- Delete Button -->
+    <button class="btn btn-sm btn-danger d-flex align-items-center gap-1" 
+            (click)="deleteUser(user)" 
+            title="Delete User">
+      <i class="fas fa-trash-alt"></i>
+      <span>Delete</span>
+    </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

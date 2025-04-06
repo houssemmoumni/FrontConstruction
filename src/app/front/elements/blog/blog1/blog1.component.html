@@ -1,0 +1,35 @@
+<div class="section-full content-inner bg-gray wow fadeIn" data-wow-duration="2s" data-wow-delay="0.4s">
+  <div class="container">
+    <div class="section-head text-center">
+      <h2 class="title">Latest blog post</h2>
+      <p>There are many variations of passages of Lorem Ipsum typesetting industry has been the industry's standard dummy text ever since the been when an unknown printer.</p>
+    </div>
+    <owl-carousel-o [options]="customOptions" class="blog-carousel owl-none ">
+      @for(blog of blogs; track blog;){
+        <ng-template carouselSlide>
+          <div class="item">
+            <div class="blog-post post-style-1">
+              <div class="dlab-post-media dlab-img-effect rotate">
+                <a [routerLink]="['/blog-single']"><img src="{{blog.blog_image}}" alt=""></a>
+              </div>
+              <div class="dlab-post-info">
+                <div class="dlab-post-meta">
+                  <ul>
+                      <li class="post-date" [innerHTML]="blog.post_date"></li>
+                      <li class="post-author ml-1">By <a href="#" onclick="return false;">{{blog.post_author}}</a></li>
+                  </ul>
+                </div>
+                <div class="dlab-post-title">
+                  <h4 class="post-title"><a  routerLink="/{{blog.read_more_link}}">{{blog.post_title}}</a></h4>
+                </div>
+                <div class="dlab-post-readmore">
+                  <a [routerLink]="[blog.read_more_link]" title="READ MORE" rel="bookmark" class="site-button btnhover13">{{blog.read_more_text}}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      }
+    </owl-carousel-o>
+  </div>
+</div>

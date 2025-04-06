@@ -1,0 +1,57 @@
+<div class="page-wraper">
+
+  <!-- header -->
+  <app-header-light3></app-header-light3>
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- inner page banner -->
+    <app-banner1 [data]="banner"></app-banner1>
+    <!-- inner page banner END -->
+    <!-- contact area -->
+    <div class="content-block">
+      <!-- Portfolio  -->
+      <div class="section-full content-inner-2 portfolio text-uppercase bg-gray" id="portfolio">
+        <div class="container">
+          <div class="site-filters clearfix center  m-b40">
+            <ul class="filters" data-toggle="buttons">
+              <li data-filter="" class="btn active">
+                <input type="radio">
+                <a href="javascript:void(0);" class="site-button-secondry button-sm radius-xl"><span>All</span></a>
+              </li>
+              <li data-filter="web" class="btn">
+                <input type="radio">
+                <a href="javascript:void(0);" class="site-button-secondry button-sm radius-xl"><span>Agricultural</span></a>
+              </li>
+              <li data-filter="advertising" class="btn">
+                <input type="radio">
+                <a href="javascript:void(0);" class="site-button-secondry button-sm radius-xl"><span>Chemical</span></a>
+              </li>
+              <li data-filter="branding" class="btn">
+                <input type="radio">
+                <a href="javascript:void(0);" class="site-button-secondry button-sm radius-xl"><span>Mechanical</span></a>
+              </li>
+              <li data-filter="design" class="btn">
+                <input type="radio">
+                <a href="javascript:void(0);" class="site-button-secondry button-sm radius-xl"><span>Power Energy</span></a>
+              </li>
+              <li data-filter="photography" class="btn">
+                <input type="radio">
+                <a href="javascript:void(0);" class="site-button-secondry button-sm radius-xl"><span>plants</span></a>
+              </li>
+            </ul>
+          </div>
+          <div class="clearfix" id="lightgallery">
+            <ul id="masonry" class=" portfolio-ic dlab-gallery-listing gallery-grid-4 gallery lightgallery text-center">
+              <app-content17 [data]="portolio_grid"></app-content17>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- contact area END -->
+  </div>
+  <!-- Footer -->
+  <app-footer13></app-footer13>
+  <!-- Footer End -->
+ <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+</div>

@@ -1,0 +1,50 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light19></app-header-light19>
+  <!-- header END -->
+  <!-- Content -->
+  <div class="page-content bg-white">
+    <!-- Slider Banner -->
+    <app-slider12></app-slider12>
+    <!-- Slider Banner -->
+    <!-- contact area -->
+    <div class="content-block">
+      <!-- Our Story -->
+      <app-query-form1></app-query-form1>
+      <!-- Our Story End -->
+      <!-- Our Project and Gallery -->
+      <app-content9></app-content9>
+      <!-- Our Project and Gallery End -->
+      <!-- Features -->
+      <app-services-element17></app-services-element17>
+      <!-- Features End -->
+      <!-- Latests News -->
+      <div class="section-full content-inner bg-white" id="latestnews">
+        <div class="container">
+          <div class="section-head text-black text-center">
+            <h2 class="title">Latest News</h2>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry has been the industry's
+              standard dummy text ever since the been when an unknown printer.</p>
+          </div>
+          <app-blog5 [data]="blogs"></app-blog5>
+        </div>
+      </div>
+      <!-- Latest News End -->
+      <!-- Our Team -->
+      <app-team15 [data]="our_team"></app-team15>
+      <!-- Our Team End -->
+      <!-- Testimonials -->
+      <app-testimonial2 [data]="testimonials"></app-testimonial2>
+      <!-- Testimonials END -->
+      <!-- Call To Action -->
+      <app-call-to-action2></app-call-to-action2>
+      <!-- Call To Action End -->
+    </div>
+    <!-- contact area END -->
+  </div>
+  <!-- Content END -->
+  <!-- Footer -->
+  <app-footer15></app-footer15>
+  <!-- Footer END -->
+  <button class="scroltop style3 radius" (click)="scroll_top()" type="button"><i class="fa fa-arrow-up"></i></button>
+</div>
