@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ProjectService } from '../../services/project.service';
 import { IncidentService } from '../../services/incident.service';
-import { WebSocketService } from '../../services/websocket.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Project } from '../../models/project.model';
 import { IncidentForm } from '../../models/incident.model';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -39,7 +39,8 @@ export class DeclareIncidentComponent implements OnInit {
     description: '',
     severity: 'MEDIUM',
     projectId: 0,
-    reporterName: ''
+    reporterName: '',
+    projectName: ''
   };
   isSubmitting = false;
   isLoading = false;
@@ -47,7 +48,6 @@ export class DeclareIncidentComponent implements OnInit {
   constructor(
     private projectService: ProjectService,
     private incidentService: IncidentService,
-    private wsService: WebSocketService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -66,7 +66,7 @@ export class DeclareIncidentComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        this.showError('Failed to load projects');
+        this.showError('Failed to load projects: ' + this.getErrorMessage(err));
         this.isLoading = false;
       }
     });
@@ -75,9 +75,10 @@ export class DeclareIncidentComponent implements OnInit {
   selectProject(project: Project): void {
     this.selectedProject = project;
     this.incident.projectId = project.id || 0;
+    this.incident.projectName = project.name;
   }
 
-  cancelReport(): void {
+  cancel(): void {
     this.selectedProject = null;
     this.resetIncidentForm();
   }
@@ -88,18 +89,13 @@ export class DeclareIncidentComponent implements OnInit {
     this.isSubmitting = true;
     this.incidentService.createIncident(this.incident).subscribe({
       next: () => {
-        this.wsService.sendIncidentNotification({
-          description: this.incident.description,
-          severity: this.incident.severity as 'LOW' | 'MEDIUM' | 'HIGH',
-          reporterName: this.incident.reporterName,
-          projectId: this.incident.projectId
-        });
         this.showSuccess('Incident reported successfully!');
-        this.cancelReport();
-        this.isSubmitting = false;
+        this.resetForm();
       },
       error: (err) => {
-        this.showError('Failed to submit incident');
+        this.showError('Failed to submit incident: ' + this.getErrorMessage(err));
+      },
+      complete: () => {
         this.isSubmitting = false;
       }
     });
@@ -114,7 +110,16 @@ export class DeclareIncidentComponent implements OnInit {
       this.showError('Please describe the incident');
       return false;
     }
+    if (!this.incident.projectId) {
+      this.showError('Please select a project');
+      return false;
+    }
     return true;
+  }
+
+  private resetForm(): void {
+    this.selectedProject = null;
+    this.resetIncidentForm();
   }
 
   private resetIncidentForm(): void {
@@ -122,15 +127,28 @@ export class DeclareIncidentComponent implements OnInit {
       description: '',
       severity: 'MEDIUM',
       projectId: 0,
-      reporterName: ''
+      reporterName: '',
+      projectName: ''
     };
   }
 
   private showSuccess(message: string): void {
-    this.snackBar.open(message, 'Close', { duration: 3000 });
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      panelClass: ['success-snackbar']
+    });
   }
 
   private showError(message: string): void {
-    this.snackBar.open(message, 'Close', { duration: 3000 });
+    this.snackBar.open(message, 'Close', {
+      duration: 5000,
+      panelClass: ['error-snackbar']
+    });
+  }
+
+  private getErrorMessage(error: any): string {
+    if (error.error?.error) return error.error.error;
+    if (error.message) return error.message;
+    return 'Unknown error occurred';
   }
 }

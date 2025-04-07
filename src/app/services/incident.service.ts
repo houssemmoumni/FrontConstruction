@@ -1,33 +1,61 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { IncidentReport, IncidentForm } from '../models/incident.model';
+import { Observable, catchError, throwError } from 'rxjs';
+import { IncidentReport, AssignIncidentRequest, User } from '../models/incident.model';
 
 @Injectable({ providedIn: 'root' })
 export class IncidentService {
-  private apiUrl = 'http://localhost:8065/api/incidents';
+  private apiUrl = 'http://localhost:8065/api/incidents'; // Base URL for the incidents API
 
   constructor(private http: HttpClient) {}
 
-  createIncident(formData: IncidentForm): Observable<IncidentReport> {
-    const incidentData = {
-      description: formData.description,
-      reportDate: new Date().toISOString(),
-      status: 'DECLARED',
-      severity: formData.severity,
-      reportedById: 1,
-      projectId: formData.projectId,
-      reporterName: formData.reporterName
-    };
-    return this.http.post<IncidentReport>(this.apiUrl, incidentData);
+  // Create a new incident
+  createIncident(incidentData: any): Observable<IncidentReport> {
+    return this.http.post<IncidentReport>(this.apiUrl, incidentData).pipe(
+      catchError(error => {
+        console.error('Error creating incident:', error);
+        return throwError(() => new Error('Error creating incident'));
+      })
+    );
   }
 
-  getIncidents(): Observable<IncidentReport[]> {
-    return this.http.get<IncidentReport[]>(this.apiUrl);
+  // Get all incidents
+  getAllIncidents(): Observable<IncidentReport[]> {
+    return this.http.get<IncidentReport[]>(this.apiUrl).pipe(
+      catchError(error => {
+        console.error('Error fetching incidents:', error);
+        return throwError(() => new Error('Error fetching incidents'));
+      })
+    );
   }
 
-  assignTechnician(incidentId: number, technicianId: number): Observable<void> {
-    const url = `${this.apiUrl}/${incidentId}/assign-technician/${technicianId}`;
-    return this.http.put<void>(url, {});
+  // Assign an incident to a technician
+  assignIncident(incidentId: number, request: AssignIncidentRequest): Observable<IncidentReport> {
+    return this.http.post<IncidentReport>(`${this.apiUrl}/${incidentId}/assign`, request).pipe(
+      catchError(error => {
+        console.error('Error assigning incident:', error);
+        return throwError(() => new Error('Error assigning incident'));
+      })
+    );
+  }
+
+  // Get all technicians
+  getTechnicians(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/technicians`).pipe(
+      catchError(error => {
+        console.error('Error fetching technicians:', error);
+        return throwError(() => new Error('Error fetching technicians'));
+      })
+    );
+  }
+
+  // Get a specific incident by ID
+  getIncidentById(id: number): Observable<IncidentReport> {
+    return this.http.get<IncidentReport>(`${this.apiUrl}/${id}`).pipe(
+      catchError(error => {
+        console.error('Error fetching incident:', error);
+        return throwError(() => new Error('Error fetching incident'));
+      })
+    );
   }
 }

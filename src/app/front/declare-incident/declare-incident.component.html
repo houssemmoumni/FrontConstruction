@@ -1,5 +1,4 @@
 <div class="container">
-    <!-- Project Cards View -->
     <div *ngIf="!selectedProject" class="project-cards-container">
       <mat-card *ngFor="let project of projects" class="project-card">
         <img mat-card-image [src]="project.image" alt="{{project.name}}" *ngIf="project.image">
@@ -18,13 +17,12 @@
       </mat-card>
     </div>
 
-    <!-- Incident Form View -->
     <div *ngIf="selectedProject" class="incident-form-container">
       <mat-card>
         <mat-card-header>
           <div class="header-content">
             <mat-card-title>Report Incident for {{selectedProject.name}}</mat-card-title>
-            <button mat-icon-button (click)="cancelReport()">
+            <button mat-icon-button (click)="cancel()">
               <mat-icon>close</mat-icon>
             </button>
           </div>
@@ -52,7 +50,7 @@
             </mat-form-field>
 
             <div class="form-actions">
-              <button mat-button type="button" (click)="cancelReport()">CANCEL</button>
+              <button mat-button type="button" (click)="cancel()">CANCEL</button>
               <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting">
                 SUBMIT INCIDENT
                 <mat-spinner *ngIf="isSubmitting" diameter="20"></mat-spinner>
@@ -62,4 +60,5 @@
         </mat-card-content>
       </mat-card>
     </div>
-  </div>
+</div>
+

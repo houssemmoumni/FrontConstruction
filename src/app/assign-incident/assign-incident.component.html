@@ -1,0 +1,56 @@
+<mat-card class="assignment-card">
+    <mat-card-header>
+      <mat-card-title>Assigner l'incident #{{incident.id}}</mat-card-title>
+      <mat-card-subtitle>
+        <span class="severity-badge" [ngClass]="'severity-' + incident.severity.toLowerCase()">
+          {{incident.severity}}
+        </span>
+        • Signalé le {{incident.reportDate | date:'mediumDate'}}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="loading" class="spinner-container">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+
+      <div *ngIf="!loading" class="assignment-form">
+        <div class="incident-details">
+          <p><strong>Projet:</strong> {{incident.projectName}}</p>
+          <p><strong>Description:</strong> {{incident.description}}</p>
+          <p *ngIf="incident.reporterName"><strong>Signalé par:</strong> {{incident.reporterName}}</p>
+          <p><strong>Statut:</strong> {{incident.status}}</p>
+        </div>
+
+        <mat-form-field appearance="outline" class="technician-select">
+          <mat-label>Sélectionner un technicien</mat-label>
+          <mat-select [(ngModel)]="technicianId" required>
+            <mat-option *ngFor="let tech of technicians" [value]="tech.id">
+              {{tech.username}} ({{tech.email}})
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="!technicianId">Technicien requis</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="comments-field">
+          <mat-label>Commentaires</mat-label>
+          <textarea matInput
+                    [(ngModel)]="comments"
+                    placeholder="Ajoutez des notes supplémentaires..."
+                    rows="3"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-stroked-button (click)="cancel()">
+        Annuler
+      </button>
+      <button mat-raised-button color="primary"
+              (click)="assign()"
+              [disabled]="!technicianId || loading">
+        <span *ngIf="!loading">Assigner</span>
+        <span *ngIf="loading">En cours...</span>
+      </button>
+    </mat-card-actions>
+</mat-card>

@@ -1,29 +1,54 @@
-// src/app/models/incident.model.ts
-import { Project } from './project.model';
+export interface User {
+    id: number;
+    username: string;
+    email: string;
+    role: 'ADMIN' | 'TECHNICIEN' | 'OUVRIER';
+  }
 
-export interface IncidentForm {
+  export interface IncidentForm {
     description: string;
     severity: 'LOW' | 'MEDIUM' | 'HIGH';
     projectId: number;
     reporterName: string;
-}
+    projectName: string;
+  }
 
-export interface IncidentReport {
-    id?: number;
+  export interface IncidentReport {
+    id: number;
     description: string;
-    reportDate?: string;
-    status?: 'DECLARED' | 'ASSIGNED' | 'RESOLVED' | 'REOPENED';
+    reportDate: string;
+    status: 'DECLARED' | 'ASSIGNED' | 'RESOLVED' | 'REOPENED';
     severity: 'LOW' | 'MEDIUM' | 'HIGH';
-    reporterName: string;
+    reporterName?: string;
+    reportedBy?: User;
+    assignedTo?: User;
     projectId: number;
-    assignedToId?: number;
-}
+    projectName?: string;
+  }
 
-export interface IncidentNotification {
-    id?: number;
+  export interface AssignIncidentRequest {
+    technicianId: number;
+    adminId: number;
+    comments: string;
+  }
+
+  export interface Notification {
+    id: number;
     message: string;
-    notificationDate: string;
-    isRead: boolean;
+    notification_date: string;
+    is_read: boolean;
+    severity: 'HIGH' | 'MEDIUM' | 'LOW';
     receiverId: number;
-    incidentId?: number;
-}
+    incident?: IncidentReport;
+    incidentReport?: IncidentReport;
+    source: 'incident' | 'incidentReport';
+  }
+
+  export interface Project {
+    id?: number;
+    name: string;
+    location: string;
+    description?: string;
+    published: boolean;
+    image?: string | null;
+  }
