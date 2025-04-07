@@ -63,19 +63,15 @@ export class ResolveIncidentComponent implements OnInit {
       }
     });
   }
-
   resolve(resolved: boolean): void {
-    if (!this.incidentId) {
-      this.showError('No incident selected');
-      return;
-    }
+    if (!this.incidentId) return;
 
     this.loading = true;
     this.incidentService.resolveIncident(this.incidentId, resolved, this.technicianId).subscribe({
-      next: () => {
-        this.showSuccess(`Incident marked as ${resolved ? 'resolved' : 'unresolved'}`);
-
-        this.loadIncidentDetails();
+      next: (updatedIncident) => {
+        this.incidentDetails = updatedIncident;
+        this.showSuccess(`Incident ${resolved ? 'resolved' : 'reopened'} successfully`);
+        this.loading = false;
       },
       error: () => {
         this.showError('Failed to update incident status');

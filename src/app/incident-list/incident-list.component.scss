@@ -1,0 +1,37 @@
+// src/app/incident-list/incident-list.component.scss
+.status-resolved {
+    color: #4caf50;
+    font-weight: 500;
+  }
+
+  .status-reopened {
+    color: #ff9800;
+    font-weight: 500;
+  }
+
+  .status-new {
+    color: #2196f3;
+    font-weight: 500;
+  }
+
+  .history-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding: 8px;
+    background: #f5f5f5;
+    border-radius: 4px;
+
+    mat-icon {
+      color: #757575;
+    }
+
+    div {
+      flex: 1;
+    }
+
+    small {
+      color: #757575;
+    }
+  }

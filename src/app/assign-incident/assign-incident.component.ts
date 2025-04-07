@@ -75,36 +75,17 @@ export class AssignIncidentComponent implements OnInit {
     this.loading = true;
     const request: AssignIncidentRequest = {
       technicianId: this.technicianId,
-      adminId: 1, // Replace with actual admin ID from your system
+      adminId: 1, // Replace with actual admin ID
       comments: this.comments
     };
 
     this.incidentService.assignIncident(this.incident.id, request).subscribe({
-      next: (response: any) => {
-        let message = 'Incident assigned successfully';
-
-        if (response.emailSent !== undefined) {
-          message += response.emailSent
-            ? ' - Email notification sent'
-            : ' - Email failed: ' + (response.emailError || 'Unknown error');
-        }
-
-        this.snackBar.open(message, 'Close', {
-          duration: 5000,
-          panelClass: response.success ? ['success-snackbar'] : ['error-snackbar']
-        });
-
-        if (response.success) {
-          this.dialogRef.close(response.incident);
-        } else {
-          this.loading = false;
-        }
+      next: (response) => {
+        this.snackBar.open('Incident assigned successfully', 'Close', { duration: 5000 });
+        this.dialogRef.close(true);
       },
       error: (err) => {
-        this.snackBar.open('Assignment failed: ' + err.message, 'Close', {
-          duration: 5000,
-          panelClass: ['error-snackbar']
-        });
+        this.snackBar.open('Assignment failed: ' + err.message, 'Close', { duration: 5000 });
         this.loading = false;
       }
     });

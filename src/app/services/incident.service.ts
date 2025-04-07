@@ -57,12 +57,16 @@ export class IncidentService {
   }
 
   resolveIncident(id: number, resolved: boolean, technicianId: number): Observable<IncidentReport> {
-    return this.http.patch<IncidentReport>(`${this.apiUrl}/${id}/resolve`, null, {
-      params: {
-        resolved: resolved.toString(),
-        technicianId: technicianId.toString()
+    return this.http.patch<IncidentReport>(
+      `${this.apiUrl}/${id}/resolve`,
+      {}, // Empty body since we're using query params
+      {
+        params: {
+          resolved: resolved.toString(),
+          technicianId: technicianId.toString()
+        }
       }
-    }).pipe(
+    ).pipe(
       catchError(error => {
         console.error('Error resolving incident:', error);
         return throwError(() => new Error('Error resolving incident'));

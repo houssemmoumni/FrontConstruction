@@ -207,6 +207,7 @@ import { ProjectComponent } from './project/project.component';
 import { DeclareIncidentComponent } from './front/declare-incident/declare-incident.component';
 import { AssignIncidentComponent}   from './assign-incident/assign-incident.component';
 import { ResolveIncidentComponent } from './resolve-incident/resolve-incident.component';
+import { IncidentListComponent } from '././incident-list/incident-list.component';
 // import { NotificationComponent } from './incident-notification/incident-notification.component';
 // import { ManageIncidentsComponent } from './manage-incident/manage-incident.component';
 
@@ -301,6 +302,7 @@ export const routes: Routes = [
     { path: 'declare-incident', component: DeclareIncidentComponent },
     { path: 'assign-incident/:id', component: AssignIncidentComponent },
     {path: 'resolve-incident/:id', component: ResolveIncidentComponent },
+    { path: 'incidents', component: IncidentListComponent },
     //notification de l'incident
     // { path: 'notifications', component: NotificationComponent },
      { path: 'admin-notifications', component: AdminNotificationsComponent },
