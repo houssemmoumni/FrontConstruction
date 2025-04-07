@@ -1,0 +1,14 @@
+<div class="container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Resolve Incident #{{incidentId}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Have you resolved this incident?</p>
+        <div class="button-group">
+          <button mat-raised-button color="primary" (click)="resolve(true)">Yes, Resolved</button>
+          <button mat-stroked-button (click)="resolve(false)">Not Resolved</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>

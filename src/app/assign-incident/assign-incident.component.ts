@@ -45,7 +45,7 @@ export class AssignIncidentComponent implements OnInit {
     private incidentService: IncidentService,
     private snackBar: MatSnackBar
   ) {
-    this.incident = data.incident || {} as IncidentReport;
+    this.incident = data.incident;
   }
 
   ngOnInit(): void {
@@ -75,17 +75,36 @@ export class AssignIncidentComponent implements OnInit {
     this.loading = true;
     const request: AssignIncidentRequest = {
       technicianId: this.technicianId,
-      adminId: 1,
+      adminId: 1, // Replace with actual admin ID from your system
       comments: this.comments
     };
 
     this.incidentService.assignIncident(this.incident.id, request).subscribe({
-      next: (result) => {
-        this.snackBar.open('Incident assigned successfully', 'Close', { duration: 3000 });
-        this.dialogRef.close(result);
+      next: (response: any) => {
+        let message = 'Incident assigned successfully';
+
+        if (response.emailSent !== undefined) {
+          message += response.emailSent
+            ? ' - Email notification sent'
+            : ' - Email failed: ' + (response.emailError || 'Unknown error');
+        }
+
+        this.snackBar.open(message, 'Close', {
+          duration: 5000,
+          panelClass: response.success ? ['success-snackbar'] : ['error-snackbar']
+        });
+
+        if (response.success) {
+          this.dialogRef.close(response.incident);
+        } else {
+          this.loading = false;
+        }
       },
-      error: () => {
-        this.snackBar.open('Failed to assign incident', 'Close', { duration: 3000 });
+      error: (err) => {
+        this.snackBar.open('Assignment failed: ' + err.message, 'Close', {
+          duration: 5000,
+          panelClass: ['error-snackbar']
+        });
         this.loading = false;
       }
     });
