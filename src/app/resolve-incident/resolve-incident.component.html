@@ -1,13 +1,43 @@
 <div class="container">
     <mat-card>
       <mat-card-header>
-        <mat-card-title>Resolve Incident #{{incidentId}}</mat-card-title>
+        <mat-card-title>
+          {{token ? 'Confirm Resolution' : 'Update Incident Status'}} #{{incidentId}}
+        </mat-card-title>
+        <mat-card-subtitle *ngIf="incidentDetails">
+          Current status: {{incidentDetails.status}}
+        </mat-card-subtitle>
       </mat-card-header>
+
       <mat-card-content>
-        <p>Have you resolved this incident?</p>
-        <div class="button-group">
-          <button mat-raised-button color="primary" (click)="resolve(true)">Yes, Resolved</button>
-          <button mat-stroked-button (click)="resolve(false)">Not Resolved</button>
+        <div *ngIf="loading" class="spinner-container">
+          <mat-spinner></mat-spinner>
+        </div>
+
+        <div *ngIf="!loading">
+          <div *ngIf="incidentDetails" class="incident-details">
+            <p><strong>Description:</strong> {{incidentDetails.description}}</p>
+            <p><strong>Severity:</strong> {{incidentDetails.severity}}</p>
+            <p *ngIf="incidentDetails.project"><strong>Project:</strong> {{incidentDetails.project.name}}</p>
+          </div>
+
+          <p *ngIf="token">Have you resolved this incident?</p>
+          <p *ngIf="!token">Update incident status:</p>
+
+          <div class="button-group">
+            <button mat-raised-button
+                    color="primary"
+                    (click)="resolve(true)"
+                    [disabled]="loading">
+              {{token ? 'Yes, Resolved' : 'Mark as Resolved'}}
+            </button>
+            <button mat-stroked-button
+                    (click)="resolve(false)"
+                    [disabled]="loading"
+                    *ngIf="token || (!token && incidentDetails?.status === 'RESOLVED')">
+              {{token ? 'Not Resolved' : 'Reopen Incident'}}
+            </button>
+          </div>
         </div>
       </mat-card-content>
     </mat-card>

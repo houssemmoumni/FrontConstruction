@@ -29,7 +29,6 @@ export class IncidentService {
     );
   }
 
-  // Keep all your existing methods exactly as they were
   createIncident(incidentData: any): Observable<IncidentReport> {
     return this.http.post<IncidentReport>(this.apiUrl, incidentData).pipe(
       catchError(error => {
@@ -85,6 +84,17 @@ export class IncidentService {
       catchError(error => {
         console.error('Error fetching unresolved incidents:', error);
         return throwError(() => new Error('Error fetching unresolved incidents'));
+      })
+    );
+  }
+
+  generateResolveLink(incidentId: number): Observable<string> {
+    return this.http.get<string>(`${this.apiUrl}/${incidentId}/resolve-link`, {
+      responseType: 'text' as 'json'
+    }).pipe(
+      catchError(error => {
+        console.error('Error generating resolve link', error);
+        return throwError(() => new Error('Failed to generate resolve link'));
       })
     );
   }
