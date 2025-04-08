@@ -1,0 +1,151 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">
+        Create Course
+    </h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+        <li class="breadcrumb-item position-relative">
+            <a routerLink="/" class="d-inline-block position-relative">
+                <i class="ri-home-8-line"></i>
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item position-relative">
+            LMS
+        </li>
+        <li class="breadcrumb-item position-relative">
+            Courses
+        </li>
+        <li class="breadcrumb-item position-relative">
+            Create Course
+        </li>
+    </ol>
+</div>
+
+<!-- Create Course -->
+<form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+    <div class="row justify-content-center">
+        <div class="col-xxl-7 col-xxxl-8">
+            <mat-card class="daxa-card create-course-card mb-25 border-radius bg-white border-none d-block">
+                <mat-card-header>
+                    <mat-card-title>
+                        <h5 class="mb-0">
+                            Add a Course
+                        </h5>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">
+                                    Course Title
+                                </label>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>
+                                        Course title
+                                    </mat-label>
+                                    <input matInput formControlName="title" placeholder="E.g. Introduction to Java">
+                                    <mat-error *ngIf="courseForm.get('title')?.hasError('required')">
+                                        Course title is required.
+                                    </mat-error>
+                                    <mat-error *ngIf="courseForm.get('title')?.hasError('minlength')">
+                                        Course title must be at least 5 characters.
+                                    </mat-error>
+                                    <mat-error *ngIf="courseForm.get('title')?.hasError('maxlength')">
+                                        Course title cannot exceed 100 characters.
+                                    </mat-error>
+                                    <mat-error *ngIf="courseForm.get('title')?.hasError('pattern')">
+                                        Course title can only contain letters and spaces.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">
+                                    Course Description
+                                </label>
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <textarea matInput formControlName="description" rows="5" placeholder="Enter course description"></textarea>
+                                    <mat-error *ngIf="courseForm.get('description')?.hasError('required')">
+                                        Course description is required.
+                                    </mat-error>
+                                    <mat-error *ngIf="courseForm.get('description')?.hasError('minlength')">
+                                        Course description must be at least 10 characters.
+                                    </mat-error>
+                                    <mat-error *ngIf="courseForm.get('description')?.hasError('maxlength')">
+                                        Course description cannot exceed 500 characters.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">
+                                    Duration (minutes)
+                                </label>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>
+                                        Enter duration
+                                    </mat-label>
+                                    <input matInput type="number" formControlName="duration" placeholder="E.g. 120">
+                                    <mat-error *ngIf="courseForm.get('duration')?.hasError('required')">
+                                        Duration is required.
+                                    </mat-error>
+                                    <mat-error *ngIf="courseForm.get('duration')?.hasError('min')">
+                                        Duration must be at least 1 minute.
+                                    </mat-error>
+                                    <mat-error *ngIf="courseForm.get('duration')?.hasError('max')">
+                                        Duration cannot exceed 600 minutes.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">
+                                    Instructor
+                                </label>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>
+                                        Select instructor
+                                    </mat-label>
+                                    <mat-select formControlName="instructor">
+                                        @for (instructor of instructorList; track instructor) {
+                                            <mat-option [value]="instructor">{{instructor}}</mat-option>
+                                        }
+                                    </mat-select>
+                                    <mat-error *ngIf="courseForm.get('instructor')?.hasError('required')">
+                                        Instructor is required.
+                                    </mat-error>
+                                    <mat-error *ngIf="courseForm.get('instructor')?.hasError('pattern')">
+                                        Instructor name can only contain letters and spaces.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                              <label class="main-label d-block lh-1 text-black">
+                                Publish Course
+                              </label>
+                              <mat-form-field appearance="outline">
+                                <mat-label>Select status</mat-label>
+                                <mat-select formControlName="isPublished">
+                                  <mat-option value="true">Published</mat-option>
+                                  <mat-option value="false">Unpublished</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                    </div>
+                    <!-- Bouton "Save Course" à l'intérieur du formulaire -->
+                    <div class="btn-box d-md-flex align-items-center justify-content-end">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="courseForm.invalid">Save Course</button>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</form>

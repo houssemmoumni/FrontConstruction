@@ -1,0 +1,20 @@
+<ul *ngIf="!isLoading && comments && comments.length > 0">
+    <li *ngFor="let comment of comments">
+      <img *ngIf="comment.avatar" [src]="comment.avatar" alt="Avatar" class="avatar">
+      <strong>{{ comment.author }}</strong> :
+      <p>{{ comment.content }}</p>
+      <small>{{ comment.date }}</small>
+
+      <!-- Affichage des réponses imbriquées -->
+      <ul *ngIf="comment.replies && comment.replies.length > 0">
+        <li *ngFor="let reply of comment.replies">
+          <img *ngIf="reply.avatar" [src]="reply.avatar" alt="Avatar" class="avatar">
+          <strong>{{ reply.author }}</strong> :
+          <p>{{ reply.content }}</p>
+          <small>{{ reply.date }}</small>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <p *ngIf="!isLoading && comments.length === 0">Aucun commentaire pour cet article.</p>

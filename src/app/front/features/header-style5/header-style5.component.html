@@ -1,0 +1,156 @@
+<div class="page-wraper">
+  <!-- header -->
+  <app-header-light5></app-header-light5>
+  <!-- header END -->
+  <!-- Content -->
+  <div class="page-content">
+    <!-- inner page banner -->
+    <app-banner2 [data] = "banner"></app-banner2>
+    <!-- inner page banner END -->
+    <!-- contact area -->
+    <div class="content-block">
+      <!-- Code Box -->
+      <div class="section-full content-inner bg-white video-section" style="background-image:url('assets/images/background/bg-video.png');">
+        <div class="container">
+          <div class="header-box">
+            <div class="row align-items-center">
+              <div class="col-lg-3 col-md-4">
+                <img src="assets/images/header.png" alt=""/>
+              </div>
+              <div class="col-lg-9 col-md-8">
+                <h2 class="title">Check Header Style 05</h2>
+                <p>A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm.</p>
+              </div>
+            </div>
+          </div>
+          <div class="relative">
+            <button id="copyButton" class="btn">Copy</button>
+<pre class="code-box" id="copyTarget">
+&lt;!-- header --&gt;
+&lt;header class="site-header mo-left header-transparent header"&gt;
+&lt;div class="top-bar"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="row d-flex justify-content-between align-items-center"&gt;
+      &lt;div class="dlab-topbar-left"&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href="javascript:void(0);"&gt;About Us&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Refund Policy&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Help Desk&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class="dlab-topbar-right"&gt;
+        &lt;a href="javascript:void(0);" class="site-button radius-no"&gt;GET A QUOTE&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- main header --&gt;
+&lt;div class="sticky-header main-bar-wraper navbar-expand-lg"&gt;
+  &lt;div class="main-bar clearfix "&gt;
+    &lt;div class="container clearfix"&gt;
+      &lt;!-- website logo --&gt;
+      &lt;div class="logo-header mostion"&gt;
+        &lt;a [routerLink]="['/index']"&gt;&lt;img src="assets/images/logo-white.png" alt=""&gt;&lt;/a&gt;
+      &lt;/div&gt;
+      &lt;!-- nav toggle button --&gt;
+      &lt;button class="navbar-toggler collapsed navicon justify-content-end" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"&gt;
+        &lt;span&gt;&lt;/span&gt;
+        &lt;span&gt;&lt;/span&gt;
+        &lt;span&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;!-- extra nav --&gt;
+      &lt;div class="extra-nav"&gt;
+        &lt;div class="extra-cell"&gt;
+          &lt;button id="quik-search-btn" type="button" class="site-button-link"&gt;&lt;i class="la la-search"&gt;&lt;/i&gt;&lt;/button&gt;
+          &lt;div class="shop-cart navbar-right"&gt;
+            &lt;button type="button" class="site-button-link cart-btn"&gt;
+              &lt;i class="la la-cart-plus"&gt;&lt;/i&gt;&lt;span class="badge bg-primary"&gt;3&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;ul class="dropdown-menu cart-list"&gt;
+              &lt;li class="cart-item"&gt;
+                &lt;div class="media"&gt;
+                  &lt;div class="media-left"&gt;
+                    &lt;a href="javascript:void(0);"&gt;
+                      &lt;img alt="" class="media-object" src="assets/images/product/thumb3.jpg"&gt;
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                  &lt;div class="media-body"&gt;
+                    &lt;h6&gt;&lt;a href="" class="media-heading"&gt;Tshirt Dress&lt;/a&gt;&lt;/h6&gt;
+                    &lt;span&gt;$19.99&lt;/span&gt;
+                    &lt;span class="item-close"&gt;X&lt;/span&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/li&gt;
+              &lt;li class="cart-item"&gt;
+                &lt;div class="media"&gt;
+                  &lt;div class="media-left"&gt;
+                    &lt;a href="javascript:void(0);"&gt;
+                      &lt;img alt="" class="media-object" src="assets/images/product/thumb2.jpg"&gt;
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                  &lt;div class="media-body"&gt;
+                    &lt;h6&gt;&lt;a href="" class="media-heading"&gt;Tshirt Dress&lt;/a&gt;&lt;/h6&gt;
+                    &lt;span&gt;$19.99&lt;/span&gt;
+                    &lt;span class="item-close"&gt;X&lt;/span&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/li&gt;
+              &lt;li class="cart-item"&gt;
+                &lt;div class="media"&gt;
+                  &lt;div class="media-left"&gt;
+                    &lt;a href="javascript:void(0);"&gt;
+                      &lt;img alt="" class="media-object" src="assets/images/product/thumb1.jpg"&gt;
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                  &lt;div class="media-body"&gt;
+                    &lt;h6&gt;&lt;a href="" class="media-heading"&gt;Tshirt Dress&lt;/a&gt;&lt;/h6&gt;
+                    &lt;span&gt;$19.99&lt;/span&gt;
+                    &lt;span class="item-close"&gt;X&lt;/span&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/li&gt;
+              &lt;li class="cart-item text-center"&gt;
+                &lt;h5 class="text-black m-a0"&gt;Totle = $500&lt;/h5&gt;
+              &lt;/li&gt;
+              &lt;li class="text-center"&gt;
+                &lt;button class="site-button radius-xl m-r5"&gt;View Cart&lt;/button&gt;
+                &lt;button class="site-button radius-xl outline black"&gt;Checkout&lt;/button&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- Quik search --&gt;
+      &lt;div class="dlab-quik-search "&gt;
+        &lt;form action="#"&gt;
+          &lt;input name="search" value="" type="text" class="form-control" placeholder="Type to search"&gt;
+          &lt;span id="quik-search-remove"&gt;&lt;i class="ti-close"&gt;&lt;/i&gt;&lt;/span&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+      &lt;!-- main nav --&gt;
+      &lt;div class="header-nav navbar-collapse collapse justify-content-end" id="navbarNavDropdown"&gt;
+        &lt;div class="logo-header d-md-block d-lg-none"&gt;
+          &lt;a [routerLink]="['/index']"&gt;&lt;img src="assets/images/logo.png" alt=""&gt;&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;app-navigation1/&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- main header END --&gt;
+&lt;/header&gt;
+&lt;!-- header END --&gt;
+</pre>
+          </div>
+        </div>
+      </div>
+      <!-- Code Box End -->
+    </div>
+    <!-- contact area END -->
+  </div>
+  <!-- Footer -->
+  <app-footer13></app-footer13>
+  <!-- Footer End -->
+  <!-- scroll top button -->
+  <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+</div>

@@ -1,0 +1,50 @@
+<div class="row">
+  <ng-template ngFor let-productData [ngForOf]="related_products">
+    <div class="col-lg-12">
+      <h5 class="m-b20">{{productData.section_title}}</h5>
+      <owl-carousel-o [options]="customOptions" class="owl-btn-center-lr owl-btn-1 primary">
+        @for(product of productData.products; track product){
+        <ng-template carouselSlide>
+          <div class="item">
+            <div class="item-box">
+              <div class="item-img">
+                <img src="{{product.image}}" alt="">
+                <div class="item-info-in">
+                  <ul>
+                    @for(cartLink of product.cart_link; track cartLink;){
+                    <li>
+                      <a href="javascript:void(0);" title="{{cartLink.title}}"><i class="{{cartLink.icon_class}}"></i></a>
+                    </li>
+                    }
+                  </ul>
+                </div>
+              </div>
+              <div class="item-info text-center text-black p-a10">
+                <h6 class="item-title text-uppercase font-weight-500">
+                  <a [routerLink]="['/shop-product-details']">{{product.title}}</a>
+                </h6>
+                <ul class="item-review">
+                  <li><i class="fa fa-star mr-1"></i></li>
+                  <li><i class="fa fa-star mr-1"></i></li>
+                  <li><i class="fa fa-star mr-1"></i></li>
+                  <li><i class="fa fa-star-half-o mr-1"></i></li>
+                  <li><i class="fa fa-star-o"></i></li>
+                </ul>
+                <h4 class="item-price">
+                  <ng-template [ngIf]="product.sale" [ngIfElse]="normalPrice">
+                    <del>{{product.price}}</del>
+                    <span class="text-primary pl-2">{{product.sale_price}}</span>
+                  </ng-template>
+                  <ng-template #normalPrice>
+                    <span class="text-primary">{{product.price}}</span>
+                  </ng-template>
+                </h4>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        }
+      </owl-carousel-o>
+    </div>
+  </ng-template>
+</div>

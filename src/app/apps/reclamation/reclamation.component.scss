@@ -1,0 +1,103 @@
+/* Styles pour les badges de statut */
+.badge-pending {
+    background-color: #ffc107; /* Jaune */
+    color: #000;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.badge-resolved {
+    background-color: #28a745; /* Vert */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.badge-closed {
+    background-color: #dc3545; /* Rouge */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.badge-default {
+    background-color: #6c757d; /* Gris */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+
+
+/* Styles pour centrer le formulaire */
+.reply-form {
+    max-width: 600px;
+    margin: 20px auto; /* Centre le formulaire horizontalement */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Styles pour les groupes de formulaire */
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .form-group textarea {
+    resize: vertical; /* Permet à l'utilisateur de redimensionner verticalement */
+    min-height: 100px;
+  }
+
+  /* Styles pour les boutons */
+  .button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px; /* Espace entre les boutons */
+  }
+
+  .button-group button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .button-group button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .button-group button[type="button"] {
+    background-color: #6c757d;
+    color: white;
+  }
+
+  .button-group button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+
+  .button-group button[type="button"]:hover {
+    background-color: #5a6268;
+  }

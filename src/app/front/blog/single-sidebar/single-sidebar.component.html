@@ -1,0 +1,215 @@
+<div class="page-wraper">
+    <!-- Header -->
+    <app-header-light3></app-header-light3>
+
+    <!-- Content -->
+    <div class="page-content bg-white">
+      <!-- Inner Page Banner -->
+      <app-banner1 [data]="banner"></app-banner1>
+      <!-- Inner Page Banner END -->
+
+      <!-- Contact Area -->
+      <div class="content-inner-2">
+        <div class="container">
+          <div class="row">
+            <!-- Sidebar (Conditionnel) -->
+            <ng-template [ngIf]="layout.sidebar">
+              <div
+                class="col-xl-3 col-lg-4 col-md-12"
+                *ngIf="layout.sidebarPosition === 'left'"
+              >
+                <aside class="side-bar sticky-top">
+                  <app-search-form2></app-search-form2>
+                  <app-recent-posts1></app-recent-posts1>
+                  <app-newsletter1></app-newsletter1>
+                  <app-our-gallery1></app-our-gallery1>
+                  <app-category-list1></app-category-list1>
+                  <app-tag-list1></app-tag-list1>
+                </aside>
+              </div>
+            </ng-template>
+
+            <!-- Main Content -->
+            <div
+              class=""
+              [ngClass]="{
+                'col-xl-9 col-lg-8 col-md-12 m-b30': layout.sidebar === true,
+                'col-xl-12 col-lg-12': layout.sidebar === false
+              }"
+            >
+              <!-- Blog Post -->
+              <div class="blog-post blog-single">
+                <div class="dlab-post-meta">
+                  <ul>
+                    <li class="post-date">
+                      <strong>{{ blog.date | date: 'dd MMM' }}</strong>
+                    </li>
+                  </ul>
+                </div>
+                <div class="dlab-post-title">
+                  <h4 class="post-title m-t0">{{ blog.title }}</h4>
+                </div>
+                <div class="dlab-post-media dlab-img-effect zoom-slow">
+                  <a href="blog-single-sidebar"
+                    ><img [src]="blog.photo" alt="Blog image"
+                  /></a>
+                </div>
+                <div class="dlab-post-text">
+                  <p>{{ blog.content }}</p>
+                  <div *ngFor="let img of blog.images">
+                    <img class="alignleft" [src]="img" alt="Blog Image" />
+                  </div>
+                  <div class="dlab-divider bg-gray-dark"></div>
+                  <div *ngFor="let paragraph of blog.additionalContent">
+                    <p>{{ paragraph }}</p>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+
+                <!-- Blog Tags -->
+                <div class="dlab-post-tags clear">
+                  <div class="post-tags">
+                    <a *ngFor="let tag of blog.tags" href="javascript:void(0);">{{
+                      tag
+                    }}</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comments Section -->
+             <!-- Comments Section -->
+<div class="clear" id="comment-list">
+    <div class="comments-area" id="comments">
+      <h2 class="comments-title">{{ comments.length }} Commentaires</h2>
+
+      <!-- Liste des commentaires -->
+      <!-- Liste des commentaires -->
+<ul class="comment-list" *ngIf="!isLoading && comments.length > 0">
+    <li class="comment" *ngFor="let comment of comments">
+      <div class="comment-body">
+        <!-- Avatar de l'auteur -->
+        <div class="comment-author">
+          <img
+            *ngIf="comment.avatar"
+            [src]="comment.avatar"
+            alt="Avatar"
+            class="avatar"
+          />
+          <span class="author-name">{{ comment.author }}</span>
+          <span class="comment-date">{{ comment.date | date: 'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+
+        <!-- Contenu du commentaire -->
+        <div class="comment-content">
+          <p>{{ comment.content }}</p>
+        </div>
+
+        <!-- Boutons Like et Dislike -->
+        <div class="comment-actions">
+          <button (click)="likeComment(comment)" class="btn-like">
+            👍 {{ comment.likes || 0 }}
+          </button>
+          <button (click)="dislikeComment(comment)" class="btn-dislike">
+            👎 {{ comment.dislikes || 0 }}
+          </button>
+          <button (click)="toggleReplyForm(comment)" class="btn-reply">
+            Répondre
+          </button>
+        </div>
+
+        <!-- Formulaire de réponse (masqué par défaut) -->
+        <!-- Formulaire de réponse (masqué par défaut) -->
+<form
+*ngIf="comment.isReplying"
+(ngSubmit)="addReply(comment)"
+class="reply-form"
+>
+<div class="form-group">
+  <textarea
+    [(ngModel)]="replyContent"
+    name="replyContent"
+    class="form-control"
+    placeholder="Votre réponse..."
+    rows="2"
+    required
+  ></textarea>
+</div>
+<button type="submit" class="btn btn-primary">Envoyer</button>
+</form>
+
+        <!-- Réponses aux commentaires -->
+        <ul class="children" *ngIf="comment.replies && comment.replies.length > 0">
+          <li class="comment" *ngFor="let reply of comment.replies">
+            <div class="comment-body">
+              <div class="comment-author">
+                <img
+                  *ngIf="reply.avatar"
+                  [src]="reply.avatar"
+                  alt="Avatar"
+                  class="avatar"
+                />
+                <span class="author-name">{{ reply.author }}</span>
+                <span class="comment-date">{{ reply.date | date: 'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+              <div class="comment-content">
+                <p>{{ reply.content }}</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+
+      <!-- Message si aucun commentaire -->
+      <p *ngIf="!isLoading && comments.length === 0" class="no-comments">
+        Aucun commentaire pour cet article.
+      </p>
+
+      <!-- Formulaire d'ajout de commentaire -->
+      <form (ngSubmit)="addComment()" class="comment-form">
+        <div class="form-group">
+          <textarea
+            [(ngModel)]="newCommentContent"
+            name="content"
+            class="form-control"
+            placeholder="Votre commentaire..."
+            rows="4"
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!newCommentContent">
+          Ajouter un commentaire
+        </button>
+      </form>
+    </div>
+  </div>
+            </div>
+
+            <!-- Sidebar (Conditionnel) -->
+            <ng-template [ngIf]="layout.sidebar">
+              <div
+                class="col-xl-3 col-lg-4 col-md-12"
+                *ngIf="layout.sidebarPosition === 'right'"
+              >
+                <aside class="side-bar sticky-top">
+                  <app-search-form2></app-search-form2>
+                  <app-recent-posts1></app-recent-posts1>
+                  <app-newsletter1></app-newsletter1>
+                  <app-our-gallery1></app-our-gallery1>
+                  <app-category-list1></app-category-list1>
+                  <app-tag-list1></app-tag-list1>
+                </aside>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <app-footer13></app-footer13>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+  </div>

@@ -1,0 +1,78 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">Courses List</h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+        <li class="breadcrumb-item position-relative">
+            <a routerLink="/" class="d-inline-block position-relative">
+                <i class="ri-home-8-line"></i>
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item position-relative">
+            LMS
+        </li>
+        <li class="breadcrumb-item position-relative">
+            Courses List
+        </li>
+    </ol>
+</div>
+
+
+<!-- Add Course Button -->
+<div class="add-course-btn-container">
+    <button
+      mat-raised-button
+      color="primary"
+      [routerLink]="['/lms-page/create-course']"
+      class="add-course-btn"
+    >
+      Add Course
+    </button>
+  </div>
+
+<!-- Filters and Courses List -->
+<mat-card class="daxa-card courses-card mb-25 border-radius bg-white border-none d-block">
+    <mat-card-header>
+        <mat-card-title>
+            <h5 class="mb-0">Courses</h5>
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <!-- Filtres -->
+        <div class="filters-container">
+            <!-- Filtre par statut (Published/Unpublished) -->
+            <mat-form-field appearance="outline" class="filter-field">
+                <mat-label>Status</mat-label>
+                <mat-select [(value)]="selectedStatus" (selectionChange)="applyFilter('status')">
+                    <mat-option value="all">All</mat-option>
+                    <mat-option value="published">Published</mat-option>
+                    <mat-option value="unpublished">Unpublished</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- Filtre par durée -->
+            <mat-form-field appearance="outline" class="filter-field">
+                <mat-label>Duration</mat-label>
+                <mat-select [(value)]="selectedDuration" (selectionChange)="applyFilter('duration')">
+                    <mat-option value="all">All</mat-option>
+                    <mat-option value="short">Short (≤ 5h)</mat-option>
+                    <mat-option value="long">Long (> 5h)</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- Filtre par instructeur -->
+            <mat-form-field appearance="outline" class="filter-field">
+                <mat-label>Instructor</mat-label>
+                <input matInput [(ngModel)]="selectedInstructor" (input)="applyFilter('instructor')" placeholder="Enter instructor name">
+            </mat-form-field>
+        </div>
+
+        <!-- Onglets -->
+        <mat-tab-group animationDuration="0ms">
+            <!-- Onglet "All Courses" -->
+            <mat-tab label="All Courses">
+                <app-all-courses [courses]="filteredCourses" />
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>

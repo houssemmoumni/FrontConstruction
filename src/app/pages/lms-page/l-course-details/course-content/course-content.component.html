@@ -1,0 +1,60 @@
+<mat-card
+  class="daxa-card course-content-card mb-25 border-radius bg-white border-none d-block"
+  [class.component-dark-theme]="themeService.isDark()"
+  [class.rtl-enabled]="themeService.isRTLEnabled()"
+>
+<mat-card-header>
+    <mat-card-title>
+      <h5 class="mb-0">
+        Course Content
+      </h5>
+    </mat-card-title>
+  </mat-card-header>
+  <!-- <mat-card-content>
+    <div class="btn-box d-md-flex align-items-center justify-content-between">
+      <button mat-button [routerLink]="['/lms-page/add-content', courseId]">Add Content</button>
+    </div>
+  </mat-card-content> -->
+    <mat-card-content>
+
+
+    <mat-accordion>
+      <!-- Boucle sur les modules -->
+      <mat-expansion-panel *ngFor="let module of modules" [expanded]="module.orderInCourse === 1">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ module.title }}
+          </mat-panel-title>
+          <mat-panel-description>
+            <span class="d-inline-block">
+              {{ module.orderInCourse }} lecture
+            </span>
+            <span class="d-inline-block">
+              {{ formatDuration(module.duration) }}
+            </span>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <ul class="pl-0 mt-0 mb-0 list-unstyled">
+          <li class="position-relative d-flex align-items-center justify-content-between">
+            <i class="material-symbols-outlined">
+              smart_display
+            </i>
+            <span class="d-block text-body">
+              {{ module.content }}
+            </span>
+            <span class="d-block text-body">
+              {{ formatDuration(module.duration) }}
+            </span>
+          </li>
+          <!-- Afficher la vidéo -->
+          <li class="position-relative">
+            <video controls class="video-player">
+              <source [src]="module.videoUrl" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </li>
+        </ul>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+</mat-card>

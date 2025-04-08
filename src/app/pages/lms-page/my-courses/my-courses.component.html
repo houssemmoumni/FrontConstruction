@@ -1,0 +1,22 @@
+<!-- src/app/components/my-courses/my-courses.component.html -->
+<div class="my-courses">
+    <h2>Mes Cours</h2>
+
+    <!-- Liste des cours inscrits -->
+    <div *ngIf="enrolledCourses.length > 0; else noCourses" class="course-list">
+      <div *ngFor="let userCourse of enrolledCourses" class="course-card">
+        <h3>{{ userCourse.course.title }}</h3>
+        <p [innerHTML]="userCourse.course.description"></p> <!-- Utilisez innerHTML pour afficher du HTML -->
+        <div class="course-details">
+          <span><strong>Durée :</strong> {{ userCourse.course.duration }} minutes</span>
+          <span><strong>Instructeur :</strong> {{ userCourse.course.instructor }}</span>
+        </div>
+        <button (click)="viewCourseDetails(userCourse.course.id)">Voir les Détails</button>
+      </div>
+    </div>
+
+    <!-- Message si aucun cours n'est inscrit -->
+    <ng-template #noCourses>
+      <p>Vous n'êtes inscrit à aucun cours pour le moment.</p>
+    </ng-template>
+  </div>

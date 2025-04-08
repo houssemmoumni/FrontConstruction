@@ -1,0 +1,33 @@
+<ng-template ngFor let-galleryData [ngForOf]="data">
+  <div class="section-head">
+    <h2 class="title">{{galleryData.section_title}}</h2>
+    <div class="dlab-separator bg-primary m-b0"></div>
+  </div>
+  <div class="dlab-gallery-listing row sp15 gallery video-gallery">
+    @for(item of galleryData.items; track item){
+      <div class="col-lg-4 col-md-4 col-sm-4 col-6 wow bounceInUp" data-wow-duration="2s" data-wow-delay="0.1s">
+        <div class="dlab-box m-b15">
+          <div class="dlab-img-overlay4 dlab-img-effect zoom">
+            <a href="javascript:void(0);">
+              <img src="{{item.image}}" alt="">
+            </a>
+            <div class="overlay-bx">
+              <div class="overlay-icon">
+                @if(galleryData.type=='video'){
+                <a href="{{item.url}}" class="popup-youtube video"><i class="fa fa-play"></i></a>
+                }
+                <span attr.data-exthumbimage="{{item.original_image}}" attr.data-src="{{item.original_image}}" class="check-km" title="Image 1 Title will come here" *ngIf="galleryData.type!='video'">
+                  <i class="fa fa-search icon-bx-xs"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="m-t20">
+    <a [routerLink]="[galleryData.viewAllLink]" class="site-button btnhover14">View All Video</a>
+  </div>
+  <!-- </div> -->
+</ng-template>

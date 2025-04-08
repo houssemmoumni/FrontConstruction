@@ -1,0 +1,78 @@
+/* Styles pour le bouton */
+.btn-info {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: darken(#17a2b8, 10%);
+      transform: scale(1.05);
+    }
+  }
+
+  /* Styles pour le tableau */
+  .table-responsive {
+    margin-top: 20px;
+    overflow-x: auto;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #4e73df;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+  }
+
+  /* Styles pour les badges */
+  .badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+
+    &-warning {
+      background-color: #f6c23e;
+      color: #1f2d3d;
+    }
+
+    &-success {
+      background-color: #1cc88a;
+      color: white;
+    }
+
+    &-danger {
+      background-color: #e74a3b;
+      color: white;
+    }
+  }
+
+  /* Style pour les réponses */
+  .bg-light {
+    background-color: #f8f9fa !important;
+  }
+
+  .text-muted {
+    color: #6c757d !important;
+  }

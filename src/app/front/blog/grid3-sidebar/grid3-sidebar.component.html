@@ -1,0 +1,102 @@
+<div class="page-wraper">
+    <!-- Header -->
+    <app-header-light3></app-header-light3>
+
+    <!-- Content -->
+    <div class="page-content bg-gray">
+      <!-- Inner page banner -->
+      <app-banner1 [data]="banner"></app-banner1>
+      <!-- Inner page banner END -->
+
+      <div class="content-inner-2">
+        <div class="container">
+          <div class="row">
+            <!-- Sidebar (left) -->
+            <ng-container *ngIf="layout.sidebar && layout.sidebarPosition === 'left'">
+              <div class="col-xl-3 col-lg-4">
+                <aside class="side-bar sticky-top">
+                  <app-search-form2></app-search-form2>
+                  <app-recent-posts1></app-recent-posts1>
+                  <app-newsletter1></app-newsletter1>
+                  <app-our-gallery1></app-our-gallery1>
+                  <app-category-list1></app-category-list1>
+                  <app-tag-list1></app-tag-list1>
+                </aside>
+              </div>
+            </ng-container>
+
+            <!-- Blog grid -->
+            <div [ngClass]="{'col-xl-9 col-lg-8': layout.sidebar, 'col-xl-12 col-lg-12': !layout.sidebar}">
+              <div id="masonry" class="dlab-blog-grid-3 row">
+                <div *ngFor="let blog of blogList; trackBy: trackById" class="post card-container {{ layout.gridClass }} col-md-12 col-sm-12">
+                  <div class="blog-post blog-grid blog-rounded blog-effect1">
+                    <div class="dlab-post-media dlab-img-effect">
+                      <a [routerLink]="['/blog-single', blog.id]">
+                        <img *ngIf="blog.photo" [src]="blog.photo" [alt]="blog.title">
+                        <img *ngIf="!blog.photo" src="assets/images/default-image.jpg" alt="Image par défaut">
+                      </a>
+                    </div>
+                    <div class="dlab-info p-a20 border-1">
+                      <div class="dlab-post-meta">
+                        <ul>
+                          <li class="post-date">{{ blog.date }}</li>
+                          <li class="post-author ml-2" *ngIf="blog.author && blog.author.username">
+                            Par <a href="javascript:void(0);">{{ blog.author.username }}</a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="dlab-post-title">
+                        <h4 class="post-title">
+                          <a [routerLink]="['/blog-single', blog.id]">{{ blog.title }}</a>
+                        </h4>
+                      </div>
+                      <div class="dlab-post-text">
+                        <p>{{ blog.content | slice:0:150 }}...</p>
+                      </div>
+                      <div class="dlab-post-readmore" *ngIf="blog.id">
+                        <a [routerLink]="['/front/blog-single-sidebar', blog.id]" title="Lire la suite" rel="bookmark" class="site-button">
+                          Lire la suite <i class="ti-arrow-right"></i>
+                        </a>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pagination -->
+              <div class="pagination-bx clearfix m-b30 text-center">
+                <ul class="pagination">
+                  <li class="previous"><a href="javascript:void(0);"><i class="ti-arrow-left"></i> Précédent</a></li>
+                  <li class="active"><a href="javascript:void(0);">1</a></li>
+                  <li><a href="javascript:void(0);">2</a></li>
+                  <li><a href="javascript:void(0);">3</a></li>
+                  <li class="next"><a href="javascript:void(0);">Suivant <i class="ti-arrow-right"></i></a></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Sidebar (right) -->
+            <ng-container *ngIf="layout.sidebar && layout.sidebarPosition === 'right'">
+              <div class="col-xl-3 col-lg-4">
+                <aside class="side-bar sticky-top">
+                  <app-search-form2></app-search-form2>
+                  <app-recent-posts1></app-recent-posts1>
+                  <app-newsletter1></app-newsletter1>
+                  <app-our-gallery1></app-our-gallery1>
+                  <app-category-list1></app-category-list1>
+                  <app-tag-list1></app-tag-list1>
+                </aside>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <app-footer13></app-footer13>
+
+    <!-- Scroll top button -->
+    <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+  </div>

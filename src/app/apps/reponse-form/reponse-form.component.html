@@ -1,0 +1,57 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">Répondre à la réclamation</h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+        <li class="breadcrumb-item position-relative">
+            <a routerLink="/" class="d-inline-block position-relative">
+                <i class="ri-home-8-line"></i> Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item position-relative">Réclamations</li>
+        <li class="breadcrumb-item position-relative">Répondre</li>
+    </ol>
+</div>
+
+<!-- Formulaire de réponse -->
+<div class="row">
+    <div class="col-xxl-7 col-xxxl-8">
+        <mat-card class="daxa-card add-reponse-card mb-25 border-radius bg-white border-none d-block">
+            <mat-card-header>
+                <mat-card-title>
+                    <h5 class="mb-0">Répondre à la réclamation</h5>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <form (ngSubmit)="submitReply()">
+                    <div class="row">
+                        <!-- Titre de la réponse -->
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">Titre</label>
+                                <mat-form-field>
+                                    <mat-label>Entrez le titre</mat-label>
+                                    <input matInput [(ngModel)]="reply.titre" name="titre" required>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Contenu de la réponse -->
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <label class="main-label d-block lh-1 text-black">Réponse</label>
+                                <mat-form-field class="textarea">
+                                    <mat-label>Écrivez votre réponse</mat-label>
+                                    <textarea matInput [(ngModel)]="reply.reponse" name="reponse" rows="5" required></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-box">
+                        <button mat-button color="primary" type="submit">Envoyer</button>
+                        <button mat-button color="warn" (click)="cancelReply()">Annuler</button>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
