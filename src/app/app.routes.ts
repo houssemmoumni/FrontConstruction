@@ -5,6 +5,7 @@ import { ProjectManagementComponent } from './dashboard/project-management/proje
 import { CrmComponent } from './dashboard/crm/crm.component';
 import { LmsComponent } from './dashboard/lms/lms.component';
 import { HelpDeskComponent } from './dashboard/help-desk/help-desk.component';
+import { ViewResponsesDialogComponentComponent } from './view-responses-dialog-component/view-responses-dialog-component.component';
 import { UiElementsComponent } from './ui-elements/ui-elements.component';
 import { AlertsComponent } from './ui-elements/alerts/alerts.component';
 import { AutocompleteComponent } from './ui-elements/autocomplete/autocomplete.component';
@@ -208,6 +209,8 @@ import { MesReclamationsComponent } from './mes-reclamations/mes-reclamations.co
 //reclaamtion backoffice
 import { ReclamationComponent } from './apps/reclamation/reclamation.component';
 import { ReponseFormComponent } from './apps/reponse-form/reponse-form.component';
+
+
 //
 
 
@@ -222,6 +225,7 @@ import { ReponseFormComponent } from './apps/reponse-form/reponse-form.component
 //front
 
 import { ReclamationAddComponent } from './front/reclamation-add/reclamation-add.component';
+
 
 
 import { HeaderStyle1Component } from './front/features/header-style1/header-style1.component';
@@ -300,6 +304,7 @@ import { EditBlogComponent } from './apps/edit-blog/edit-blog.component';
 
 
 
+
 // Removed invalid route definition
 
 
@@ -309,6 +314,7 @@ export const routes: Routes = [
     { path: 'reclamation', component: ReclamationComponent },
 
     { path: 'reponse/:id', component: ReponseFormComponent },
+    { path: 'view/:id', component: ViewResponsesDialogComponentComponent },
 
     { path: '', component: EcommerceComponent },
     { path: 'crm', component: CrmComponent },
@@ -552,6 +558,8 @@ export const routes: Routes = [
             { path: 'data-table', component: DataTableComponent },
         ],
     },
+
+
     {
         path: 'ui-kit',
         component: UiElementsComponent,

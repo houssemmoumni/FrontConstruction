@@ -2,6 +2,6 @@ export interface Reponse {
     idreponse?: number;
     titre: string;
     reponse: string;
-    date_reponse: string;
-    reclamation?: any;
+    date_reponse?: string;
+  //  reclamation?: any;
   }

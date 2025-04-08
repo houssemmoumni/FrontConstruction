@@ -29,7 +29,22 @@ export class ReclamationService {
 
   // Ajouter une réclamation
   addReclamation(reclamation: Reclamation, userId: number): Observable<Reclamation> {
-    return this.http.post<Reclamation>(`${this.apiUrl}/ajouter?userId=${userId}`, reclamation);
+    // Solution 1: Envoi comme form-data (pour la méthode avec @RequestParam)
+    const formData = new FormData();
+    formData.append('titre', reclamation.titre || '');
+    formData.append('description', reclamation.description || '');
+    formData.append('type', reclamation.type || '');
+
+    return this.http.post<Reclamation>(
+      `${this.apiUrl}/ajouter?userId=${userId}`,
+      formData
+    );
+
+    // OU Solution 2: Envoi comme JSON (méthode recommandée)
+    // return this.http.post<Reclamation>(
+    //   `${this.apiUrl}/ajouter?userId=${userId}`,
+    //   reclamation
+    // );
   }
 
   // Modifier une réclamation

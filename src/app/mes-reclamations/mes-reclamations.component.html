@@ -48,17 +48,21 @@
                       <!-- Affichage des réponses (à l'intérieur du *ngFor !) -->
                       <tr *ngIf="rec.idreclamation && reponsesMap[rec.idreclamation]">
                         <td colspan="6">
-                          <strong>Réponses :</strong>
-                          <ul *ngIf="reponsesMap[rec.idreclamation].length > 0; else noReponse">
-                            <li *ngFor="let rep of reponsesMap[rec.idreclamation]">
-                              {{ rep.reponse }} - <small>{{ rep.date_reponse | date:'dd/MM/yyyy' }}</small>
-                            </li>
-                          </ul>
-                          <ng-template #noReponse>
-                            <p class="text-muted">Aucune réponse disponible.</p>
-                          </ng-template>
+                          <div class="reponse-wrapper">
+                            <strong class="reponse-title">Réponses :</strong>
+                            <ul *ngIf="reponsesMap[rec.idreclamation].length > 0; else noReponse" class="reponse-list">
+                              <li *ngFor="let rep of reponsesMap[rec.idreclamation]" class="reponse-item">
+                                <span class="reponse-text">{{ rep.reponse }}</span>
+                                <small class="reponse-date">{{ rep.date_reponse | date:'dd/MM/yyyy' }}</small>
+                              </li>
+                            </ul>
+                            <ng-template #noReponse>
+                              <p class="text-muted">Aucune réponse disponible.</p>
+                            </ng-template>
+                          </div>
                         </td>
                       </tr>
+
                     </ng-container>
 
                     <tr *ngIf="reclamations.length === 0">

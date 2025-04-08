@@ -19,20 +19,13 @@ export class ReponseService {
   }
 
 
-  // Ajouter une réponse
- // Ajouter une réponse
+
 // Ajouter une réponse
-addReponse(reponse: Reponse, reclamationId: number, userId: number): Observable<any> {
+addReponse(reponse: { titre: string; reponse: string }, reclamationId: number, userId: number): Observable<Reponse> {
     const url = `${this.apiUrl}/addResponse?reclamationId=${reclamationId}&userId=${userId}`;
-    return this.http.post(url, reponse);
-  }
-  // Mettre à jour une réponse
-  updateReponse(id: number, reponse: Reponse, userId: number): Observable<Reponse> {
-    return this.http.put<Reponse>(`${this.apiUrl}/update/${id}`, reponse, {
-      params: {
-        userId: userId.toString(),
-      },
-    });
+    return this.http.post<Reponse>(url, reponse).pipe(
+      retry(2) // Optionnel: permet de réessayer en cas d'échec
+    );
   }
 
   // Supprimer une réponse

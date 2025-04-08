@@ -13,6 +13,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
+
+
+
 @Component({
   selector: 'app-reclamation',
   standalone: true,
@@ -32,6 +35,8 @@ import { Router } from '@angular/router';
 export class ReclamationComponent implements OnInit {
   displayedColumns: string[] = ['idreclamation', 'titre', 'description', 'dateReclamation', 'status', 'actions'];
   dataSource = new MatTableDataSource<Reclamation>();
+    reponseService: any;
+    dialog: any;
 
   constructor(
     private reclamationService: ReclamationService,
@@ -79,8 +84,11 @@ export class ReclamationComponent implements OnInit {
     }
   }
 
+
   viewReclamation(reclamation: Reclamation): void {
-    console.log('Voir la réclamation :', reclamation);
+    if (reclamation.idreclamation) {
+      this.router.navigate(['/view', reclamation.idreclamation]);
+    }
   }
 
   replyReclamation(reclamation: Reclamation): void {
