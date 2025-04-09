@@ -154,6 +154,7 @@ import { LCoursesComponent } from './pages/lms-page/l-courses/l-courses.componen
 import { UserCourseListComponent } from './pages/lms-page/user-course-list/user-course-list.component';
 import { MyCoursesComponent } from './pages/lms-page/my-courses/my-courses.component';
 import { UserDetailsCourseComponent } from './pages/lms-page/user-details-course/user-details-course.component';
+
 //import { CourseContentComponent } from './pages/lms-page/l-course-details/course-content/course-content.component';
 import { AddContentComponent } from './pages/lms-page/add-content/add-content.component';
 import { LmsPageComponent } from './pages/lms-page/lms-page.component';
@@ -300,6 +301,7 @@ import { HomeSolarPlantComponent } from './front/home-solar-plant/home-solar-pla
 import { HomeSteelPlantComponent } from './front/home-steel-plant/home-steel-plant.component';
 import { IndexComponent } from './front/index/index.component';
 import { EditBlogComponent } from './apps/edit-blog/edit-blog.component';
+import { ChatbotComponent } from './chatbot/chatbot.component';
 
 
 
@@ -313,6 +315,7 @@ export const routes: Routes = [
 
     { path: 'reclamation', component: ReclamationComponent },
 
+    { path: 'chatbot', component: ChatbotComponent },
     { path: 'reponse/:id', component: ReponseFormComponent },
     { path: 'view/:id', component: ViewResponsesDialogComponentComponent },
 
