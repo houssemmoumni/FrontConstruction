@@ -1,6 +1,8 @@
 <div *ngIf="isFrontPage; else mainLayout">
     <router-outlet />
 </div>
+
+<!-- <app-notifications></app-notifications> -->
 <ng-template #mainLayout>
     <div
         [ngClass]="{
@@ -21,6 +23,8 @@
         <!-- Sidebar -->
         <app-sidebar />
 
+
+
         <!-- Main Content -->
         <div
             class="main-content transition d-flex flex-column"
@@ -38,6 +42,7 @@
         <!-- <app-customizer-settings /> -->
 
         <app-chatbot></app-chatbot>
+
 
     </div>
 

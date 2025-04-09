@@ -28,6 +28,13 @@
       </mat-card-title>
     </mat-card-header>
 
+
+        <!-- Ajoutez ceci près de votre bouton de recherche -->
+<!-- Dans reclamation.component.html -->
+<div class="notification-badge" *ngIf="pendingCount > 0">
+    {{pendingCount}}
+  </div>
+
     <mat-card-content>
       <div class="contacts-list-table">
         <div class="table-responsive">
@@ -89,6 +96,11 @@
         </div>
       </div>
     </mat-card-content>
+
+
+
+    <!-- Pagination -->
+<mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
   </mat-card>
 
   <!-- Formulaire de réponse (masqué par défaut) -->

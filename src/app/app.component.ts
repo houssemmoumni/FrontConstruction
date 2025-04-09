@@ -8,6 +8,9 @@ import { CustomizerSettingsComponent } from './customizer-settings/customizer-se
 import { CustomizerSettingsService } from './customizer-settings/customizer-settings.service';
 import { ToggleService } from './common/sidebar/toggle.service';
 import { ChatbotComponent } from "./chatbot/chatbot.component";
+//import { NotificationsComponent } from "./notifications/notifications.component";
+
+
 
 
 @Component({
@@ -21,6 +24,7 @@ import { ChatbotComponent } from "./chatbot/chatbot.component";
     CustomizerSettingsComponent,
     NgClass,
     ChatbotComponent
+   ,
 ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',

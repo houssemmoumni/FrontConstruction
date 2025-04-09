@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReclamationService } from '../../services/reclamation.service';
 import { ReponseService } from '../../services/reponse.service';
 import { Reclamation } from '../../models/reclamation.model';
@@ -12,6 +12,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import {MatPaginator} from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
+
+import { NotificationService } from '../../services/notification.service';
+import Swal from 'sweetalert2';
 
 
 
@@ -27,6 +32,7 @@ import { Router } from '@angular/router';
     MatButtonModule,
     MatSnackBarModule,
     FormsModule,
+    MatPaginator
   ],
   templateUrl: './reclamation.component.html',
   styleUrls: ['./reclamation.component.css'],
@@ -37,16 +43,58 @@ export class ReclamationComponent implements OnInit {
   dataSource = new MatTableDataSource<Reclamation>();
     reponseService: any;
     dialog: any;
+    private notificationSub!: Subscription;
+  pendingCount = 0;
+
 
   constructor(
     private reclamationService: ReclamationService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar ,
+    private notificationService: NotificationService
   ) {}
-
   ngOnInit(): void {
     this.loadReclamations();
+    this.setupNotificationListener();
   }
+
+  ngOnDestroy(): void {
+    this.notificationSub?.unsubscribe(); // Correction ici
+  }
+
+  private setupNotificationListener(): void {
+    this.notificationSub = this.notificationService.newNotification.subscribe({
+      next: (notification: {message: string, count: number}) => {
+        this.pendingCount += notification.count;
+        this.showNotificationAlert(notification.message);
+      },
+      error: (err: Error) => console.error('Notification error:', err)
+    });
+  }
+
+  private showNotificationAlert(message: string): void {
+    Swal.fire({
+      title: 'Notification',
+      text: message,
+      icon: 'info',
+      confirmButtonText: 'Voir',
+      showCancelButton: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dataSource.filter = 'en attente';
+      }
+    });
+  }
+
+
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator; // Lier le paginator à la source de données
+  }
+
+
 
   loadReclamations(): void {
     this.reclamationService.getAllReclamations().subscribe(

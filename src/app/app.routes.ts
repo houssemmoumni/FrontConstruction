@@ -302,7 +302,7 @@ import { HomeSteelPlantComponent } from './front/home-steel-plant/home-steel-pla
 import { IndexComponent } from './front/index/index.component';
 import { EditBlogComponent } from './apps/edit-blog/edit-blog.component';
 import { ChatbotComponent } from './chatbot/chatbot.component';
-
+//import { NotificationsComponent } from './notifications/notifications.component';
 
 
 
@@ -314,6 +314,7 @@ export const routes: Routes = [
 
 
     { path: 'reclamation', component: ReclamationComponent },
+    //{ path: 'notifications', component: NotificationsComponent },
 
     { path: 'chatbot', component: ChatbotComponent },
     { path: 'reponse/:id', component: ReponseFormComponent },

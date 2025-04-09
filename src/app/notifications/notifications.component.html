@@ -1,0 +1,54 @@
+<!-- <div class="notification-container">
+    <button class="notification-bell"
+            (click)="toggleNotifications()"
+            [class.disconnected]="!isConnected"
+            matTooltip="{{isConnected ? 'Notifications actives' : 'Connexion perdue'}}">
+      <span class="material-icons">
+        {{isConnected ? 'notifications' : 'notifications_off'}}
+      </span>
+      <span class="badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+      <span class="connection-dot" [class.connected]="isConnected"></span>
+    </button>
+
+    <div class="notification-dropdown" *ngIf="showNotifications">
+      <div class="dropdown-header">
+        <h3>
+          <span class="material-icons">notifications</span>
+          Notifications
+          <small>({{notifications.length}})</small>
+        </h3>
+        <button class="close-btn" (click)="toggleNotifications()">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <div class="connection-alert" *ngIf="!isConnected">
+        <span class="material-icons">wifi_off</span>
+        Connexion perdue - Tentative de reconnexion...
+      </div>
+
+      <div class="notification-list">
+        <div *ngFor="let notification of notifications" class="notification-item">
+          <div class="notification-icon">
+            <span class="material-icons" [class.urgent]="notification.priority === 'high'">
+              {{notification.priority === 'high' ? 'warning' : 'info'}}
+            </span>
+          </div>
+          <div class="notification-content">
+            <p class="notification-message">{{ notification.message }}</p>
+            <div class="notification-meta">
+              <small class="notification-time">{{ notification.timestamp | date:'short' }}</small>
+              <span class="notification-status" [class.pending]="notification.status === 'en attente'">
+                {{notification.status}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="notifications.length === 0" class="empty-state">
+          <span class="material-icons">notifications_none</span>
+          <p>Aucune notification</p>
+        </div>
+      </div>
+    </div>
+  </div> -->
