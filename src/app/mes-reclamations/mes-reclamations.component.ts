@@ -56,6 +56,34 @@ export class MesReclamationsComponent implements OnInit {
       }
 
 
+
+      editReclamation(reclamation: any) {
+        // Implémentez la logique d'édition
+        console.log('Édition de la réclamation:', reclamation);
+        // Vous pouvez ouvrir un modal ou naviguer vers une page d'édition
+      }
+
+      confirmDelete(reclamationId: number) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer cette réclamation ?')) {
+          this.deleteReclamation(reclamationId);
+        }
+      }
+
+      deleteReclamation(reclamationId: number) {
+        // Implémentez la suppression via votre service
+        this.reclamationService.deleteReclamation(reclamationId).subscribe(
+          () => {
+            // Recharger les données ou filtrer le tableau local
+            this.reclamations = this.reclamations.filter(r => r.idreclamation !== reclamationId);
+            alert('Réclamation supprimée avec succès');
+          },
+          error => {
+            console.error('Erreur lors de la suppression:', error);
+            alert('Échec de la suppression');
+          }
+        );
+      }
+
     }
 
 
