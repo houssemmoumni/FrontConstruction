@@ -1,42 +1,78 @@
-<!-- src/app/front/interview-detail/interview-detail.component.html -->
-<div class="container mt-5">
-    <!-- En-tête de la page -->
-    <div class="text-center mb-5">
-      <h2 class="display-4 font-weight-bold text-primary">Entretiens pour la candidature ID : {{ applicationId }}</h2>
-      <p class="lead text-muted">Détails des entretiens planifiés pour cette candidature.</p>
-    </div>
+<div class="container py-5">
+    @if (isLoading) {
+      <div class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3">Loading interview details...</p>
+      </div>
+    }
 
-    <!-- Liste des entretiens -->
-    <div *ngIf="interviews.length > 0; else noInterviews" class="row">
-      <div class="col-md-8 offset-md-2">
-        <div class="card shadow-sm mb-4" *ngFor="let interview of interviews">
-          <div class="card-body">
-            <h5 class="card-title text-primary">
-              <i class="fas fa-calendar-alt me-2"></i>Date de l'entretien
-            </h5>
-            <p class="card-text">{{ interview.interviewDate | date: 'dd/MM/yyyy à HH:mm' }}</p>
+    @if (error) {
+      <div class="alert alert-danger text-center">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        {{ error }}
+        <button class="btn btn-sm btn-outline-primary ms-3" routerLink="/">
+          Return Home
+        </button>
+      </div>
+    }
 
-            <h5 class="card-title text-primary mt-4">
-              <i class="fas fa-comment-dots me-2"></i>Feedback
-            </h5>
-            <p class="card-text">{{ interview.feedback || "Aucun feedback disponible pour le moment." }}</p>
+    @if (interview && !isLoading) {
+      <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">
+            <i class="bi bi-calendar2-check me-2"></i>
+            Your Interview Details
+          </h3>
+        </div>
+
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <h5><i class="bi bi-clock-history me-2 text-primary"></i> Scheduled Time</h5>
+              <p class="lead">{{ formattedDate }}</p>
+            </div>
+
+            <div class="col-md-6">
+              <h5><i class="bi bi-info-circle me-2 text-primary"></i> Status</h5>
+              <span class="badge" [class.bg-success]="canJoin" [class.bg-warning]="!canJoin" [class.text-dark]="!canJoin">
+                {{ canJoin ? 'Ready to join' : 'Will activate 24 hours before interview' }}
+              </span>
+            </div>
+          </div>
+
+          @if (canJoin && interview.meetLink) {
+            <div class="mb-4">
+              <h5><i class="bi bi-camera-video me-2 text-primary"></i> Meeting Link</h5>
+              <a [href]="interview.meetLink" target="_blank" class="btn btn-success">
+                <i class="bi bi-arrow-up-right-circle me-2"></i>
+                Join Interview Now
+              </a>
+            </div>
+          }
+
+          <div class="mb-4">
+            <h5><i class="bi bi-card-checklist me-2 text-primary"></i> Preparation</h5>
+            <div class="alert alert-info">
+              {{ interview.feedback || 'Please prepare for a technical discussion about your application.' }}
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            @if (interview.interviewDate) {
+              <button class="btn btn-primary" (click)="addToCalendar()">
+                <i class="bi bi-calendar-plus me-2"></i>
+                Add to Calendar
+              </button>
+            }
+
+            <button class="btn btn-outline-secondary" routerLink="/">
+              <i class="bi bi-house-door me-2"></i>
+              Return Home
+            </button>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Message si aucun entretien trouvé -->
-    <ng-template #noInterviews>
-      <div class="alert alert-info text-center">
-        <i class="fas fa-info-circle me-2"></i>
-        {{ errorMessage || "Aucun entretien trouvé pour cette candidature." }}
-      </div>
-    </ng-template>
-    </div>
-
-    <!-- Bouton pour retourner à la liste des offres -->
-    <button class="btn btn-primary btn-lg" (click)="navigateToBlogGrid2()">
-        <i class="fas fa-arrow-left me-2"></i>Retour à la liste des offres
-      </button>
-
-
+    }
+  </div>

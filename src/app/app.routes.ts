@@ -287,6 +287,7 @@ import { ShopRegisterComponent } from './front/shop/shop-register/shop-register.
 import { ShopSidebarComponent } from './front/shop/shop-sidebar/shop-sidebar.component';
 import { ShopWishlistComponent } from './front/shop/shop-wishlist/shop-wishlist.component';
 import { ShopComponent } from './front/shop/shop/shop.component';
+import { Server } from 'http';
 
 export const routes: Routes = [
     { path: 'postuler/:jobId', component: JobApplicationFormComponent },
@@ -296,7 +297,9 @@ export const routes: Routes = [
     { path: 'addjob', component: AddJobComponent },
     { path: 'addjob/:id', component: AddJobComponent },
     { path: 'applicationlist', component: ApplicationListComponent },
-    {  path: 'interviews/candidate/:applicationId',component: InterviewDetailComponent,},
+    {  path: 'interviews/candidate/:applicationId',component: InterviewDetailComponent},
+    {path: 'interview/:token',component: InterviewDetailComponent},
+
     { path: 'front/blog-grid-2', component: Grid2Component },
     { path: 'projects', component: ProjectComponent },
     { path: 'declare-incident', component: DeclareIncidentComponent },

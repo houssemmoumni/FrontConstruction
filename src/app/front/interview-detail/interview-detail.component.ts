@@ -1,64 +1,120 @@
-// src/app/front/interview-detail/interview-detail.component.ts
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InterviewService } from '../../services/interview.service';
 import { Interview } from '../../models/interview.model';
-
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-interview-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './interview-detail.component.html',
-  styleUrls: ['./interview-detail.component.scss'],
+  styleUrl: './interview-detail.component.scss'
 })
 export class InterviewDetailComponent implements OnInit {
-  interviews: Interview[] = []; // Liste des entretiens
-  applicationId!: number; // ID de la candidature
-  errorMessage: string | null = null; // Message d'erreur
+  interview?: Interview;
+  formattedDate = '';
+  isLoading = true;
+  error: string | null = null;
+  canJoin = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private interviewService: InterviewService
   ) {}
-  navigateToBlogGrid2(): void {
-    this.router.navigate(['/front/blog-grid-2']);
-  }
 
   ngOnInit(): void {
-    // Récupère l'ID de la candidature depuis l'URL
-    this.applicationId = Number(this.route.snapshot.paramMap.get('applicationId'));
+    this.route.paramMap.subscribe(params => {
+      const token = params.get('token');
+      const applicationId = params.get('applicationId');
 
-    // Vérifie si l'ID de la candidature est valide
-    if (isNaN(this.applicationId)) {
-      console.error("⚠️ ID de candidature invalide. Redirection vers la liste.");
-      this.router.navigate(['/applications']);
-      return;
-    }
-
-    console.log("🔹 ID de candidature récupéré depuis l'URL :", this.applicationId);
-    this.loadInterviews(this.applicationId); // Charge les entretiens
+      if (token) {
+        this.loadInterviewByToken(token);
+      } else if (applicationId) {
+        this.loadInterviewByApplicationId(applicationId);
+      } else {
+        this.router.navigate(['/not-found']);
+      }
+    });
   }
 
-  // Charge les entretiens pour la candidature
-  loadInterviews(applicationId: number): void {
-    console.log("📡 Récupération des entretiens pour la candidature ID :", applicationId);
-    this.interviewService.getInterviewsByApplicationId(applicationId).subscribe(
-      (data: Interview[]) => {
-        if (data && data.length > 0) {
-          console.log("✅ Entretiens récupérés :", data);
-          this.interviews = data;
+  private loadInterviewByToken(token: string): void {
+    this.interviewService.getInterviewByToken(token).subscribe({
+      next: (interview) => {
+        if (interview) {
+          this.interview = interview;
+          this.updateInterviewData();
+          this.activateLinkIfNeeded(token);
         } else {
-          console.warn("⚠️ Aucun entretien trouvé pour cette candidature !");
-          this.errorMessage = "Aucun entretien trouvé pour cette candidature.";
+          this.error = 'Invalid or expired interview link';
         }
+        this.isLoading = false;
       },
-      (error: any) => {
-        console.error("❌ Erreur lors de la récupération des entretiens :", error);
-        this.errorMessage = "Erreur serveur. Les entretiens sont peut-être inexistants.";
+      error: (err) => {
+        console.error('Error loading interview:', err);
+        this.error = 'Failed to load interview details';
+        this.isLoading = false;
       }
+    });
+  }
+
+  private loadInterviewByApplicationId(applicationId: string): void {
+    this.interviewService.getInterviewByApplicationId(+applicationId).subscribe({
+      next: (interviews) => {
+        if (interviews?.[0]) {
+          this.interview = interviews[0];
+          this.updateInterviewData();
+        } else {
+          this.error = 'No interview scheduled for this application';
+        }
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error loading interview:', err);
+        this.error = 'Failed to load interview details';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private updateInterviewData(): void {
+    if (!this.interview) return;
+
+    this.formattedDate = this.interviewService.formatInterviewDate(
+      this.interview.interviewDate,
+      this.interview.interviewTime
     );
+    this.canJoin = this.interviewService.canJoinInterview(
+      this.interview.interviewDate,
+      this.interview.interviewTime
+    );
+  }
+
+  private activateLinkIfNeeded(token: string): void {
+    if (this.canJoin && this.interview?.token) {
+      this.interviewService.activateInterviewLink(token).subscribe({
+        error: (err) => console.error('Failed to activate link:', err)
+      });
+    }
+  }
+
+  addToCalendar(): void {
+    if (!this.interview?.interviewDate || !this.interview.interviewTime) return;
+
+    const startDate = new Date(
+      `${this.interview.interviewDate}T${this.interview.interviewTime}`
+    );
+    const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+
+    const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE` +
+      `&text=Interview for Application ${this.interview.applicationId}` +
+      `&dates=${startDate.toISOString().replace(/[-:.]/g, '')}` +
+      `/${endDate.toISOString().replace(/[-:.]/g, '')}` +
+      `&details=Interview meeting. Link: ${encodeURIComponent(this.interview.meetLink ?? '')}` +
+      `&location=${encodeURIComponent(this.interview.meetLink ?? '')}`;
+
+    window.open(calendarUrl, '_blank');
   }
 }

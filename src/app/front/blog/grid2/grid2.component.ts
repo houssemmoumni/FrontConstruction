@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { JobOfferService } from '../../../services/job-offer.service';
-import { CandidateService } from '../../../services/candidate.service';
+import { NotificationService } from '../../../services/notification.service';
+import { Subscription } from 'rxjs';
 import { Banner1Component } from '../../elements/banner/banner1/banner1.component';
 import { Footer13Component } from '../../elements/footer/footer13/footer13.component';
 import { HeaderLight3Component } from '../../elements/header/header-light3/header-light3.component';
@@ -9,6 +10,23 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule, NgClass } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationModalComponent } from '../../notification-modal/notification-modal.component';
+
+interface AppNotification {
+  id: number;
+  type: string;
+  message: string;
+  is_read: boolean;
+  created_at: string;
+  application_id?: number;
+  interview_id?: number;
+  status?: string;
+  job_title?: string;
+  job_offer_id?: number;
+}
 
 @Component({
   selector: 'app-grid2',
@@ -23,11 +41,12 @@ import { RouterModule } from '@angular/router';
     MatMenuModule,
     MatButtonModule,
     RouterModule,
+    DatePipe
   ],
   templateUrl: './grid2.component.html',
   styleUrls: ['./grid2.component.css']
 })
-export class Grid2Component implements OnInit {
+export class Grid2Component implements OnInit, OnDestroy {
   banner: any = {
     pagetitle: "Offres d'Emploi",
     bg_image: "assets/images/banner/bnr1.jpg",
@@ -40,110 +59,210 @@ export class Grid2Component implements OnInit {
     gridClass: "col-lg-4 col-md-6"
   };
 
-  blogList: any[] = []; // Liste des offres d'emploi
-  displayedBlogs: any[] = []; // Offres d'emploi à afficher
-  currentPage: number = 1; // Page actuelle
-  itemsPerPage: number = 2; // Nombre d'éléments par page
-  searchQuery: string = ''; // Texte de recherche
-  selectedItem: any = null; // Élément sélectionné pour afficher la description complète
-  notifications: any[] = []; // Liste des notifications
-  showNotifications: boolean = false; // Contrôle l'affichage de la boîte de notifications
-  unreadNotificationsCount: number = 0; // Nombre de notifications non lues
+  blogList: any[] = [];
+  displayedBlogs: any[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 2;
+  searchQuery: string = '';
+  selectedItem: any = null;
+
+  notifications: AppNotification[] = [];
+  showNotifications: boolean = false;
+  unreadNotificationsCount: number = 0;
+  private notificationSub!: Subscription;
+  private destroy$ = new Subscription();
 
   constructor(
     public jobOfferService: JobOfferService,
-    private candidateService: CandidateService
-  ) { }
+    private notificationService: NotificationService,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    this.fetchPublishedJobOffers(); // Charge les offres d'emploi publiées
-    this.checkApplicationStatus(); // Vérifie le statut des candidatures
+    this.fetchPublishedJobOffers();
+    this.setupRealTimeNotifications();
+    this.loadInitialNotifications();
   }
 
-  // Charge les offres d'emploi publiées
-  fetchPublishedJobOffers() {
-    this.jobOfferService.getJobOffers().subscribe({
-      next: (data) => {
-        this.blogList = data.filter(offer => offer.publish); // Filtre les offres publiées
-        this.updateDisplayedBlogs(); // Met à jour les offres affichées
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des offres publiées :', error);
+  ngOnDestroy(): void {
+    this.notificationSub?.unsubscribe();
+    this.destroy$.unsubscribe();
+  }
+
+  private setupRealTimeNotifications(): void {
+    this.notificationSub = this.notificationService.getNotifications().subscribe({
+      next: (notifications: any[]) => {
+        this.notifications = notifications.map(notification => ({
+          id: notification.id,
+          type: this.determineNotificationType(notification),
+          message: this.formatNotificationMessage(notification),
+          is_read: notification.is_read || false,
+          created_at: notification.created_at,
+          application_id: notification.application_id,
+          interview_id: notification.interview_id,
+          status: notification.status,
+          job_title: notification.job_title,
+          job_offer_id: notification.job_offer_id
+        }));
+        this.updateUnreadCount();
+
+        const newUnread = notifications.filter(n => !n.is_read);
+        if (newUnread.length > 0) {
+          newUnread.forEach(notification => {
+            this.showNotificationToast(notification);
+          });
+        }
       }
     });
   }
 
-  // Vérifie le statut des candidatures
-  checkApplicationStatus() {
-    const candidateId = 1; // Remplace par l'ID du candidat connecté
-    this.candidateService.getAllApplications().subscribe({
-      next: (applications) => {
-        applications.forEach(application => {
-          if (application.status === 'ACCEPTED') {
-            this.notifications.push({
-              type: 'success',
-              message: `Félicitations ! Vous avez été accepté pour l'offre "${application.jobOffer.title}".`,
-              link: `/interviews/candidate/${application.id}`, // Lien vers l'entretien
-              read: false // Marquer comme non lu
-            });
-          } else if (application.status === 'REJECTED') {
-            this.notifications.push({
-              type: 'error',
-              message: `Malheureusement, votre candidature pour l'offre "${application.jobOffer.title}" a été rejetée.`,
-              link: '', // Pas de lien pour un rejet
-              read: false // Marquer comme non lu
-            });
-          }
-        });
-        this.updateUnreadNotificationsCount(); // Met à jour le nombre de notifications non lues
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des candidatures :', error);
+  private determineNotificationType(notification: any): string {
+    if (notification.status === 'REJECTED') return 'rejected';
+    if (notification.status === 'ACCEPTED') return 'accepted';
+    if (notification.interview_id) return 'interview';
+    return 'info';
+  }
+
+  private formatNotificationMessage(notification: any): string {
+    if (notification.status === 'REJECTED') {
+      return `Votre candidature a été rejetée pour le poste ${notification.job_title || ''}`;
+    }
+    if (notification.status === 'ACCEPTED') {
+      return `Félicitations! Votre candidature pour ${notification.job_title || ''} a été acceptée`;
+    }
+    if (notification.interview_id) {
+      return `Nouvel entretien programmé pour ${notification.job_title || ''}`;
+    }
+    return notification.message || 'Nouvelle notification';
+  }
+
+  private loadInitialNotifications(): void {
+    this.destroy$.add(
+      this.notificationService.getUserNotifications(1).subscribe({
+        next: (notifications: any[]) => {
+          this.notifications = notifications.map(notification => ({
+            id: notification.id,
+            type: this.determineNotificationType(notification),
+            message: this.formatNotificationMessage(notification),
+            is_read: notification.is_read || false,
+            created_at: notification.created_at,
+            application_id: notification.application_id,
+            interview_id: notification.interview_id,
+            status: notification.status,
+            job_title: notification.job_title,
+            job_offer_id: notification.job_offer_id
+          }));
+          this.updateUnreadCount();
+        }
+      })
+    );
+  }
+
+  private showNotificationToast(notification: AppNotification): void {
+    const toastRef = this.snackBar.open(notification.message, 'Voir', {
+      duration: 5000,
+      panelClass: ['notification-snackbar'],
+      verticalPosition: 'top'
+    });
+
+    toastRef.onAction().subscribe(() => {
+      this.openNotificationModal(notification);
+    });
+  }
+
+  openNotificationModal(notification: AppNotification): void {
+    this.dialog.open(NotificationModalComponent, {
+      width: '500px',
+      data: {
+        notification: notification
       }
     });
   }
 
-  // Met à jour le nombre de notifications non lues
-  updateUnreadNotificationsCount() {
-    this.unreadNotificationsCount = this.notifications.filter(n => !n.read).length;
-  }
-
-  // Ouvre ou ferme la boîte de notifications
-  toggleNotifications() {
+  toggleNotifications(): void {
     this.showNotifications = !this.showNotifications;
+    if (this.showNotifications) {
+      this.markVisibleNotificationsAsRead();
+    }
   }
 
-  // Marque une notification comme lue
-  markAsRead(notification: any) {
-    notification.read = true;
-    this.updateUnreadNotificationsCount(); // Met à jour le compteur après avoir marqué comme lu
+  private markVisibleNotificationsAsRead(): void {
+    const unreadNotifications = this.notifications.filter(n => !n.is_read);
+    if (unreadNotifications.length > 0) {
+      this.destroy$.add(
+        this.notificationService.markAllAsRead(1).subscribe({
+          next: () => {
+            this.notifications.forEach(n => n.is_read = true);
+            this.updateUnreadCount();
+          }
+        })
+      );
+    }
   }
 
-  // Met à jour les offres d'emploi affichées
-  updateDisplayedBlogs(): void {
+  markAsRead(notification: AppNotification): void {
+    if (!notification.is_read) {
+      this.destroy$.add(
+        this.notificationService.markAsRead(notification.id).subscribe({
+          next: () => {
+            notification.is_read = true;
+            this.updateUnreadCount();
+          }
+        })
+      );
+    }
+  }
+
+  markAllAsRead(): void {
+    const unreadNotifications = this.notifications.filter(n => !n.is_read);
+    if (unreadNotifications.length > 0) {
+      this.destroy$.add(
+        this.notificationService.markAllAsRead(1).subscribe({
+          next: () => {
+            this.notifications.forEach(n => n.is_read = true);
+            this.unreadNotificationsCount = 0;
+          }
+        })
+      );
+    }
+  }
+
+  private updateUnreadCount(): void {
+    this.unreadNotificationsCount = this.notifications.filter(n => !n.is_read).length;
+  }
+
+  fetchPublishedJobOffers() {
+    this.destroy$.add(
+      this.jobOfferService.getJobOffers().subscribe({
+        next: (data) => {
+          this.blogList = data.filter(offer => offer.publish);
+          this.updateDisplayedBlogs();
+        }
+      })
+    );
+  }
+
+  private updateDisplayedBlogs(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.displayedBlogs = this.blogList.slice(startIndex, endIndex);
   }
 
-  // Change la page actuelle
   changePage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
     this.updateDisplayedBlogs();
   }
 
-  // Retourne le nombre total de pages
   get totalPages(): number {
     return Math.ceil(this.blogList.length / this.itemsPerPage);
   }
 
-  // Retourne la liste des pages
   get pages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  // Filtre les offres par date
   filterByDate(range: string): void {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -199,12 +318,11 @@ export class Grid2Component implements OnInit {
     this.currentPage = 1;
   }
 
-  // Applique le filtre de recherche
   applySearchFilter(): void {
     if (this.searchQuery) {
       this.blogList = this.blogList.filter(offer =>
-        offer.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        offer.description.toLowerCase().includes(this.searchQuery.toLowerCase())
+        offer.title?.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        offer.description?.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     } else {
       this.fetchPublishedJobOffers();
@@ -213,16 +331,10 @@ export class Grid2Component implements OnInit {
     this.updateDisplayedBlogs();
   }
 
-  // Affiche ou masque la description complète
   showFullDescription(item: any): void {
-    if (this.selectedItem === item) {
-      this.selectedItem = null;
-    } else {
-      this.selectedItem = item;
-    }
+    this.selectedItem = this.selectedItem === item ? null : item;
   }
 
-  // Fait défiler la page vers le haut
   scroll_top() {
     window.scroll({
       top: 0,

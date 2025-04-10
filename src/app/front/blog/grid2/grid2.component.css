@@ -66,12 +66,12 @@
 
 .badge-success {
     background-color: var(--success-color); /* Vert */
-    color: rgb(30, 227, 12); /* Texte blanc */
+    color: white; /* Texte blanc */
 }
 
 .badge-danger {
     background-color: #dc3545; /* Rouge */
-    color: rgb(252, 5, 5); /* Texte blanc */
+    color: white; /* Texte blanc */
 }
 
 /* Bouton "Voir Détails" */
@@ -116,85 +116,139 @@
 
 .page-item.active .page-link {
     background-color: #0056b3; /* Bleu plus foncé pour la page active */
-    color: rgb(123, 240, 39); /* Texte blanc */
+    color: white; /* Texte blanc */
 }
 
-.notification-bell {
+/* Notification Styles */
+.notification-container {
     position: relative;
-    display: inline-block;
-}
+    margin-right: 15px;
+  }
 
-.bell-icon {
+  .notification-bell {
     cursor: pointer;
-    font-size: 24px;
     position: relative;
-}
-
-.badge {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background-color: red;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 12px;
-}
-
-.notification-dropdown {
-    position: absolute;
-    top: 40px;
-    right: 0;
-    width: 300px;
-    background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.notification-item {
     display: flex;
     align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-}
+    color: #333;
+  }
 
-.notification-icon {
-    font-size: 24px;
-    margin-right: 10px;
-}
-
-.notification-content {
-    flex: 1;
-}
-
-.notification-content p {
-    margin: 0;
-    font-size: 14px;
-}
-
-.notification-content a {
-    color: #007bff;
-    text-decoration: none;
-    font-size: 12px;
-}
-
-.notification-content a:hover {
-    text-decoration: underline;
-}
-
-.mark-as-read {
-    background-color: #007bff;
+  .notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #f44336;
     color: white;
-    border: none;
-    padding: 5px 10px;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .notification-dropdown {
+    position: absolute;
+    right: 0;
+    top: 40px;
+    width: 350px;
+    max-height: 500px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #ddd;
     border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+
+  .notification-header {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .notification-header h4 {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  .mark-all-read {
+    background: none;
+    border: none;
+    color: #2196F3;
     cursor: pointer;
     font-size: 12px;
-}
+  }
 
-.mark-as-read:hover {
-    background-color: #0056b3;
-}
+  .notification-list {
+    padding: 0;
+    margin: 0;
+  }
+
+  .notification-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+  }
+
+  .notification-item.unread {
+    background-color: #f8f9fa;
+  }
+
+  .notification-icon {
+    margin-right: 10px;
+    font-size: 20px;
+  }
+
+  .notification-content {
+    flex: 1;
+  }
+
+  .notification-message {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+  }
+
+  .notification-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #666;
+  }
+
+  .notification-time {
+    margin-right: 10px;
+  }
+
+  .btn-join-meet, .btn-view-details, .mark-as-read {
+    background: none;
+    border: none;
+    color: #2196F3;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    padding: 0 5px;
+  }
+
+  .mark-as-read {
+    color: #4CAF50;
+  }
+
+  .empty-notifications {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+  }
+
+  .empty-notifications i {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .empty-notifications p {
+    margin: 0;
+  }
