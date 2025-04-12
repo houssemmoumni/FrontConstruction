@@ -15,8 +15,11 @@ export interface Worker {
     email: string;
     phone?: string;
     joindate: string;
-    projectId?: number;      // Match backend naming
-    currentProject?: project; // Match backend naming
+    project_id?: number | null;    // Changed from projectId to project_id to match backend
+    currentProject?: {
+        projet_id: number;
+        projet_name: string;
+    } | null;
 }
 
 export type WorkerFormData = Omit<Worker, 'id' | 'project'>;

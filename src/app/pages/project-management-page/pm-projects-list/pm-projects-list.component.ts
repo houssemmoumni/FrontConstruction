@@ -40,9 +40,8 @@ import { ProjectQrDialogComponent } from '../../../components/project-qr-dialog/
         MatFormFieldModule,
         MatInputModule,
         DatePipe,
-        MatDialogModule,
-        WorkerDetailsDialogComponent,
-        ProjectQrDialogComponent
+        MatDialogModule
+        
     ]
 })
 export class PmProjectsListComponent implements OnInit {
@@ -129,6 +128,7 @@ export class PmProjectsListComponent implements OnInit {
                 if (err.status === 0 || err.status === 500) {
                     this.error += '\nPlease verify that:\n1. The server is running\n2. The API endpoint is correct\n3. You have an active internet connection';
                 }
+                this.showMessage(this.error, true);
             },
             complete: () => {
                 this.isLoading = false;
@@ -241,6 +241,15 @@ export class PmProjectsListComponent implements OnInit {
             width: '400px',
             data: { project },
             panelClass: 'qr-dialog'
+        });
+    }
+
+    private showMessage(message: string, isError = false): void {
+        this.snackBar.open(message, 'Close', {
+            duration: 5000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            panelClass: isError ? ['error-snackbar'] : ['success-snackbar']
         });
     }
 }

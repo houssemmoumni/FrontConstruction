@@ -108,34 +108,51 @@
                             <i class="material-symbols-outlined">more_vert</i>
                         </button>
                         <mat-menu #menu="matMenu">
-                            <!-- Debug info -->
-                            {{debugWorkerStatus(worker)}}
+                            <!-- Edit button -->
+                            <button mat-menu-item [routerLink]="['/users-page/edit-user', worker.id]">
+                                <mat-icon>edit</mat-icon>
+                                <span>Edit</span>
+                            </button>
                             
-                            <!-- Assign button -->
-                            <button mat-menu-item (click)="assignToProject(worker.id)" *ngIf="!worker.currentProject">
-                                <i class="material-symbols-outlined">assignment_ind</i>
+                            <!-- Assign to Project button -->
+                            <button mat-menu-item (click)="assignToProject(worker.id)" 
+                                    *ngIf="!hasProject(worker)"
+                                    matTooltip="Assign to a project">
+                                <mat-icon>assignment_ind</mat-icon>
                                 <span>Assign to Project</span>
                             </button>
-                            
-                            <!-- Remove button -->
-                            <button mat-menu-item (click)="removeFromProject(worker.id)" *ngIf="worker.currentProject"
-                                    [matTooltip]="'Currently in: ' + worker.currentProject?.projet_name">
-                                <i class="material-symbols-outlined text-warning">person_remove</i>
-                                <span>Remove from {{worker.currentProject?.projet_name}}</span>
+
+                            <!-- Remove from Project button -->
+                            <button mat-menu-item (click)="removeFromProject(worker.id)"
+                                    *ngIf="hasProject(worker)"
+                                    matTooltip="Remove from current project">
+                                <mat-icon color="warn">person_remove</mat-icon>
+                                <span>Remove from Project</span>
                             </button>
-                            
+
                             <!-- Delete button -->
                             <button mat-menu-item (click)="deleteWorker(worker.id)">
-                                <i class="material-symbols-outlined text-danger">delete</i>
+                                <mat-icon color="warn">delete</mat-icon>
                                 <span>Delete</span>
                             </button>
                         </mat-menu>
+
+                        <!-- Optional: Show project status indicator -->
+                        <div *ngIf="hasProject(worker)" class="project-status">
+                            <small class="text-success">Assigned</small>
+                        </div>
                     </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-                    class="hover-row"></tr>
+                    class="hover-row"
+                    [ngClass]="{
+                        'assigned-worker': hasProject(row),
+                        'unassigned-worker': !hasProject(row)
+                    }"
+                    [matTooltip]="hasProject(row) ? 'Assigned to: ' + (row.currentProject?.projet_name || 'Project') : 'Not assigned to any project'">
+                </tr>
 
                 <!-- No Data Row -->
                 <tr class="mat-row" *matNoDataRow>

@@ -129,6 +129,41 @@
                             background: rgba(0,0,0,0.02);
                         }
                     }
+
+                    tr.assigned-worker {
+                        background-color: rgba(76, 175, 80, 0.05) !important;
+                        border-left: 4px solid #4CAF50 !important;
+
+                        &:hover {
+                            background-color: rgba(76, 175, 80, 0.1) !important;
+                        }
+
+                        .role-badge {
+                            border: 1px solid rgba(76, 175, 80, 0.3);
+                        }
+
+                        // Add a subtle icon indicator
+                        td:first-child {
+                            position: relative;
+
+                            &::after {
+                                content: '';
+                                display: inline-block;
+                                width: 8px;
+                                height: 8px;
+                                border-radius: 50%;
+                                background-color: #4CAF50;
+                                position: absolute;
+                                left: 10px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                            }
+                        }
+                    }
+
+                    tr.unassigned-worker {
+                        border-left: 4px solid transparent;
+                    }
                 }
 
                 .no-data-message {
@@ -168,6 +203,22 @@
                 }
             }
         }
+    }
+}
+
+.project-status {
+    margin-top: 4px;
+    small {
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        background-color: rgba(76, 175, 80, 0.1);
+    }
+}
+
+.mat-menu-item {
+    mat-icon {
+        margin-right: 8px;
     }
 }
 
@@ -292,3 +343,17 @@
 
 /* Min width 1600px */
 @media only screen and (min-width: 1600px) {}
+
+:host-context(.dark-theme) {
+    .table-container {
+        table {
+            tr.assigned-worker {
+                background-color: rgba(76, 175, 80, 0.08) !important;
+                
+                &:hover {
+                    background-color: rgba(76, 175, 80, 0.12) !important;
+                }
+            }
+        }
+    }
+}

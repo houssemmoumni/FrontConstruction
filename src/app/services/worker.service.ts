@@ -10,7 +10,7 @@ import { ProjectManagementService } from './project-management.service';
   providedIn: 'root'
 })
 export class WorkerService {
-  private apiUrl = 'http://localhost:8040';
+  private apiUrl = 'http://localhost:8222';  // Verify this URL is correct
 
   constructor(
     private http: HttpClient,
@@ -19,7 +19,17 @@ export class WorkerService {
   ) { }
 
   getAllWorkers(): Observable<Worker[]> {
-    return this.http.get<Worker[]>(`${this.apiUrl}/workers`);
+    return this.http.get<Worker[]>(`${this.apiUrl}/workers`).pipe(
+      tap(workers => {
+        console.log('Raw worker data:', workers);
+        workers.forEach(worker => {
+          console.log(`Worker ${worker.name} project status:`, {
+            project_id: worker.project_id,
+            currentProject: worker.currentProject
+          });
+        });
+      })
+    );
   }
 
   getWorkerById(id: number): Observable<Worker> {
@@ -34,9 +44,18 @@ export class WorkerService {
     return this.http.delete<void>(`${this.apiUrl}/workers/${id}`);
   }
 
-  assignWorkerToProject(workerId: number, projectId: number): Observable<Worker> {
+  updateWorker(worker: Worker): Observable<Worker> {
+    return this.http.put<Worker>(`${this.apiUrl}/workers/${worker.id}`, worker).pipe(
+      catchError(error => {
+        console.error('Error updating worker:', error);
+        return throwError(() => new Error('Failed to update worker'));
+      })
+    );
+  }
+
+  assignWorkerToProject(workerId: number, project_id: number): Observable<Worker> {
     return this.http.put<Worker>(
-      `${this.apiUrl}/workers/${workerId}/assign/${projectId}`,
+      `${this.apiUrl}/workers/${workerId}/assign/${project_id}`,
       {}
     ).pipe(
       tap(() => {

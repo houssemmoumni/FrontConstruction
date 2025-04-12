@@ -267,6 +267,7 @@ import { HomeShipIndustryComponent } from './front/home-ship-industry/home-ship-
 import { HomeSolarPlantComponent } from './front/home-solar-plant/home-solar-plant.component';
 import { HomeSteelPlantComponent } from './front/home-steel-plant/home-steel-plant.component';
 import { IndexComponent } from './front/index/index.component';
+import { EditUserComponent } from './pages/users-page/edit-user/edit-user.component';
 
 
 export const routes: Routes = [
@@ -721,6 +722,10 @@ export const routes: Routes = [
             }
         ]
     },
-
+    {
+        path: 'users-page/edit-user/:id',
+        component: EditUserComponent,
+        title: 'Edit User - Construction Management'
+    },
     { path: '**', component: NotFoundComponent }, // This line will remain down from the whole pages component list
 ];

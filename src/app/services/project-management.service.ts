@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { project } from '../models/project.model';
 import { tap, catchError, map, retry } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
 export interface ApiError {
@@ -16,7 +15,7 @@ export interface ApiError {
   providedIn: 'root'
 })
 export class ProjectManagementService {
-  private apiUrl = 'http://localhost:8040';
+  private apiUrl = 'http://localhost:8040/pro'; // Updated to include '/pro'
   private retryAttempts = 3;
   private retryDelay = 1000; // 1 second
 
@@ -88,7 +87,14 @@ export class ProjectManagementService {
         if (!response) return [];
         return Array.isArray(response) ? response : [response];
       }),
-      catchError(this.handleError)
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error fetching projects:', error);
+        if (error.status === 0) {
+            // Connection refused or server not running
+            return throwError(() => new Error('Server connection failed. Please check if the server is running.'));
+        }
+        return throwError(() => new Error(error.message || 'Failed to fetch projects.'));
+      })
     );
   }
 

@@ -15,7 +15,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { DeleteConfirmationDialogComponent } from '../../../shared/components/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { ProjectAssignmentDialogComponent } from './project-assignment-dialog.component';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-users-list',
@@ -29,7 +28,8 @@ import { Router } from '@angular/router';
         MatTableModule, 
         MatPaginatorModule, 
         MatTooltipModule,
-        MatIconModule
+        MatIconModule,
+        MatMenuModule
     ],
     templateUrl: './users-list.component.html'
 })
@@ -43,8 +43,7 @@ export class UsersListComponent implements OnInit {
         public themeService: CustomizerSettingsService,
         private workerService: WorkerService,
         private dialog: MatDialog,
-        private snackBar: MatSnackBar,
-        private router: Router
+        private snackBar: MatSnackBar
     ) {}
 
     ngOnInit() {
@@ -67,19 +66,11 @@ export class UsersListComponent implements OnInit {
     loadWorkers() {
         this.workerService.getAllWorkers().subscribe({
             next: (workers) => {
-                console.group('Workers Data');
-                workers.forEach(worker => {
-                    console.log(`Worker ${worker.name}:`, {
-                        project: worker.projectId,
-                        project_id: worker.projectId,
-                        hasProject: !!worker.projectId
-                    });
-                });
-                console.groupEnd();
+                console.log('Loaded workers:', workers); // Debug log
                 this.dataSource.data = workers;
             },
             error: (error) => {
-                console.error('Error:', error);
+                console.error('Error loading workers:', error);
                 this.showMessage('Failed to load workers', true);
             }
         });
@@ -117,20 +108,24 @@ export class UsersListComponent implements OnInit {
         });
     }
 
-    assignToProject(workerId: number): void {
+    hasProject(worker: Worker): boolean {
+        console.log('Worker data:', worker); // Debug log
+        // Check both project_id and currentProject
+        return worker && (worker.project_id !== null && worker.project_id !== undefined || worker.currentProject !== null);
+    }
+
+    assignToProject(workerId: number) {
         const dialogRef = this.dialog.open(ProjectAssignmentDialogComponent, {
             width: '400px',
-            disableClose: true,
             data: { workerId }
         });
 
-        dialogRef.afterClosed().subscribe(projectId => {
-            if (projectId) {
-                this.workerService.assignWorkerToProject(workerId, projectId).subscribe({
+        dialogRef.afterClosed().subscribe(project_id => {
+            if (project_id) {
+                this.workerService.assignWorkerToProject(workerId, project_id).subscribe({
                     next: () => {
                         this.showMessage('Worker assigned to project successfully');
-                        // Navigate to projects list
-                        this.router.navigate(['/project-management-page/projects-list']);
+                        this.loadWorkers(); // Refresh the list
                     },
                     error: (error) => {
                         console.error('Error:', error);
@@ -141,48 +136,38 @@ export class UsersListComponent implements OnInit {
         });
     }
 
-    removeFromProject(workerId: number): void {
+    removeFromProject(workerId: number) {
         const worker = this.dataSource.data.find(w => w.id === workerId);
+        console.log('Removing worker from project:', worker); // Debug log
         
-        console.group('Remove Worker from Project');
-        console.log('Worker to remove:', worker);
-        console.log('Current project:', worker?.currentProject);
-
-        if (!worker?.currentProject) {
-            console.warn('No project found for worker');
-            console.groupEnd();
+        if (!worker) {
             return;
         }
 
-        const confirmSnackBar = this.snackBar.open(
-            `Remove ${worker.name} from ${worker.currentProject.projet_name}?`,
-            'Remove',
-            {
-                duration: 5000,
-                panelClass: ['warning-snackbar'],
-                horizontalPosition: 'center',
-                verticalPosition: 'top'
+        const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Remove from Project',
+                message: `Are you sure you want to remove ${worker.name} from their current project?`,
+                confirmText: 'Remove',
+                cancelText: 'Cancel'
             }
-        );
+        });
 
-        confirmSnackBar.onAction().subscribe(() => {
-            this.workerService.removeWorkerFromProject(workerId).subscribe({
-                next: (updatedWorker) => {
-                    this.snackBar.open('Worker removed from project successfully', 'Close', {
-                        duration: 3000,
-                        panelClass: ['success-snackbar']
-                    });
-                    console.log('Updated worker:', updatedWorker);
-                    this.loadWorkers();
-                },
-                error: (error) => {
-                    console.error('Removal failed:', error);
-                    this.snackBar.open('Failed to remove worker from project', 'Close', {
-                        duration: 3000,
-                        panelClass: ['error-snackbar']
-                    });
-                }
-            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.workerService.removeWorkerFromProject(workerId).subscribe({
+                    next: (updatedWorker) => {
+                        console.log('Worker removed successfully:', updatedWorker); // Debug log
+                        this.showMessage('Worker removed from project successfully');
+                        this.loadWorkers(); // Refresh the list
+                    },
+                    error: (error) => {
+                        console.error('Error removing worker from project:', error);
+                        this.showMessage('Failed to remove worker from project', true);
+                    }
+                });
+            }
         });
     }
 
@@ -193,27 +178,5 @@ export class UsersListComponent implements OnInit {
             verticalPosition: 'top',
             panelClass: isError ? ['error-snackbar'] : ['success-snackbar']
         });
-    }
-
-    // Add debug helper
-    hasProject(worker: Worker): boolean {
-        if (!worker) return false;
-        console.log(`Worker ${worker.name} project status:`, {
-            hasProjet: !!worker.projectId,
-            projet: worker.projectId,
-            projetId: worker.projectId
-        });
-        return !!worker.projectId;
-    }
-
-    // Add this helper method
-    debugWorkerStatus(worker: Worker): void {
-        console.group(`Worker: ${worker.name}`);
-        console.log('Full worker data:', worker);
-        console.log('Current Project:', worker.currentProject);
-        console.log('Project ID:', worker.projectId);
-        console.log('Has Project:', !!worker.currentProject);
-        console.groupEnd();
-        '';
     }
 }

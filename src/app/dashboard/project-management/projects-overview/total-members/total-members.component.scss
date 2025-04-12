@@ -56,6 +56,48 @@
     }
 }
 
+.worker-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 500;
+    margin-right: -10px;
+    border: 2px solid white;
+    font-size: 14px;
+}
+
+.remaining-count {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    margin-left: 5px;
+    border: 2px solid white;
+}
+
+.loading {
+    opacity: 0.7;
+    font-size: 0.9em;
+}
+
+.number {
+    font-size: 24px;
+    margin-top: 8px;
+}
+
+:host-context(.dark-theme) {
+    .worker-avatar,
+    .remaining-count {
+        border-color: var(--cardBg);
+    }
+}
+
 /* Max width 767px */
 @media only screen and (max-width : 767px) {
 
