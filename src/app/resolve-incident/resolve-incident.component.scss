@@ -1,28 +1,81 @@
 .container {
-    padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
   }
 
   .spinner-container {
     display: flex;
     justify-content: center;
-    padding: 20px;
+    padding: 3rem;
+  }
+
+  .error-message {
+    color: #f44336;
+    padding: 1rem;
+    background-color: #ffebee;
+    border-radius: 4px;
+    margin: 1rem 0;
+    text-align: center;
+  }
+
+  .content-container {
+    padding: 1rem;
   }
 
   .incident-details {
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+
     p {
-      margin: 8px 0;
+      margin: 0.5rem 0;
+      line-height: 1.6;
+    }
+  }
+
+  .resolution-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e0e0;
+
+    p {
+      font-weight: 500;
+      margin-bottom: 1rem;
     }
   }
 
   .button-group {
     display: flex;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 1rem;
+    margin-top: 1rem;
 
     button {
       flex: 1;
+    }
+  }
+
+  .token-valid {
+    color: #4caf50;
+    font-weight: 500;
+    margin-left: 0.5rem;
+  }
+
+  .success-snackbar {
+    background-color: #4caf50;
+    color: white;
+
+    .mat-simple-snackbar-action {
+      color: white;
+    }
+  }
+
+  .error-snackbar {
+    background-color: #f44336;
+    color: white;
+
+    .mat-simple-snackbar-action {
+      color: white;
     }
   }

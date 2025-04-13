@@ -6,37 +6,45 @@
         </mat-card-title>
         <mat-card-subtitle *ngIf="incidentDetails">
           Current status: {{incidentDetails.status}}
+          <span *ngIf="validToken" class="token-valid">(Verified)</span>
         </mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
         <div *ngIf="loading" class="spinner-container">
-          <mat-spinner></mat-spinner>
+          <mat-spinner diameter="50"></mat-spinner>
         </div>
 
-        <div *ngIf="!loading">
-          <div *ngIf="incidentDetails" class="incident-details">
+        <div *ngIf="errorMessage" class="error-message">
+          {{errorMessage}}
+        </div>
+
+        <div *ngIf="incidentDetails && !loading" class="content-container">
+          <div class="incident-details">
             <p><strong>Description:</strong> {{incidentDetails.description}}</p>
             <p><strong>Severity:</strong> {{incidentDetails.severity}}</p>
             <p *ngIf="incidentDetails.project"><strong>Project:</strong> {{incidentDetails.project.name}}</p>
+            <p *ngIf="incidentDetails.assignedTo"><strong>Assigned to:</strong> {{incidentDetails.assignedTo.username}}</p>
           </div>
 
-          <p *ngIf="token">Have you resolved this incident?</p>
-          <p *ngIf="!token">Update incident status:</p>
+          <div class="resolution-actions">
+            <p>{{token ? 'Have you resolved this incident?' : 'Update incident status:'}}</p>
 
-          <div class="button-group">
-            <button mat-raised-button
-                    color="primary"
-                    (click)="resolve(true)"
-                    [disabled]="loading">
-              {{token ? 'Yes, Resolved' : 'Mark as Resolved'}}
-            </button>
-            <button mat-stroked-button
-                    (click)="resolve(false)"
-                    [disabled]="loading"
-                    *ngIf="token || (!token && incidentDetails?.status === 'RESOLVED')">
-              {{token ? 'Not Resolved' : 'Reopen Incident'}}
-            </button>
+            <div class="button-group">
+              <button mat-raised-button
+                      color="primary"
+                      (click)="resolve(true)"
+                      [disabled]="loading">
+                {{token ? 'Yes, Resolved' : 'Mark as Resolved'}}
+              </button>
+
+              <button mat-stroked-button
+                      (click)="resolve(false)"
+                      [disabled]="loading"
+                      *ngIf="token || (!token && incidentDetails.status === 'RESOLVED')">
+                {{token ? 'Not Resolved' : 'Reopen Incident'}}
+              </button>
+            </div>
           </div>
         </div>
       </mat-card-content>

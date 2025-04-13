@@ -1,81 +1,93 @@
-import { CommonModule, Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { IncidentService } from '../services/incident.service';
+import { IncidentReport } from '../models/incident.model'; // Assurez-vous que ce chemin est correct
 
 @Component({
   selector: 'app-resolve-incident',
-  standalone: true, // Required for standalone components
+  standalone: true,
   imports: [
     CommonModule,
-    MatCardModule, // Required for <mat-card>
-    MatProgressSpinnerModule, // Required for <mat-spinner>
-    MatButtonModule, // Required for <mat-button>
-    MatSnackBarModule, // Required for MatSnackBar service
+    MatCardModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule
   ],
   templateUrl: './resolve-incident.component.html',
-  styleUrls: ['./resolve-incident.component.scss'],
+  styleUrls: ['./resolve-incident.component.scss']
 })
-export class ResolveIncidentComponent implements OnInit {
+export class ResolveIncidentComponent {
   incidentId!: number;
-  technicianId: number = 1;
   token: string | null = null;
-  incidentDetails: any = null;
+  incidentDetails: IncidentReport | null = null;
   loading = false;
+  validToken = false;
+  errorMessage: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private incidentService: IncidentService,
-    private snackBar: MatSnackBar,
-    private router: Router,
-    private location: Location
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.incidentId = +params.get('id')!;
       this.token = this.route.snapshot.queryParamMap.get('token');
-
-      if (!this.incidentId) {
-        this.showError('Invalid incident ID');
-        this.router.navigate(['/incidents']);
-        return;
-      }
-
-      this.loadIncidentDetails();
+      this.loadIncident();
     });
   }
 
-  loadIncidentDetails(): void {
+  loadIncident(): void {
     this.loading = true;
-    this.incidentService.getIncidentById(this.incidentId).subscribe({
+    this.errorMessage = null;
+
+    const load$ = this.token
+      ? this.incidentService.getIncidentByToken(this.token)
+      : this.incidentService.getIncidentById(this.incidentId);
+
+    load$.subscribe({
       next: (incident) => {
+        if (this.token && incident.id !== this.incidentId) {
+          this.showError('Token does not match incident');
+          return;
+        }
         this.incidentDetails = incident;
+        this.validToken = !!this.token;
         this.loading = false;
       },
-      error: () => {
-        this.showError('Failed to load incident details');
+      error: (err) => {
         this.loading = false;
+        this.errorMessage = this.token
+          ? 'Invalid or expired token'
+          : 'Failed to load incident details';
+        this.showError(this.errorMessage);
       }
     });
   }
+
   resolve(resolved: boolean): void {
-    if (!this.incidentId) return;
+    if (!this.incidentDetails) return;
 
     this.loading = true;
-    this.incidentService.resolveIncident(this.incidentId, resolved, this.technicianId).subscribe({
+    const resolve$ = this.token
+      ? this.incidentService.resolveWithToken(this.incidentId, resolved, this.token)
+      : this.incidentService.resolveIncident(this.incidentId, resolved, 1); // Default technician ID
+
+    resolve$.subscribe({
       next: (updatedIncident) => {
         this.incidentDetails = updatedIncident;
         this.showSuccess(`Incident ${resolved ? 'resolved' : 'reopened'} successfully`);
         this.loading = false;
       },
-      error: () => {
-        this.showError('Failed to update incident status');
+      error: (err) => {
         this.loading = false;
+        this.showError('Failed to update incident status: ' + err.message);
       }
     });
   }

@@ -305,7 +305,7 @@ export const routes: Routes = [
     { path: 'projects', component: ProjectComponent },
     { path: 'declare-incident', component: DeclareIncidentComponent },
     { path: 'assign-incident/:id', component: AssignIncidentComponent },
-    {path: 'resolve-incident/:id', component: ResolveIncidentComponent },
+    {path: 'resolve/:id', component: ResolveIncidentComponent },
     { path: 'incidents', component: IncidentListComponent },
     { path: 'completed', component: ListInterviewsComponent, title: 'Completed Interviews'},
     //notification de l'incident

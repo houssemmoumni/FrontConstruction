@@ -23,7 +23,12 @@ export interface User {
     reportedBy?: User;
     assignedTo?: User;
     projectId: number;
-    projectName?: string;
+    projectName?: string; // À ajouter si possible
+    project?: {         // Optionnel - si vous voulez l'objet complet
+      id: number;
+      name: string;
+      location?: string;
+    };
   }
 
   export interface AssignIncidentRequest {

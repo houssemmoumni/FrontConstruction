@@ -10,12 +10,11 @@ export class IncidentService {
 
   constructor(private http: HttpClient) {}
 
-  assignIncident(incidentId: number, request: AssignIncidentRequest): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/${incidentId}/assign`, request).pipe(
+  assignIncident(incidentId: number, request: AssignIncidentRequest): Observable<IncidentReport> {
+    return this.http.post<IncidentReport>(`${this.apiUrl}/${incidentId}/assign`, request).pipe(
       catchError(error => {
         let errorMsg = 'Failed to assign incident';
         if (error.error?.error) errorMsg += ': ' + error.error.error;
-        else if (error.message) errorMsg += ': ' + error.message;
         return throwError(() => new Error(errorMsg));
       })
     );
@@ -23,83 +22,69 @@ export class IncidentService {
 
   getTechnicians(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/technicians`).pipe(
-      catchError(error => {
-        return throwError(() => new Error('Failed to load technicians'));
-      })
+      catchError(error => throwError(() => new Error('Failed to load technicians')))
     );
   }
 
   createIncident(incidentData: any): Observable<IncidentReport> {
     return this.http.post<IncidentReport>(this.apiUrl, incidentData).pipe(
-      catchError(error => {
-        console.error('Error creating incident:', error);
-        return throwError(() => new Error('Error creating incident'));
-      })
+      catchError(error => throwError(() => new Error('Error creating incident')))
     );
   }
 
   getAllIncidents(): Observable<IncidentReport[]> {
     return this.http.get<IncidentReport[]>(this.apiUrl).pipe(
-      catchError(error => {
-        console.error('Error fetching incidents:', error);
-        return throwError(() => new Error('Error fetching incidents'));
-      })
+      catchError(error => throwError(() => new Error('Error fetching incidents')))
     );
   }
 
   getIncidentById(id: number): Observable<IncidentReport> {
     return this.http.get<IncidentReport>(`${this.apiUrl}/${id}`).pipe(
-      catchError(error => {
-        console.error('Error fetching incident:', error);
-        return throwError(() => new Error('Error fetching incident'));
-      })
+      catchError(error => throwError(() => new Error('Error fetching incident')))
     );
   }
 
   resolveIncident(id: number, resolved: boolean, technicianId: number): Observable<IncidentReport> {
     return this.http.patch<IncidentReport>(
       `${this.apiUrl}/${id}/resolve`,
-      {}, // Empty body since we're using query params
-      {
-        params: {
-          resolved: resolved.toString(),
-          technicianId: technicianId.toString()
-        }
-      }
+      {},
+      { params: { resolved: resolved.toString(), technicianId: technicianId.toString() } }
     ).pipe(
-      catchError(error => {
-        console.error('Error resolving incident:', error);
-        return throwError(() => new Error('Error resolving incident'));
-      })
+      catchError(error => throwError(() => new Error('Error resolving incident')))
     );
   }
 
   getResolvedIncidents(): Observable<IncidentReport[]> {
     return this.http.get<IncidentReport[]>(`${this.apiUrl}/resolved`).pipe(
-      catchError(error => {
-        console.error('Error fetching resolved incidents:', error);
-        return throwError(() => new Error('Error fetching resolved incidents'));
-      })
+      catchError(error => throwError(() => new Error('Error fetching resolved incidents')))
     );
   }
 
   getUnresolvedIncidents(): Observable<IncidentReport[]> {
     return this.http.get<IncidentReport[]>(`${this.apiUrl}/unresolved`).pipe(
-      catchError(error => {
-        console.error('Error fetching unresolved incidents:', error);
-        return throwError(() => new Error('Error fetching unresolved incidents'));
-      })
+      catchError(error => throwError(() => new Error('Error fetching unresolved incidents')))
     );
   }
 
-  generateResolveLink(incidentId: number): Observable<string> {
-    return this.http.get<string>(`${this.apiUrl}/${incidentId}/resolve-link`, {
-      responseType: 'text' as 'json'
-    }).pipe(
-      catchError(error => {
-        console.error('Error generating resolve link', error);
-        return throwError(() => new Error('Failed to generate resolve link'));
-      })
+  generateResolveLink(incidentId: number): Observable<{link: string}> {
+    return this.http.get<{link: string}>(`${this.apiUrl}/${incidentId}/resolve-link`).pipe(
+      catchError(error => throwError(() => new Error('Failed to generate resolve link')))
+    );
+  }
+
+  getIncidentByToken(token: string): Observable<IncidentReport> {
+    return this.http.get<IncidentReport>(`${this.apiUrl}/by-token/${token}`).pipe(
+      catchError(error => throwError(() => new Error('Invalid or expired token')))
+    );
+  }
+
+  resolveWithToken(id: number, resolved: boolean, token: string): Observable<IncidentReport> {
+    return this.http.patch<IncidentReport>(
+      `${this.apiUrl}/${id}/resolve-with-token`,
+      {},
+      { params: { resolved: resolved.toString(), token } }
+    ).pipe(
+      catchError(error => throwError(() => new Error('Error resolving incident with token')))
     );
   }
 }
