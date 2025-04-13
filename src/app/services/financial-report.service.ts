@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, forkJoin, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { FinancialReport } from '../models/financial-report.model';
 import { RevenueService } from './revenue.service'; // Import RevenueService
 import { ExpenseService } from './expense.service'; // Import ExpenseService
@@ -39,7 +39,20 @@ export class FinancialReportService {
   }
 
   sendFinancialReport(report: FinancialReport): Observable<string> {
-    return this.http.post<string>(`${this.apiUrl}/send`, report);
+    return this.http.post<string>(`${this.apiUrl}/send`, report).pipe(
+        catchError(error => {
+            console.error('Error sending financial report:', error);
+            return throwError(error);
+        })
+    );
+  }
+
+  downloadReportById(id: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/download/${id}`, { responseType: 'blob' });
+  }
+
+  downloadReport(report: FinancialReport): Observable<Blob> {
+    return this.http.post(`${this.apiUrl}/download`, report, { responseType: 'blob' });
   }
 
   getNetProfit(): Observable<number> {

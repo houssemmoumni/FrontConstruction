@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Revenue } from '../models/revenue.model';
 import { ProjectDTO } from '../models/project.model'; // Import ProjectDTO model
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,12 @@ export class RevenueService {
   }
 
   getExternalProjects(): Observable<ProjectDTO[]> {
-    return this.http.get<ProjectDTO[]>(`${this.apiUrl}/external-projects`);
+    return this.http.get<ProjectDTO[]>(`${this.apiUrl}/external-projects`).pipe(
+        catchError(error => {
+            console.error('Error fetching external projects:', error);
+            return throwError(error);
+        })
+    );
   }
 
   getTotalRevenue(): Observable<number> {
