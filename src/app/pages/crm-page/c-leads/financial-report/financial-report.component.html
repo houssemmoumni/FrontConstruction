@@ -1,0 +1,26 @@
+<div class="stat-item position-relative">
+    <h5>Financial Report</h5>
+    <div *ngIf="netProfit !== null; else loading">
+        <div class="number lh-1 fw-medium">
+            {{ netProfit | currency:'USD' }}
+        </div>
+        <span class="daxa-up-down-badge" [ngClass]="{ up: netProfit > 0, down: netProfit < 0 }">
+            <i class="material-symbols-outlined">
+                {{ netProfit > 0 ? 'trending_up' : 'trending_down' }}
+            </i>
+            {{ netProfit > 0 ? 'Profit' : 'Loss' }}
+        </span>
+        <div class="chart">
+            <div id="crm_page_financial_report_chart"></div>
+            <div class="title d-block text-body">
+                Current Status
+            </div>
+        </div>
+        <button class="send-report-btn" (click)="sendReport()">Send Report</button>
+        <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+    </div>
+    <ng-template #loading>
+        <p>Loading financial report...</p>
+    </ng-template>
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+</div>

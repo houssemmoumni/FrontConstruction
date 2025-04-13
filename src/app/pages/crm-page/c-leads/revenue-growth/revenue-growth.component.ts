@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule
+import { CommonModule } from '@angular/common';
 import { CustomizerSettingsService } from '../../../../customizer-settings/customizer-settings.service';
 import { RevenueService } from '../../../../services/revenue.service';
 
@@ -7,12 +7,12 @@ import { RevenueService } from '../../../../services/revenue.service';
     selector: 'app-revenue-growth',
     templateUrl: './revenue-growth.component.html',
     styleUrl: './revenue-growth.component.scss',
-    imports: [CommonModule] // Add CommonModule here
+    imports: [CommonModule]
 })
 export class RevenueGrowthComponent {
-    revenueData: any = { amount: 0, growthPercentage: 0 }; // Initialize with default values
-    externalProjects: any = []; // Initialize as an empty array
-    errorMessage: string = ''; // Add an error message property
+    revenueData: any = { amount: 0, growthPercentage: 0 };
+    externalProjects: any = [];
+    errorMessage: string = '';
 
     constructor(
         public themeService: CustomizerSettingsService,
@@ -28,7 +28,7 @@ export class RevenueGrowthComponent {
         this.revenueService.getAllRevenues().subscribe(
             revenues => {
                 const totalAmount = revenues.reduce((total, revenue) => total + revenue.amount, 0);
-                this.revenueData = { amount: totalAmount, growthPercentage: 10 }; // Example growth percentage
+                this.revenueData = { amount: totalAmount, growthPercentage: 10 };
             },
             error => {
                 this.errorMessage = 'Failed to load revenue data.';

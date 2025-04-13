@@ -8,7 +8,7 @@ import { FinancialReportService } from '../../../../services/financial-report.se
     styleUrl: './lead-conversion.component.scss'
 })
 export class LeadConversionComponent {
-    financialReportData: any = []; // Initialize as an empty array
+    financialReportData: any = { net_profit: null }; // Initialize with a default structure
     errorMessage: string = ''; // Add an error message property
 
     constructor(
@@ -26,8 +26,8 @@ export class LeadConversionComponent {
                 this.financialReportData = { net_profit: netProfit };
             },
             error => {
-                this.errorMessage = 'Failed to calculate net profit.';
-                console.error(error);
+                this.errorMessage = 'Failed to calculate net profit. Please try again later.';
+                console.error('Error fetching net profit:', error);
             }
         );
     }

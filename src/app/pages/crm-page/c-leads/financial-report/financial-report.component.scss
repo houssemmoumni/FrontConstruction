@@ -1,0 +1,86 @@
+.stat-item {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+    h5 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .number {
+        font-size: 28px;
+        font-weight: 700;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    .daxa-up-down-badge {
+        display: inline-flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 5px 10px;
+        border-radius: 12px;
+
+        &.up {
+            background-color: #e6ffe6;
+            color: #5cb85c;
+        }
+
+        &.down {
+            background-color: #ffe6e6;
+            color: #d9534f;
+        }
+    }
+
+    .chart {
+        margin-top: 20px;
+
+        .title {
+            font-size: 14px;
+            color: #666;
+        }
+    }
+
+    .error-message {
+        color: #d9534f;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+}
+
+.send-report-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+}
+
+.success-message {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.error-message {
+    color: #d9534f;
+    font-size: 14px;
+    margin-top: 10px;
+}

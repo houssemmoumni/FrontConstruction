@@ -6,4 +6,5 @@ export interface FinancialReport {
     date_rapport: string;
     total_revenue: number;
     net_profit: number;
+    email: string;
 }

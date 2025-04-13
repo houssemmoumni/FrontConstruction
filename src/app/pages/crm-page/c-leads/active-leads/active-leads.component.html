@@ -1,11 +1,5 @@
-<div
-    class="stat-item position-relative"
-    [class.rtl-enabled]="themeService.isRTLEnabled()"
-    [class.component-dark-theme]="themeService.isDark()"
->
-    <h5>
-        Active Leads
-    </h5>
+<div class="stat-item position-relative">
+    <h5>Active Leads</h5>
     <div class="number lh-1 fw-medium">
         94,817
     </div>
@@ -22,3 +16,12 @@
         </div>
     </div>
 </div>
+
+<div class="stats">
+    <h5>Statistics</h5>
+    <div class="stat-item">
+        <p><strong>Total Expenses:</strong> {{ stats.totalExpenses | currency:'USD' }}</p>
+        <p><strong>Total Projects:</strong> {{ stats.totalProjects }}</p>
+    </div>
+</div>
+

@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FinancialReport } from '../models/financial-report.model';
-import { Revenue } from '../models/revenue.model';
-import { Expense } from '../models/expense.model';
+import { RevenueService } from './revenue.service'; // Import RevenueService
+import { ExpenseService } from './expense.service'; // Import ExpenseService
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,11 @@ import { Expense } from '../models/expense.model';
 export class FinancialReportService {
   private apiUrl = 'http://localhost:8045/api/financial-reports';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private revenueService: RevenueService, // Inject RevenueService
+    private expenseService: ExpenseService // Inject ExpenseService
+  ) {}
 
   getAllFinancialReports(): Observable<FinancialReport[]> {
     return this.http.get<FinancialReport[]>(this.apiUrl);
@@ -34,14 +38,14 @@ export class FinancialReportService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  sendFinancialReport(report: FinancialReport): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/send`, report);
+  sendFinancialReport(report: FinancialReport): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/send`, report);
   }
 
   getNetProfit(): Observable<number> {
     return forkJoin({
-        revenues: this.http.get<Revenue[]>(`${this.apiUrl}/revenues`),
-        expenses: this.http.get<Expense[]>(`${this.apiUrl}/expenses`)
+        revenues: this.revenueService.getAllRevenues(), // Use RevenueService
+        expenses: this.expenseService.getAllExpenses() // Use ExpenseService
     }).pipe(
         map(({ revenues, expenses }) => {
             const totalRevenue = revenues.reduce((total, revenue) => total + revenue.amount, 0);

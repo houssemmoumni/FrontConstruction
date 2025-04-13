@@ -5,7 +5,7 @@ export enum CategoryRevenue {
 }
 
 export interface Revenue {
-    id_revenue?: number; // Optional ID
+    id_revenue?: number;
     description_revenue: string;
     amount: number;
     date_revenue: string;
