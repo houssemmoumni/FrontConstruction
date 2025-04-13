@@ -7,4 +7,5 @@ export interface FinancialReport {
     total_revenue: number;
     net_profit: number;
     email: string;
+    signature?: string; // Add the signature field (optional)
 }

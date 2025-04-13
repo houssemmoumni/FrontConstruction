@@ -46,6 +46,21 @@
                         }
                     }
                 }
+                .send-email-btn {
+                    margin-left: 10px;
+                    background-color: #28a745;
+                    color: #ffffff;
+                    border: none;
+                    border-radius: 5px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+
+                    &:hover {
+                        background-color: #218838;
+                    }
+                }
             }
             &.rtl-enabled {
                 .mat-mdc-card-content {

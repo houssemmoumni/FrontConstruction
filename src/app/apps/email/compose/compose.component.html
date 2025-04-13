@@ -16,7 +16,7 @@
 <!-- Compose -->
 <div class="row">
     <div class="col-lg-3 col-md-12">
-        <app-sidebar></app-sidebar> <!-- Ensure SidebarComponent is used correctly -->
+        <app-sidebar></app-sidebar>
     </div>
     <div class="col-lg-9 col-md-12">
         <mat-card class="daxa-card email-compose-card mb-25 border-radius bg-white border-none d-block">
@@ -52,11 +52,12 @@
                         </mat-form-field>
                     </div>
                     <div class="btn-box d-flex align-items-center">
-                        <button mat-button class="btn" type="submit">Send Report</button>
+                        <button mat-button class="btn" type="submit">Download Report with Signature</button>
+                        <button mat-button class="btn send-email-btn" type="button" (click)="sendEmail()">Send Email</button>
                     </div>
+                    <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+                    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
                 </form>
-                <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
-                <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
             </mat-card-content>
         </mat-card>
     </div>
