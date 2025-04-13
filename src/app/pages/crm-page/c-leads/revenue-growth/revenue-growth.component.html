@@ -6,13 +6,19 @@
         Revenue Growth
     </h5>
     <div class="number lh-1 fw-medium">
-        $1,207
+        {{ revenueData?.amount | currency:'USD' }}
     </div>
-    <span class="daxa-up-down-badge position-relative">
+    <span
+        class="daxa-up-down-badge"
+        [ngClass]="{
+            up: revenueData?.growthPercentage > 0,
+            down: revenueData?.growthPercentage < 0
+        }"
+    >
         <i class="material-symbols-outlined">
-            trending_up
+            {{ revenueData?.growthPercentage > 0 ? 'trending_up' : 'trending_down' }}
         </i>
-        20.75%
+        {{ revenueData?.growthPercentage || '0%' }}
     </span>
     <div class="chart">
         <div id="crm_page_revenue_growth_chart"></div>
@@ -20,4 +26,17 @@
             Weekly Growth
         </div>
     </div>
+</div>
+
+<div class="external-projects">
+    <h5>External Projects</h5>
+    <ul *ngIf="externalProjects && externalProjects.length > 0; else noProjects">
+        <li *ngFor="let project of externalProjects">
+            <strong>{{ project.name }}</strong> - {{ project.description }}
+        </li>
+    </ul>
+    <ng-template #noProjects>
+        <p *ngIf="!errorMessage">No external projects available.</p>
+        <p *ngIf="errorMessage">{{ errorMessage }}</p>
+    </ng-template>
 </div>
