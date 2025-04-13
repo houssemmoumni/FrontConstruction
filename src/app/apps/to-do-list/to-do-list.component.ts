@@ -1,9 +1,8 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit,ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // <-- Add this import
-import { CommonModule } from '@angular/common'; // <-- Add this import
-import {MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit  } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
@@ -17,190 +16,272 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+
+// Services
 import { CustomizerSettingsService } from '../../customizer-settings/customizer-settings.service';
-import { TaskService } from '../../../app/services/task.service'; // Import the service
-import { UserService } from '../../../app/services/user.service'; // Import the service
-import { Task } from '../../../app/models/task'; // Ensure the correct model is imported
-import { User } from '../../../app/models/user'; // Ensure the correct model is imported
-import { RoleType } from '../../../app/models/role-type'; // Import RoleType
-import { TaskStatus } from '../../../app/models/task-status'; // Ensure the correct model is imported
+import { TaskService } from '../../../app/services/task.service';
+import { UserService } from '../../../app/services/user.service';
+import { NotificationService } from '../../services/notification.service';
+
+// Models
+import { Task } from '../../../app/models/task';
+import { User } from '../../../app/models/user';
+import { RoleType } from '../../../app/models/role-type';
+import { TaskStatus } from '../../../app/models/task-status';
 import { TaskRequest } from '../../models/task-request';
 import { TaskResponse } from '../../models/task-response';
-import { TaskCommentsDialogComponent } from '../../../app/task-comments-dialog/task-comments-dialog.component';
-import { MatDialog } from '@angular/material/dialog'; // Import MatDialog
-import { MatIconModule } from '@angular/material/icon';
+import { NotificationDTO } from '../../models/notification-dto';
 
+// Components
+import { TaskCommentsDialogComponent } from '../../../app/task-comments-dialog/task-comments-dialog.component';
 
 @Component({
     selector: 'app-to-do-list',
-    imports: [    CommonModule,    MatPaginatorModule,    MatIconModule,  // Add this line
-        // <-- Add this import
-        // <-- Add this line
-        MatCardModule, MatMenuModule, MatButtonModule, RouterLink,    FormsModule, // <-- Add this line
-        MatTableModule, NgIf, MatCheckboxModule, MatTooltipModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule],
+    standalone: true,
+    imports: [
+        CommonModule,
+        MatPaginatorModule,
+        MatIconModule,
+        MatCardModule,
+        MatMenuModule,
+        MatButtonModule,
+        RouterLink,
+        FormsModule,
+        MatTableModule,
+        NgIf,
+        MatCheckboxModule,
+        MatTooltipModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule
+    ],
     templateUrl: './to-do-list.component.html',
-    styleUrl: './to-do-list.component.scss'
+    styleUrls: ['./to-do-list.component.scss']
 })
-export class ToDoListComponent implements OnInit{
-    @ViewChild(MatPaginator) paginator!: MatPaginator; // <-- Add this
+export class ToDoListComponent implements OnInit, OnDestroy {
+    tasks: TaskResponse[] = [];
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-    isEditMode = false; // Add this flag
+    // Component State
+    isEditMode = false;
     selectedTaskId!: number;
     minDate: Date;
-
-
-
-    displayedColumns: string[] = ['select',
-    'id', 'title', 'description', 'assignedTo', 'dueDate', 'status', 'actions'];    
-    dataSource = new MatTableDataSource<TaskResponse>();
-    selection = new SelectionModel<TaskResponse>(true, []);
     classApplied = false;
-    users: User[] = []; // List of Users
-    ouvriers: User[] = []; // List of Ouvriers (Users with role OUVRIER)
-    selectedUserIds!: number; // List of selected User IDs
-    statusoptions = Object.values(TaskStatus); // List of TaskStatus values
+    showNotification = false;
+    notificationMessage = '';
+    notificationCount = 0;
+
+    // Data Properties
+    displayedColumns: string[] = ['select', 'id', 'title', 'description', 'assignedTo', 'dueDate', 'status', 'actions'];
+    dataSource = new MatTableDataSource<TaskResponse>(this.tasks);
+    selection = new SelectionModel<TaskResponse>(true, []);
+    users: User[] = [];
+    ouvriers: User[] = [];
+    selectedUserIds!: number;
+    statusoptions = Object.values(TaskStatus);
+
+    // Form Model
     task: TaskRequest = {
         title: '',
         description: '',
         assignedToId: 3,
-        assignedById: 2, // Assuming assignedTo is a User with roles
+        assignedById: 2,
         dueDate: new Date(),
     };
 
-    constructor(
-        public themeService: CustomizerSettingsService,private dialog: MatDialog,
-        private taskService: TaskService,private userService: UserService // Set minDate to today
+    // Subscriptions
+    private notificationSubscription!: Subscription;
 
-    ) { this.minDate = new Date();}
+    constructor(
+        public themeService: CustomizerSettingsService,
+        private dialog: MatDialog,
+        private taskService: TaskService,
+        private userService: UserService,
+        private notificationService: NotificationService,
+        private snackBar: MatSnackBar
+    ) {
+        this.minDate = new Date();
+    }
+
+    ngAfterViewInit() {
+        this.dataSource.paginator = this.paginator;
+      }
+      
 
     ngOnInit(): void {
         this.fetchTasks();
-        this.fetchOuvriers(); // Fetch Ouvriers for the assignedTo dropdown
+        this.fetchOuvriers();
+        this.setupNotificationListener();
+        
         this.dataSource.filterPredicate = (data: TaskResponse, filter: string) => {
             const lowerCaseFilter = filter.trim().toLowerCase();
-            
-            // Convert status to string (handle undefined case)
             const statusText = data.status ? data.status.toString().toLowerCase() : '';
-    
             return data.title.toLowerCase().includes(lowerCaseFilter) || 
                    statusText.includes(lowerCaseFilter);
-                };
+        };
     }
 
-    fetchTasks() {
-        this.taskService.getAllTasks().subscribe((tasks) => {
-            console.log(tasks);
-            this.dataSource.data = tasks;
-            this.dataSource.paginator = this.paginator; // <-- Connect the paginator
-
-        });
-    }
-    fetchOuvriers(): void {
-        // Fetch users with the role OUVRIER
-        this.userService.getOuvriers().subscribe(
-            (users) => {
-                this.ouvriers = users;
-                console.log(users) // Assign the fetched users to the ouvriers array
-            },
-            (error) => {
-                console.error('Error fetching Ouvriers:', error);
-            }
-        );
-    
-    }
-    applyFilter(event: Event) {
-        const inputElement = event.target as HTMLInputElement;
-        if (inputElement) {
-            this.dataSource.filter = inputElement.value.trim().toLowerCase();
+    ngOnDestroy(): void {
+        if (this.notificationSubscription) {
+            this.notificationSubscription.unsubscribe();
         }
     }
-    addTask(task: TaskRequest): void 
-    {console.log(task);
-        this.taskService.createTask(task).subscribe(() => {
-            console.log(task)
-            this.fetchTasks(); // Refresh the task list
-            this.toggleClass(); // Close the popup
-            this.resetTaskForm(); // Reset the form
-        });
-      }
-      updateTask(task: TaskResponse): void {
-        this.selectedTaskId = task.id;  // Save the task ID
 
-        this.isEditMode = true; // Set edit mode to true
+    // Data Fetching Methods
+    fetchTasks(): void {
+        this.taskService.getAllTasks().subscribe({
+            next: (tasks) => {
+                this.dataSource.data = tasks;
+                //this.dataSource.paginator = this.paginator;
+                this.checkPendingTasks(tasks);
+            },
+            error: (err) => console.error('Error fetching tasks:', err)
+        });
+    }
+
+    fetchOuvriers(): void {
+        this.userService.getOuvriers().subscribe({
+            next: (users) => {
+                this.ouvriers = users;
+                console.log('Fetched ouvriers:', users);
+            },
+            error: (err) => console.error('Error fetching ouvriers:', err)
+        });
+    }
+
+    // Notification Handling
+    private setupNotificationListener(): void {
+        this.notificationSubscription = this.notificationService.notification$.subscribe({
+            next: (notification) => this.handleNotification(notification),
+            error: (err) => console.error('Notification error:', err)
+        });
+    }
+
+    private checkPendingTasks(tasks: TaskResponse[]): void {
+        const pendingCount = tasks.filter(task => task.status === TaskStatus.PENDING).length;
+        if (pendingCount >= 7) {
+            this.showSnackbarNotification(`⚠️ You have ${pendingCount} pending tasks!`);
+        }
+    }
+
+    private handleNotification(notification: NotificationDTO): void {
+        this.showSnackbarNotification(
+            `${notification.message} (${notification.pendingCount} pending tasks)`
+        );
+    }
+
+    private showSnackbarNotification(message: string): void {
+        this.snackBar.open(message, 'Dismiss', {
+            duration: 5000,
+            panelClass: ['notification-snackbar']
+        });
+    }
+
+    // Task CRUD Operations
+    addTask(task: TaskRequest): void {
+        this.taskService.createTask(task).subscribe({
+            next: () => {
+                this.fetchTasks();
+                this.toggleClass();
+                this.resetTaskForm();
+            },
+            error: (err) => console.error('Error creating task:', err)
+        });
+    }
+
+    updateTask(task: TaskResponse): void {
+        this.selectedTaskId = task.id;
+        this.isEditMode = true;
         this.task = {
             title: task.title,
             description: task.description,
-            status: task.status, // Assuming task.status is a string or convert it accordingly
+            status: task.status,
             dueDate: new Date(task.dueDate),
-            assignedById:  1,  // or a default value / prompt user
-            assignedToId:  2   // or a default value / prompt user
-        };    this.toggleClass(); 
-        console.log(this.task)
+            assignedById: 1,
+            assignedToId: 2
+        };
+        this.toggleClass();
     }
+
     saveUpdatedTask(): void {
         if (this.selectedTaskId) {
+            this.taskService.updateTask(this.selectedTaskId, this.task).subscribe({
+                next: () => {
+                    this.fetchTasks();
+                    this.toggleClass();
+                    this.resetTaskForm();
+                },
+                error: (err) => console.error('Error updating task:', err)
+            });
+        }
+    }
 
-    this.taskService.updateTask(this.selectedTaskId,this.task).subscribe(() => {
-        this.fetchTasks(); // Refresh task list
-        this.toggleClass(); // Close popup
-        this.resetTaskForm(); // Reset form
-    });
-}
-}
     deleteTask(taskId: number): void {
-        this.taskService.deleteTask(taskId).subscribe(() => {
-          this.fetchTasks(); // Refresh the task list
+        console.log('Attempting to delete task with ID:', taskId); // Log when delete is triggered
+
+        this.taskService.deleteTask(taskId).subscribe({
+            next: () => {
+                console.log('Task deleted successfully, refreshing task list');
+
+                 this.fetchTasks();},
+            error: (err) => console.error('Error deleting task:', err)
         });
-      }  
-      resetTaskForm(): void {
+    }
+
+    // UI Helper Methods
+    applyFilter(event: Event): void {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+
+    resetTaskForm(): void {
         this.task = {
             title: '',
             description: '',
             assignedToId: 1,
             assignedById: 2,
             dueDate: new Date(),
-            status: TaskStatus.PENDING, // Use the TaskStatus enum
+            status: TaskStatus.PENDING,
         };
     }
+
     isFormValid(): boolean {
-        return  !!(this.task.title && this.task.title.length >= 3 &&
+        return !!(this.task.title && this.task.title.length >= 3 &&
                this.task.description &&
                this.task.assignedToId &&
                this.task.dueDate &&
                this.task.status);
     }
 
-    /** Whether the number of selected elements matches the total number of rows. */
-    isAllSelected() {
+    toggleClass(): void {
+        this.classApplied = !this.classApplied;
+        if (!this.classApplied) {
+            this.isEditMode = false;
+            this.resetTaskForm();
+        }
+    }
+
+    // Table Selection Methods
+    isAllSelected(): boolean {
         const numSelected = this.selection.selected.length;
         const numRows = this.dataSource.data.length;
         return numSelected === numRows;
     }
 
-    /** Selects all rows if they are not all selected; otherwise clear selection. */
-    toggleAllRows() {
+    toggleAllRows(): void {
         if (this.isAllSelected()) {
             this.selection.clear();
             return;
         }
         this.selection.select(...this.dataSource.data);
     }
-    onDateChange(event: any): void {
-        if (!event.value) return;
 
-    const selectedDate = event.value;
-    
-    // Extract only the YYYY-MM-DD part (removing timezone offsets)
-// Extract local YYYY-MM-DD without timezone conversion
-const year = selectedDate.getFullYear();
-const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); 
-const day = String(selectedDate.getDate()).padStart(2, '0'); 
-
-// Store as a string
-this.task.dueDate = `${year}-${month}-${day}`;    console.log(this.task.dueDate);
-      }
-
-    /** The label for the checkbox on the passed row */
     checkboxLabel(row?: TaskResponse): string {
         if (!row) {
             return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
@@ -208,22 +289,21 @@ this.task.dueDate = `${year}-${month}-${day}`;    console.log(this.task.dueDate)
         return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
     }
 
-    
-
-    /** Toggle class for styling */
-    toggleClass() {
-        this.classApplied = !this.classApplied;
-        if (!this.classApplied) {
-            this.isEditMode = false; // Reset edit mode
-            this.resetTaskForm(); // Reset the form
-        }
+    // Date Handling
+    onDateChange(event: any): void {
+        if (!event.value) return;
+        const selectedDate = event.value;
+        const year = selectedDate.getFullYear();
+        const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+        const day = String(selectedDate.getDate()).padStart(2, '0');
+        this.task.dueDate = `${year}-${month}-${day}`;
     }
 
-    openCommentsDialog(task: any): void {
+    // Dialog Methods
+    openCommentsDialog(task: TaskResponse): void {
         this.dialog.open(TaskCommentsDialogComponent, {
-          width: '600px',
-          data: { task: task }
+            width: '600px',
+            data: { task }
         });
-      }
+    }
 }
-

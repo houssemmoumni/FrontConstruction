@@ -1,27 +1,51 @@
 <mat-dialog-content>
     <div class="comments-header">
-        <h2>Comments for "{{ data.task.title }}"</h2>
+      <h2>Comments for "{{ data.task.title }}"</h2>
     </div>
-    
+  
     <div class="comments-container">
-        <div *ngFor="let comment of comments" class="comment-item">
-            <div class="comment-header">
-                <span class="comment-author">{{ comment.userName }} ({{ comment.userRole }})</span>
-                <span class="comment-date">{{ comment.timestamp | date:'medium' }}</span>
-            </div>
-            <div class="comment-content">{{ comment.text }}</div>
+      <div *ngFor="let comment of comments" class="comment-item">
+        <div class="comment-header">
+          <span class="comment-author">{{ comment.authorName }}</span>
+          <span class="comment-date">{{ comment.createdAt | date: 'medium' }}</span>
+          <span class="comment-actions">
+            <button mat-icon-button (click)="startEditing(comment)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteComment(comment.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </span>
         </div>
-        
-        <div *ngIf="comments.length === 0" class="no-comments">
-            No comments yet. Be the first to add one!
+  
+        <!-- Show comment text if not editing -->
+        <div class="comment-content" *ngIf="editingComment?.id !== comment.id">
+          {{ comment.text }}
         </div>
+  
+        <!-- Show editable input if editing -->
+        <div *ngIf="editingComment?.id === comment.id" class="edit-comment">
+          <mat-form-field appearance="outline" class="w-100" *ngIf="editingComment != null">
+            <input matInput [(ngModel)]="editingComment.text" placeholder="Edit your comment" />
+          </mat-form-field>
+          <div class="edit-actions">
+            <button mat-button color="primary" (click)="confirmEdit()">Save</button>
+            <button mat-button (click)="cancelEdit()">Cancel</button>
+          </div>
+        </div>
+      </div>
+  
+      <div *ngIf="comments.length === 0" class="no-comments">
+        No comments yet. Be the first to add one!
+      </div>
     </div>
-    
+  
     <div class="comment-input">
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Add a comment</mat-label>
-            <textarea matInput [(ngModel)]="newComment" placeholder="Type your comment here..."></textarea>
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="addComment()">Post Comment</button>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Add a comment</mat-label>
+        <textarea matInput [(ngModel)]="newComment" placeholder="Type your comment here..."></textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="addComment()">Post Comment</button>
     </div>
-</mat-dialog-content>
+  </mat-dialog-content>
+  

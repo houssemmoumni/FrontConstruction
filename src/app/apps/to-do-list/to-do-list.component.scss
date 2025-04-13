@@ -400,3 +400,12 @@
 
 /* Min width 1600px */
 @media only screen and (min-width: 1600px) {}
+
+.notification-snackbar {
+    background-color: #fff3cd;
+    color: #856404;
+    
+    .mat-simple-snackbar-action {
+        color: #856404;
+    }
+}
