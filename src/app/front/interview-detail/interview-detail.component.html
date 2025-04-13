@@ -59,13 +59,20 @@
             </div>
           </div>
 
-          <div class="d-flex justify-content-between mt-4">
+          <div class="d-flex flex-wrap justify-content-between mt-4 gap-2">
             @if (interview.interviewDate) {
               <button class="btn btn-primary" (click)="addToCalendar()">
                 <i class="bi bi-calendar-plus me-2"></i>
                 Add to Calendar
               </button>
             }
+
+            @if (true || (canJoin && !interview.completed)) {
+                <button class="btn btn-success" (click)="completeInterview()">
+                  <i class="bi bi-check-circle me-2"></i>
+                  Terminer l'entretien
+                </button>
+              }
 
             <button class="btn btn-outline-secondary" routerLink="/">
               <i class="bi bi-house-door me-2"></i>

@@ -2,15 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InterviewService } from '../../services/interview.service';
 import { Interview } from '../../models/interview.model';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-interview-detail',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
   templateUrl: './interview-detail.component.html',
-  styleUrl: './interview-detail.component.scss'
+  styleUrls: ['./interview-detail.component.scss']
 })
 export class InterviewDetailComponent implements OnInit {
   interview?: Interview;
@@ -18,6 +14,7 @@ export class InterviewDetailComponent implements OnInit {
   isLoading = true;
   error: string | null = null;
   canJoin = false;
+  showSuccess = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,7 +50,6 @@ export class InterviewDetailComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error loading interview:', err);
         this.error = 'Failed to load interview details';
         this.isLoading = false;
       }
@@ -72,7 +68,6 @@ export class InterviewDetailComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error loading interview:', err);
         this.error = 'Failed to load interview details';
         this.isLoading = false;
       }
@@ -81,7 +76,6 @@ export class InterviewDetailComponent implements OnInit {
 
   private updateInterviewData(): void {
     if (!this.interview) return;
-
     this.formattedDate = this.interviewService.formatInterviewDate(
       this.interview.interviewDate,
       this.interview.interviewTime
@@ -98,6 +92,20 @@ export class InterviewDetailComponent implements OnInit {
         error: (err) => console.error('Failed to activate link:', err)
       });
     }
+  }
+
+  completeInterview(): void {
+    if (!this.interview?.id) return;
+
+    this.interviewService.completeInterview(this.interview.id).subscribe({
+      next: () => {
+        this.showSuccess = true;
+        setTimeout(() => this.router.navigate(['/interviews/completed']), 2000);
+      },
+      error: (err) => {
+        this.error = `Error: ${err.message || 'Unknown error'}`;
+      }
+    });
   }
 
   addToCalendar(): void {

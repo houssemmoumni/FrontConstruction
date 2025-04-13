@@ -1,7 +1,7 @@
 export interface ApplicationDTO {
     id: number;
     candidate: {
-      id: number; // Ajoutez cette propriété
+      id: number;
       firstName: string;
       lastName: string;
       email: string;
@@ -10,5 +10,6 @@ export interface ApplicationDTO {
       title: string;
     };
     status: string;
-    resume: string; // Base64 encoded PDF
-  }
+    resume: string;
+    interviewPassed?: boolean;
+}

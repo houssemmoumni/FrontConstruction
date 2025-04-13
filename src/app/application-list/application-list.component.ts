@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CandidateService } from '../services/candidate.service'; // Ensure this path is correct
-import { ApplicationDTO } from '../models/application.dto'; // Ensure this path is correct
+import { CandidateService } from '../services/candidate.service';
+import { ApplicationDTO } from '../models/application.dto';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-application-list',
@@ -23,38 +24,51 @@ import { CommonModule } from '@angular/common';
   ],
   templateUrl: './application-list.component.html',
   styleUrls: ['./application-list.component.scss'],
-  providers: [CandidateService], // Add CandidateService to providers
+  providers: [CandidateService],
 })
 export class ApplicationListComponent implements OnInit {
-  applications: ApplicationDTO[] = []; // Liste complète des candidatures
-  filteredApplications: ApplicationDTO[] = []; // Liste filtrée des candidatures
-  paginatedApplications: ApplicationDTO[] = []; // Candidatures à afficher sur la page actuelle
-  searchText: string = ''; // Texte de recherche
-  selectedStatus: string = 'ALL'; // Statut sélectionné (ACCEPTED, REJECTED, ALL)
-  pageSize: number = 5; // Nombre d'éléments par page
-  currentPage: number = 0; // Page actuelle
+  applications: ApplicationDTO[] = [];
+  filteredApplications: ApplicationDTO[] = [];
+  paginatedApplications: ApplicationDTO[] = [];
+  searchText: string = '';
+  selectedStatus: string = 'ALL';
+  pageSize: number = 5;
+  currentPage: number = 0;
 
-  constructor(private candidateService: CandidateService) {}
+  constructor(
+    private candidateService: CandidateService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.loadApplications();
+    this.route.queryParams.subscribe(params => {
+      if (params['applicationId']) {
+        this.highlightApplication(params['applicationId']);
+      }
+    });
   }
 
-  // Charger les candidatures
   loadApplications(): void {
     this.candidateService.getAllApplications().subscribe({
       next: (data: ApplicationDTO[]) => {
-        this.applications = data;
-        this.applyFilter(); // Appliquer le filtre initial
+        this.applications = data.map(app => ({
+          ...app,
+          interviewPassed: this.checkInterviewPassed(app)
+        }));
+        this.applyFilter();
       },
       error: (err: any) => {
-        console.error('Erreur lors du chargement des candidatures :', err);
-        alert('❌ Erreur lors du chargement des candidatures. Veuillez réessayer.');
+        console.error('Error loading applications:', err);
+        alert('❌ Error loading applications. Please try again.');
       },
     });
   }
 
-  // Appliquer le filtre de recherche et de statut
+  private checkInterviewPassed(application: ApplicationDTO): boolean {
+    return application.status === 'ACCEPTED' && (application as any).interviewPassed === true;
+  }
+
   applyFilter(): void {
     this.filteredApplications = this.applications.filter((application) => {
       const matchesSearch =
@@ -69,43 +83,77 @@ export class ApplicationListComponent implements OnInit {
       return matchesSearch && matchesStatus;
     });
 
-    this.currentPage = 0; // Réinitialiser la pagination après un filtre
+    this.currentPage = 0;
     this.updatePaginatedApplications();
   }
 
-  // Mettre à jour les candidatures paginées
   updatePaginatedApplications(): void {
     const startIndex = this.currentPage * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.paginatedApplications = this.filteredApplications.slice(startIndex, endIndex);
   }
 
-  // Gérer le changement de page
   onPageChange(event: PageEvent): void {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
     this.updatePaginatedApplications();
   }
 
-  // Mettre à jour le statut d'une candidature
   updateStatus(id: number, status: string): void {
     this.candidateService.updateApplicationStatus(id, status).subscribe({
       next: () => {
-        alert('✅ Statut mis à jour avec succès !');
-        this.loadApplications(); // Recharger la liste des candidatures après la mise à jour
+        alert('✅ Status updated successfully!');
+        this.loadApplications();
       },
       error: (err: any) => {
-        console.error('Erreur lors de la mise à jour du statut :', err);
-        alert('❌ Erreur lors de la mise à jour du statut. Veuillez réessayer.');
+        console.error('Error updating status:', err);
+        alert('❌ Error updating status. Please try again.');
       },
     });
   }
 
-  // Télécharger le CV
   downloadResume(resume: string, candidateName: string): void {
     const link = document.createElement('a');
     link.href = `data:application/pdf;base64,${resume}`;
     link.download = `CV_${candidateName}.pdf`;
     link.click();
+  }
+
+  generateContract(applicationId: number): void {
+    this.candidateService.downloadContractPdf(applicationId).subscribe({
+      next: (pdf: Blob) => {
+        const blobUrl = URL.createObjectURL(pdf);
+        window.open(blobUrl, '_blank');
+      },
+      error: (err: any) => {
+        console.error('Error generating contract:', err);
+        alert('❌ Error generating contract: ' + (err.error?.message || err.message));
+      }
+    });
+  }
+
+  nommer(applicationId: number): void {
+    this.candidateService.downloadContractPdf(applicationId).subscribe({
+      next: () => {
+        alert('✅ Candidate nominated successfully.');
+        this.loadApplications();
+      },
+      error: (err: any) => {
+        console.error('Error during nomination:', err);
+        alert('❌ Error during candidate nomination. Please try again.');
+      }
+    });
+  }
+
+  highlightApplication(applicationId: string): void {
+    const id = Number(applicationId);
+    setTimeout(() => {
+      const element = document.getElementById(`app-${id}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        element.classList.add('highlight');
+        setTimeout(() => element.classList.remove('highlight'), 3000);
+      }
+    }, 500);
   }
 }

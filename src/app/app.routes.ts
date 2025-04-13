@@ -208,6 +208,7 @@ import { DeclareIncidentComponent } from './front/declare-incident/declare-incid
 import { AssignIncidentComponent}   from './assign-incident/assign-incident.component';
 import { ResolveIncidentComponent } from './resolve-incident/resolve-incident.component';
 import { IncidentListComponent } from '././incident-list/incident-list.component';
+import { ListInterviewsComponent } from './list-interviews/list-interviews.component';
 // import { NotificationComponent } from './incident-notification/incident-notification.component';
 // import { ManageIncidentsComponent } from './manage-incident/manage-incident.component';
 
@@ -306,6 +307,7 @@ export const routes: Routes = [
     { path: 'assign-incident/:id', component: AssignIncidentComponent },
     {path: 'resolve-incident/:id', component: ResolveIncidentComponent },
     { path: 'incidents', component: IncidentListComponent },
+    { path: 'completed', component: ListInterviewsComponent, title: 'Completed Interviews'},
     //notification de l'incident
     // { path: 'notifications', component: NotificationComponent },
      { path: 'admin-notifications', component: AdminNotificationsComponent },
