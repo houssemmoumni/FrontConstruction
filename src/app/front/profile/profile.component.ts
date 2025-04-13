@@ -88,7 +88,7 @@ export class ProfileComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', file);
   
-      this.http.post(`http://localhost:9090/api/service/user/uploadProfilePictureAsBlobByEmail/${this.userProfile?.email}`, formData)
+      this.http.post(`http://localhost:8222/api/service/user/uploadProfilePictureAsBlobByEmail/${this.userProfile?.email}`, formData)
         .subscribe({
           next: (res) => console.log('Upload success:', res),
           error: (err) => console.error('Upload failed:', err)
@@ -98,7 +98,7 @@ export class ProfileComponent implements OnInit {
   profilePicUrl: string = '';
 
   loadProfilePicture() {
-    this.http.get(`http://localhost:9090/api/service/user/getProfilePictureBlobByEmail/${this.userProfile?.email}`, {
+    this.http.get(`http://localhost:8222/api/service/user/getProfilePictureBlobByEmail/${this.userProfile?.email}`, {
       responseType: 'text'
     }).subscribe({
       next: (image: string) => {
@@ -110,6 +110,16 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
+  async resetPassword() {
+    if (await this.keycloakService.isLoggedIn()) {
+      // Keycloak Account Management URL for password update
+      const keycloakUrl = 'http://localhost:8080/realms/constructionRealm/account/#/security/signingin';
+      window.location.href = keycloakUrl;
+    } else {
+      alert('Please log in first');
+    }
+  }
+  
   
   /**
    * ✅ Navigate to the update profile page

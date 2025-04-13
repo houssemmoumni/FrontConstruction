@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   
     if (roles.includes('admin') || roles.includes('chef_projet')) {
       this.router.navigate(['/admins']);
-    } else if (roles.includes('user')) {
+    } else if (roles.includes('user')|| roles.includes('chef_projet')) {
       this.router.navigate(['/user']);
     } else {
       this.router.navigate(['/unauthorized']);

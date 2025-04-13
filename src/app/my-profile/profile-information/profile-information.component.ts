@@ -9,11 +9,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
     selector: 'app-profile-information',
     standalone: true,
-    imports: [CommonModule, MatCardModule, MatButtonModule, MatMenuModule, MatTableModule],
+    imports: [CommonModule, MatCardModule, MatButtonModule, MatMenuModule, MatTableModule, MatIconModule,
+        MatDividerModule],
     templateUrl: './profile-information.component.html',
     styleUrls: ['./profile-information.component.scss']
 })
@@ -78,17 +81,17 @@ export class ProfileInformationComponent implements OnInit {
     onFileSelected(event: any) {
         const file: File = event.target.files[0];
         if (file) {
-          const formData = new FormData();
-          formData.append('file', file);
-      
-          this.http.post(`http://localhost:9090/api/service/user/uploadProfilePictureAsBlobByEmail/${this.userProfile?.email}`, formData)
-            .subscribe({
-              next: (res) => console.log('Upload success:', res),
-              error: (err) => console.error('Upload failed:', err)
-            });
+            const formData = new FormData();
+            formData.append('file', file);
+
+            this.http.post(`http://localhost:8222/api/service/user/uploadProfilePictureAsBlobByEmail/${this.userProfile?.email}`, formData)
+                .subscribe({
+                    next: (res) => console.log('Upload success:', res),
+                    error: (err) => console.error('Upload failed:', err)
+                });
         }
-      }
-      
+    }
+
 
     updateUser() {
         if (this.userProfile?.email) {
@@ -105,17 +108,17 @@ export class ProfileInformationComponent implements OnInit {
     profilePicUrl: string = '';
 
     loadProfilePicture() {
-      this.http.get(`http://localhost:9090/api/service/user/getProfilePictureBlobByEmail/${this.userProfile?.email}`, {
-        responseType: 'text'
-      }).subscribe({
-        next: (image: string) => {
-          this.profilePicUrl = image;
-        },
-        error: err => {
-          console.warn("No image found.");
-          this.profilePicUrl = ''; // or default avatar
-        }
-      });
+        this.http.get(`http://localhost:8222/api/service/user/getProfilePictureBlobByEmail/${this.userProfile?.email}`, {
+            responseType: 'text'
+        }).subscribe({
+            next: (image: string) => {
+                this.profilePicUrl = image;
+            },
+            error: err => {
+                console.warn("No image found.");
+                this.profilePicUrl = ''; // or default avatar
+            }
+        });
     }
-    
+
 }

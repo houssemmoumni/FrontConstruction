@@ -16,6 +16,12 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = this.keycloakService.getToken();
 
     console.log('📦 Intercepting request:', req.url);
+
+    // 👇 Skip adding Authorization for preflight OPTIONS requests
+    if (req.method === 'OPTIONS') {
+      return next.handle(req);
+    }
+
     if (token) {
       console.log('🔐 Attaching token to request');
       const cloned = req.clone({

@@ -105,7 +105,7 @@ export class UpdateUserComponent implements OnInit {
   }
 
   toggleFields(role: string): void {
-    this.showRoleEntrepriseFields = role === 'Agententreprise';
-    this.showEtudiantFields = role === 'etudiant';
+    this.showRoleEntrepriseFields = role === 'chef_projet';
+    this.showEtudiantFields = role === 'ouvrier';
   }
 }

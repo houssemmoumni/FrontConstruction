@@ -14,14 +14,13 @@
     <div class="upload-section">
       <label for="fileUpload" class="upload-label">Update Profile Picture</label>
       <input id="fileUpload" type="file" (change)="onFileSelected($event)" class="file-input" />
+      <button (click)="resetPassword()">Reset Password</button>
+
     </div>
   
     <!-- User Details -->
     <div class="details-grid">
-      <div class="detail-item">
-        <span>User ID:</span>
-        <p>{{ userProfile.id }}</p>
-      </div>
+ 
       <div class="detail-item">
         <span>Full Name:</span>
         <p>{{ userProfile.firstName }} {{ userProfile.lastName }}</p>

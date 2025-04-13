@@ -11,7 +11,7 @@ import { KeycloakUser, keyCredential } from '../Modules/UserModule/KeycloakUserR
   providedIn: 'root'
 })
 export class UserServiceService {
-  url: string = "http://localhost:9090/api/service/user";
+  url: string = "http://localhost:8222/api/service/user";
   currentUser: any = {};
   private keycloak!: KeycloakInstance; // now `!` to delay assignment
 
