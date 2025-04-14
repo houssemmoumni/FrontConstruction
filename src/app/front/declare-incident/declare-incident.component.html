@@ -29,29 +29,90 @@
         </mat-card-header>
 
         <mat-card-content>
-          <form (ngSubmit)="submitIncident()">
+          <form (ngSubmit)="submitIncident(incidentForm)" #incidentForm="ngForm">
             <mat-form-field appearance="outline">
               <mat-label>Your Name</mat-label>
-              <input matInput [(ngModel)]="incident.reporterName" name="reporterName" required>
+              <input matInput [(ngModel)]="incident.reporterName" name="reporterName" required #reporterName="ngModel">
+              <mat-error *ngIf="reporterName.invalid && (reporterName.dirty || reporterName.touched)">
+                Please enter your name
+              </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Severity Level</mat-label>
-              <mat-select [(ngModel)]="incident.severity" name="severity" required>
-                <mat-option value="LOW">Low</mat-option>
-                <mat-option value="MEDIUM">Medium</mat-option>
-                <mat-option value="HIGH">High</mat-option>
+              <mat-select [(ngModel)]="incident.severity" name="severity" required (selectionChange)="onSeverityChange()">
+                <mat-option value="LOW">
+                  <div class="severity-option">
+                    <span class="severity-dot low"></span>
+                    Low
+                    <span *ngIf="autoDetectedSeverity === 'LOW'" class="auto-detected-badge">
+                      (Auto-detected)
+                    </span>
+                  </div>
+                </mat-option>
+                <mat-option value="MEDIUM">
+                  <div class="severity-option">
+                    <span class="severity-dot medium"></span>
+                    Medium
+                    <span *ngIf="autoDetectedSeverity === 'MEDIUM'" class="auto-detected-badge">
+                      (Auto-detected)
+                    </span>
+                  </div>
+                </mat-option>
+                <mat-option value="HIGH">
+                  <div class="severity-option">
+                    <span class="severity-dot high"></span>
+                    High
+                    <span *ngIf="autoDetectedSeverity === 'HIGH'" class="auto-detected-badge">
+                      (Auto-detected)
+                    </span>
+                  </div>
+                </mat-option>
               </mat-select>
+              <mat-hint *ngIf="isDetectingSeverity">
+                <mat-spinner diameter="16"></mat-spinner>
+                Analyzing description...
+              </mat-hint>
+              <mat-hint *ngIf="autoDetectedSeverity && !isDetectingSeverity">
+                Auto-detected severity: {{autoDetectedSeverity}}
+              </mat-hint>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Incident Description</mat-label>
-              <textarea matInput [(ngModel)]="incident.description" name="description" required rows="4"></textarea>
+              <textarea matInput
+                       [(ngModel)]="incident.description"
+                       (input)="onDescriptionChange($event)"
+                       name="description"
+                       required
+                       rows="4"
+                       #description="ngModel"></textarea>
+              <mat-error *ngIf="description.invalid && (description.dirty || description.touched)">
+                Please describe the incident
+              </mat-error>
+              <mat-hint>
+                <div class="severity-indicator">
+                  <span>Current severity prediction: </span>
+                  <span [ngClass]="{
+                    'low-severity': predictedSeverity === 'LOW',
+                    'medium-severity': predictedSeverity === 'MEDIUM',
+                    'high-severity': predictedSeverity === 'HIGH'
+                  }">
+                    {{predictedSeverity || 'Start typing...'}}
+                  </span>
+                  <span *ngIf="confidence" class="confidence-level">
+                    ({{confidence}}% confidence)
+                  </span>
+                </div>
+              </mat-hint>
             </mat-form-field>
 
             <div class="form-actions">
               <button mat-button type="button" (click)="cancel()">CANCEL</button>
-              <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting">
+              <button mat-raised-button
+                      color="primary"
+                      type="submit"
+                      [disabled]="isSubmitting || incidentForm.invalid">
                 SUBMIT INCIDENT
                 <mat-spinner *ngIf="isSubmitting" diameter="20"></mat-spinner>
               </button>
@@ -60,5 +121,4 @@
         </mat-card-content>
       </mat-card>
     </div>
-</div>
-
+  </div>

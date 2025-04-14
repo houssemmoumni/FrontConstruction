@@ -28,6 +28,7 @@
               "inlineStyleLanguage": "scss",
               "assets": [
                 "src/assets",
+                "src/assets/models",
                 {
                   "glob": "**/*",
                   "input": "public"

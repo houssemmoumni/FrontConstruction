@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ProjectService } from '../../services/project.service';
 import { IncidentService } from '../../services/incident.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Project } from '../../models/project.model';
 import { IncidentForm } from '../../models/incident.model';
-
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SeverityDetectionService } from '../../services/severity-detection.service';
 
 @Component({
   selector: 'app-declare-incident',
@@ -44,10 +44,16 @@ export class DeclareIncidentComponent implements OnInit {
   };
   isSubmitting = false;
   isLoading = false;
+  autoDetectedSeverity: string | null = null;
+  isDetectingSeverity = false;
+  predictedSeverity: string | null = null;
+  confidence: number | null = null;
+  userModifiedSeverity = false;
 
   constructor(
     private projectService: ProjectService,
     private incidentService: IncidentService,
+    private severityDetection: SeverityDetectionService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -83,43 +89,51 @@ export class DeclareIncidentComponent implements OnInit {
     this.resetIncidentForm();
   }
 
-  submitIncident(): void {
-    if (!this.validateForm()) return;
+  async onDescriptionChange(event: Event) {
+    const description = (event.target as HTMLTextAreaElement).value;
+    if (description.length > 10) {
+      this.isDetectingSeverity = true;
+      try {
+        const result = await this.severityDetection.detectSeverity(description);
+        this.autoDetectedSeverity = result.severity;
+        this.predictedSeverity = result.severity;
+        this.confidence = result.confidence;
+        if (!this.userModifiedSeverity) {
+          this.incident.severity = result.severity;
+        }
+      } catch (error) {
+        console.error('Severity detection failed:', error);
+      } finally {
+        this.isDetectingSeverity = false;
+      }
+    }
+  }
+
+  onSeverityChange() {
+    this.userModifiedSeverity = true;
+  }
+
+  submitIncident(form: NgForm): void {
+    if (!form.valid) return;
 
     this.isSubmitting = true;
     this.incidentService.createIncident(this.incident).subscribe({
       next: () => {
         this.showSuccess('Incident reported successfully!');
+        form.resetForm();
         this.resetForm();
       },
       error: (err) => {
         this.showError('Failed to submit incident: ' + this.getErrorMessage(err));
-      },
-      complete: () => {
         this.isSubmitting = false;
       }
     });
   }
 
-  private validateForm(): boolean {
-    if (!this.incident.reporterName?.trim()) {
-      this.showError('Please enter your name');
-      return false;
-    }
-    if (!this.incident.description?.trim()) {
-      this.showError('Please describe the incident');
-      return false;
-    }
-    if (!this.incident.projectId) {
-      this.showError('Please select a project');
-      return false;
-    }
-    return true;
-  }
-
   private resetForm(): void {
     this.selectedProject = null;
     this.resetIncidentForm();
+    this.resetDetectionState();
   }
 
   private resetIncidentForm(): void {
@@ -130,6 +144,14 @@ export class DeclareIncidentComponent implements OnInit {
       reporterName: '',
       projectName: ''
     };
+  }
+
+  private resetDetectionState(): void {
+    this.autoDetectedSeverity = null;
+    this.predictedSeverity = null;
+    this.confidence = null;
+    this.userModifiedSeverity = false;
+    this.isDetectingSeverity = false;
   }
 
   private showSuccess(message: string): void {
