@@ -17,19 +17,21 @@ import { catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
 
-interface NegociationDetail {
+interface Negociation {
   id: number;
-  clientId: number;
-  clientName: string;
-  adminId: number;
-  adminName: string;
   budgetEstime: number;
-  exigences: string;
-  statut: string;
   dateCreation: string;
-  dateFin: string;
+  dateModification: string;
+  demande: string;
+  exigences: string;
+  phase: string;
+  status: string;
+  adminId: number;
+  architecteId: number;
+  clientId: number;
+  ingenieurCivilId: number;
+  
 }
-
 @Component({
   selector: 'app-negociation-detaille',
   templateUrl: './Negociation-detaille.component.html',
@@ -53,9 +55,10 @@ interface NegociationDetail {
 })
 export class NegociationDetailleComponent implements OnInit {
   displayedColumns: string[] = ['id', 'clientId', 'adminId', 'budgetEstime', 'exigences', 'statut', 'dateCreation', 'dateFin', 'action'];
-  dataSource = new MatTableDataSource<NegociationDetail>();
+  dataSource = new MatTableDataSource<Negociation>();
   errorMessage: string | null = null;
   phaseForm: FormGroup;
+  negociation: Negociation | null = null;
 
   constructor(
     private http: HttpClient,
@@ -73,20 +76,27 @@ export class NegociationDetailleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      const id = params['id'];
-      this.loadNegociationDetails(id);
-    });
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.loadNegociationDetails(Number(id));
+    }
   }
 
   private loadNegociationDetails(id: number) {
-    this.http.get<NegociationDetail>(`http://localhost:8066/api/negociations/${id}`)
+    this.http.get<Negociation>(`http://localhost:8890/gestionnegociation/api/phase1/negociations/light/${id}`)
       .pipe(
         catchError((error: HttpErrorResponse) => this.handleError(error))
       )
       .subscribe({
-        next: (data: NegociationDetail) => {
+        next: (data: Negociation) => {
+          // Ensure empty fields are displayed as 'N/A'
+          data.adminId = data.adminId ?? 'N/A';
+          data.architecteId = data.architecteId ?? 'N/A';
+          data.clientId = data.clientId ?? 'N/A';
+          data.ingenieurCivilId = data.ingenieurCivilId ?? 'N/A';
+
           this.dataSource.data = [data];
+          this.negociation = data;
         },
         error: (error: any) => {
           this.errorMessage = 'Erreur lors du chargement des données';
@@ -95,20 +105,22 @@ export class NegociationDetailleComponent implements OnInit {
       });
   }
 
-  deleteNegociation(id: number) {
-    this.http.delete(`http://localhost:8066/api/negociations/${id}`)
-      .pipe(
-        catchError(this.handleError)
-      )
-      .subscribe({
-        next: () => {
-          this.router.navigate(['/negociation-all-list']);
-        },
-        error: (error) => {
-          this.errorMessage = 'Erreur lors de la suppression des données';
-          console.error(error);
-        }
-      });
+  deleteNegociation(id: number | undefined) {
+    if (id) {
+      this.http.delete(`http://localhost:8890/gestionnegociation/api/phase1/negociations/${id}`)
+        .pipe(
+          catchError(this.handleError)
+        )
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/negociation-all-list']);
+          },
+          error: (error) => {
+            this.errorMessage = 'Erreur lors de la suppression des données';
+            console.error(error);
+          }
+        });
+    }
   }
 
   onAddPhase() {
@@ -116,7 +128,7 @@ export class NegociationDetailleComponent implements OnInit {
       const id = this.route.snapshot.paramMap.get('id');
       if (id) {
         const phaseData = { ...this.phaseForm.value, negociationId: id };
-        this.http.post(`http://localhost:8066/api/negociations/${id}/phases`, phaseData)
+        this.http.post(`http://localhost:8066/gestionnegociation/api/negociations/${id}/phases`, phaseData)
           .pipe(
             catchError(this.handleError)
           )
@@ -134,11 +146,37 @@ export class NegociationDetailleComponent implements OnInit {
     }
   }
 
+  sendNegociationToBackend() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id && this.negociation) {
+      this.http.post(`http://localhost:8890/gestionnegociation/api/phase1/negociations/${id}`, this.negociation)
+        .pipe(
+          catchError(this.handleError)
+        )
+        .subscribe({
+          next: () => {
+            alert('Négociation ajoutée avec succès.');
+            this.router.navigate(['/negociation-all-list']);
+          },
+          error: (error) => {
+            this.errorMessage = 'Erreur lors de l\'ajout de la négociation';
+            console.error(error);
+          }
+        });
+    }
+  }
+
+  goBack() {
+    this.router.navigate(['/negociation-all-list']);
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Une erreur est survenue';
-    if (error.error instanceof ErrorEvent) {
+    if (typeof window !== 'undefined' && error.error instanceof ErrorEvent) {
+      // Client-side error
       errorMessage = `Erreur: ${error.error.message}`;
     } else {
+      // Server-side error
       errorMessage = `Code d'erreur: ${error.status}\nMessage: ${error.message}`;
     }
     console.error(errorMessage);

@@ -1,31 +1,16 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CustomizerSettingsService } from './customizer-settings.service';
+import { NgClass } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDividerModule } from '@angular/material/divider'; // Import MatDividerModule
-import { FormsModule } from '@angular/forms';
-import { NgScrollbarModule } from 'ngx-scrollbar'; // Import NgScrollbarModule
-import { CustomizerSettingsService } from './customizer-settings.service';
+import { NgScrollbarModule } from 'ngx-scrollbar';
 
 @Component({
-  selector: 'app-customizer-settings',
-  standalone: true, // Mark the component as standalone
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTooltipModule,
-    MatSlideToggleModule,
-    MatSelectModule,
-    MatDividerModule, // Add MatDividerModule to imports
-    FormsModule,
-    NgScrollbarModule // Add NgScrollbarModule to imports
-  ], // Add necessary modules to imports
-  templateUrl: './customizer-settings.component.html',
-  styleUrls: ['./customizer-settings.component.scss']
+    selector: 'app-customizer-settings',
+    imports: [NgClass, MatDividerModule, MatIconModule, MatButtonModule, NgScrollbarModule],
+    templateUrl: './customizer-settings.component.html',
+    styleUrl: './customizer-settings.component.scss'
 })
 export class CustomizerSettingsComponent {
 

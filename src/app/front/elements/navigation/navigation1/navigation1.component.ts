@@ -1,14 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Location, NgClass, NgIf, PlatformLocation } from '@angular/common';
-import * as $ from 'jquery';
-declare var jQuery: any;
-
-function handleResizeElement() {
-  // Define the handleResizeElement function here
-  console.log('handleResizeElement function called');
-  // Add your resize handling logic here
-}
+import * as $ from 'jquery'; // Import jQuery
+declare var jQuery: any; // Add this line
+declare var handleResizeElement: any;
 
 interface MenuType {
   title: string;
@@ -27,16 +22,16 @@ interface MenuType {
 }
 
 @Component({
-  selector: 'app-navigation1',
-  imports: [
-    RouterLink,
-    NgClass,
-    NgIf,
-  ],
-  templateUrl: './navigation1.component.html',
-  styleUrls: ['./navigation1.component.css']
+    selector: 'app-navigation1',
+    imports: [
+        RouterLink,
+        NgClass,
+        NgIf,
+    ],
+    templateUrl: './navigation1.component.html',
+    styleUrl: './navigation1.component.css'
 })
-export class Navigation1Component implements OnInit {
+export class Navigation1Component {
   cssUrl: any = '';
   toggleMenu: string = '';
   toggleSubMenu: string = '';
@@ -58,16 +53,30 @@ export class Navigation1Component implements OnInit {
       this.themeColor('1');
     }
   }
-
   ngOnInit(): void {
     setTimeout(() => {
-      if (typeof $ !== 'undefined') {
+      (function ($) {
         handleResizeElement();
+      })(jQuery);
+    }, 1000)
+    this.handleActiveMenu(this.currentHref);
+    setTimeout(() => {
+      if (typeof jQuery !== 'undefined') {
+        jQuery('.some-class').someFunction(); // Example usage
       } else {
         console.error('jQuery is not defined');
       }
     }, 1000);
-    this.handleActiveMenu(this.currentHref);
+  }
+
+  ngAfterViewInit() {
+    if (typeof $ !== 'undefined') {
+        setTimeout(() => {
+            // Your jQuery-dependent code here
+        }, 0);
+    } else {
+        console.error('jQuery is not defined. Ensure it is loaded in your project.');
+    }
   }
 
   themeColor(itme: any) {

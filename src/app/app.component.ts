@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule, NgClass, ViewportScroller } from '@angular/common';
 import { RouterOutlet, Router, Event, NavigationEnd } from '@angular/router';
 import { SidebarComponent } from './common/sidebar/sidebar.component';
@@ -8,21 +8,24 @@ import { CustomizerSettingsComponent } from './customizer-settings/customizer-se
 import { CustomizerSettingsService } from './customizer-settings/customizer-settings.service';
 import { ToggleService } from './common/sidebar/toggle.service';
 
-import { RouterModule } from '@angular/router';
-
 @Component({
-  selector: 'app-root',
-  standalone: true, // Mark the component as standalone
-  imports: [CommonModule, RouterModule, NgClass, SidebarComponent, HeaderComponent, FooterComponent, CustomizerSettingsComponent], // Add required modules and components here
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA] // Add CUSTOM_ELEMENTS_SCHEMA to schemas
+    selector: 'app-root',
+    imports: [
+        RouterOutlet,
+        CommonModule,
+        SidebarComponent,
+        HeaderComponent,
+        FooterComponent,
+        CustomizerSettingsComponent,
+        NgClass,
+    ],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss',
 })
 export class AppComponent {
     // Title
     title = 'Daxa - Angular 19 Material Design Admin Dashboard Template';
 
-    
     // isSidebarToggled
     isSidebarToggled = false;
     isFrontPage: boolean = false;
@@ -35,7 +38,7 @@ export class AppComponent {
     ) {
         this.router.events.subscribe((event: Event) => {
             this.router.events.subscribe(() => {
-                this.isFrontPage = this.router.url.startsWith('/front');
+                this.isFrontPage = this.router.url.startsWith('/front'); // Corrected route check
             });
             if (event instanceof NavigationEnd) {
                 // Scroll to the top after each navigation end
@@ -46,4 +49,5 @@ export class AppComponent {
             this.isSidebarToggled = isSidebarToggled;
         });
     }
+    
 }

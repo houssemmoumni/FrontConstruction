@@ -1,3 +1,4 @@
+// Negociation.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NegociationService } from '../../../apps/Negociation/negociation.service';
@@ -13,11 +14,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-negociation',
-    standalone: true, // Mark the component as standalone
+    standalone: true,
     imports: [
         HeaderLight3Component,
         Banner1Component,
@@ -32,52 +34,71 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         MatInputModule,
         FormsModule,
         ReactiveFormsModule
-    ], // Add necessary modules to imports
+    ],
     templateUrl: './Negociation.component.html',
     styleUrls: ['./Negociation.component.scss'],
     providers: [CurrencyPipe]
 })
 export class NegociationComponent implements OnInit {
-  nomPhase: string = '';
-  statut: string = '';
-  dateDebut: string = '';
-  dateFin: string = '';
-  negociationId: number = 0;
-  banner: any = {}; // Add a banner property
+    negociationForm: FormGroup;
+    negociationId: number = 0;
+    banner: any = {};
+    private apiUrl = 'http://localhost:8890/gestionnegociation/api/phase1/negociations'; // Adjust the base URL if needed
 
-  constructor(
-    private route: ActivatedRoute,
-    private negociationService: NegociationService
-  ) {}
+    constructor(
+        private route: ActivatedRoute,
+        private negociationService: NegociationService,
+        private http: HttpClient,
+        private fb: FormBuilder
+    ) {
+        this.negociationForm = this.fb.group({
+            budgetEstime: ['', [Validators.required, Validators.min(0)]],
+            exigences: ['', Validators.required],
+            demande: ['', Validators.required]
+        });
+    }
 
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      const id = params['id'];
-      this.getNegociationDetails(id);
-    });
-  }
+    ngOnInit() {
+        this.route.paramMap.subscribe(params => {
+            const id = params.get('id');
+            if (id) {
+                this.negociationId = +id;
+                // Si vous avez besoin de charger des données existantes, vous pouvez le faire ici
+                // this.getNegociationDetails(id);
+            }
+        });
+    }
 
-  getNegociationDetails(id: string) {
-    this.negociationService.getNegociationById(id).subscribe(
-      data => {
-        const negociation = data[0]; // Assuming the response is an array with one object
-        this.nomPhase = negociation.nomPhase;
-        this.statut = negociation.statut;
-        this.dateDebut = negociation.dateDebut;
-        this.dateFin = negociation.dateFin;
-        this.negociationId = negociation.negociationId;
-      },
-      error => {
-        console.error('Error fetching negociation details', error);
-      }
-    );
-  }
+    onSubmit() {
+        if (this.negociationForm.valid) {
+            const payload = {
+                id: this.negociationId, // Include the ID directly in the payload
+                budgetEstime: this.negociationForm.value.budgetEstime,
+                exigences: this.negociationForm.value.exigences,
+                demande: this.negociationForm.value.demande
+            };
 
-  scroll_top() {
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
-  }
+            this.http.post(`${this.apiUrl}/ADD${this.negociationId}`, payload).subscribe(
+                (response) => {
+                    console.log('Success:', response);
+                    alert('Négociation envoyée avec succès !');
+                    this.negociationForm.reset(); // Optionally reset the form after submission
+                },
+                (error) => {
+                    console.error('Error:', error);
+                    alert('Une erreur est survenue lors de l\'envoi.');
+                }
+            );
+        } else {
+            alert('Veuillez remplir tous les champs obligatoires correctement.');
+        }
+    }
+
+    scroll_top() {
+        window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
+    }
 }

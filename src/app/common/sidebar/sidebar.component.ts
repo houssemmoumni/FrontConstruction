@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button'; // Import MatButtonModule
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { ToggleService } from './toggle.service';
 import { NgClass } from '@angular/common';
@@ -10,10 +8,9 @@ import { CustomizerSettingsService } from '../../customizer-settings/customizer-
 
 @Component({
     selector: 'app-sidebar',
-    standalone: true, // Mark the component as standalone
-    imports: [NgScrollbarModule, MatExpansionModule, MatIconModule, MatButtonModule, RouterLinkActive, RouterModule, RouterLink, NgClass], // Add necessary modules to imports
+    imports: [NgScrollbarModule, MatExpansionModule, RouterLinkActive, RouterModule, RouterLink, NgClass],
     templateUrl: './sidebar.component.html',
-    styleUrls: ['./sidebar.component.scss']
+    styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
 

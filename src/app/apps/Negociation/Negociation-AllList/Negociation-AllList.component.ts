@@ -12,16 +12,23 @@ import { jsPDF } from 'jspdf'; // Import jsPDF
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 interface Negociation {
   id: number;
-  clientId: number;
-  adminId: number;
   budgetEstime: number;
-  exigences: string;
-  statut: string;
   dateCreation: string;
-  dateFin: string;
+  dateModification: string;
+  demande: string;
+  exigences: string;
+  phase: string;
+  status: string;
+  adminId: number;
+  architecteId: number;
+  clientId: number;
+  ingenieurCivilId: number;
+
+ 
+  
+  
 }
 
 @Component({
@@ -43,7 +50,21 @@ interface Negociation {
   ]
 })
 export class NegociationAllListComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['id', 'clientId', 'adminId', 'budgetEstime', 'exigences', 'statut', 'dateCreation', 'dateFin', 'action'];
+  displayedColumns: string[] = [
+    'id', 
+    'budgetEstime', // Updated to match the matColumnDef in the template
+    'dateCreation', 
+    'dateModification', 
+    'demande', 
+    'exigences', 
+    'phase', 
+    'status', 
+    'adminId', 
+    'architecteId', 
+    'clientId', 
+    'ingenieurCivilId', 
+    'action'
+  ];
   dataSource = new MatTableDataSource<Negociation>();
   errorMessage: string | null = null;
 
@@ -60,12 +81,13 @@ export class NegociationAllListComponent implements OnInit, AfterViewInit {
   }
 
   private loadNegociations() {
-    this.http.get<Negociation[]>('http://localhost:8066/api/negociations/all')
+    this.http.get<Negociation[]>('http://localhost:8890/gestionnegociation/api/phase1/negociations/light')
       .pipe(
         catchError(this.handleError)
       )
       .subscribe({
         next: (data) => {
+          console.log('Data received from backend:', data); // Debugging log
           this.dataSource.data = data;
         },
         error: (error) => {
@@ -76,7 +98,7 @@ export class NegociationAllListComponent implements OnInit, AfterViewInit {
   }
 
   deleteNegociation(id: number) {
-    this.http.delete(`http://localhost:8066/api/negociations/${id}`)
+    this.http.delete(`http://localhost:8890/gestionnegociation/api/phase1/negociations/${id}`)
       .pipe(
         catchError(this.handleError)
       )
@@ -90,7 +112,6 @@ export class NegociationAllListComponent implements OnInit, AfterViewInit {
         }
       });
   }
-
   generatePDF() {
     const doc = new jsPDF();
     let row = 20; // Commencer un peu plus bas pour laisser de l'espace pour l'en-tête
@@ -127,10 +148,9 @@ export class NegociationAllListComponent implements OnInit, AfterViewInit {
         doc.text(negociation.adminId.toString(), 60, row);
         doc.text(negociation.budgetEstime.toString(), 90, row);
         doc.text(negociation.exigences, 130, row);
-        doc.text(negociation.statut, 170, row);
+    
         doc.text(negociation.dateCreation, 200, row);
-        doc.text(negociation.dateFin, 250, row);
-
+  
         // Vérifier si on atteint la fin de la page
         if (row > 280) {
             doc.addPage();
@@ -142,21 +162,9 @@ export class NegociationAllListComponent implements OnInit, AfterViewInit {
     doc.save('negociations.pdf');
 }
 
+
   private handleError(error: any) {
-    if (error instanceof ErrorEvent) {
-      // Client-side error
-      console.error('Client-side error:', error.message);
-    } else {
-      // Server-side error
-      console.error('Server-side error:', error);
-    }
-    let errorMessage = 'Une erreur est survenue';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = `Erreur: ${error.error.message}`;
-    } else {
-      errorMessage = `Code d'erreur: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.error(errorMessage);
-    return throwError(errorMessage);
+    console.error('Error:', error);
+    return throwError('Une erreur est survenue');
   }
 }
