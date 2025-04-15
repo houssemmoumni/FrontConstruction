@@ -17,6 +17,7 @@ export class ActiveLeadsComponent {
     totalProjects: number = 0; // Add property for total projects
     stats: { totalExpenses: number; totalProjects: number } = { totalExpenses: 0, totalProjects: 0 }; // Add stats property
     errorMessage: string = ''; // Add an error message property
+    totalRevenue: number = 0; // Add property for total revenue
 
     constructor(
         public themeService: CustomizerSettingsService,
@@ -27,6 +28,7 @@ export class ActiveLeadsComponent {
     ngOnInit(): void {
         this.fetchExpenseData();
         this.fetchActiveProjects(); // Fetch active projects
+        this.fetchTotalRevenue(); // Fetch total revenue
     }
 
     private fetchExpenseData(): void {
@@ -51,6 +53,18 @@ export class ActiveLeadsComponent {
             error => {
                 this.errorMessage = 'Failed to load active projects.';
                 console.error(error);
+            }
+        );
+    }
+
+    private fetchTotalRevenue(): void {
+        this.revenueService.getTotalRevenue().subscribe(
+            (revenue) => {
+                this.totalRevenue = revenue; // Assign the fetched revenue
+            },
+            (error) => {
+                this.errorMessage = 'Failed to load total revenue.';
+                console.error('Error fetching total revenue:', error);
             }
         );
     }

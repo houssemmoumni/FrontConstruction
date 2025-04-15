@@ -10,6 +10,9 @@ import { ExpenseService } from './expense.service'; // Import ExpenseService
   providedIn: 'root'
 })
 export class FinancialReportService {
+  getReport() {
+      throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost:8045/api/financial-reports';
 
   constructor(
