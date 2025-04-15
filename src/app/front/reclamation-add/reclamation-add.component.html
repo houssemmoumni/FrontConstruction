@@ -106,6 +106,27 @@
           </div>
         </div>
 
+
+        <div class="voice-controls">
+            <button type="button"
+                    class="recording-btn"
+                    (click)="toggleRecording()"
+                    [class.recording]="isRecording"
+                    [disabled]="isRecording">
+              <i class="material-icons">{{ isRecording ? 'mic_off' : 'keyboard_voice' }}</i>
+              {{ isRecording ? 'Arrêter l\'enregistrement' : 'Enregistrement vocal' }}
+            </button>
+
+            <div *ngIf="isRecording" class="recording-feedback">
+              <div class="pulse-ring"></div>
+              <span class="status-text">En écoute active...</span>
+            </div>
+          </div>
+
+          <div *ngIf="message" class="transcription-message">
+            <i class="material-icons" style="vertical-align: middle;">info</i>
+            {{ message }}
+          </div>
         <!-- Bouton d'envoi -->
         <div class="col-lg-12 col-md-12">
           <button type="submit" class="site-button button-md" [disabled]="reclamationForm.invalid">

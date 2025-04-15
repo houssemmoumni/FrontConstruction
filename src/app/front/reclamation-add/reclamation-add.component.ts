@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { HeaderLight3Component } from '../../../app/front/elements/header/header-light3/header-light3.component';
 import { Footer13Component } from '../../../app/front/elements/footer/footer13/footer13.component';
 import { ReclamationService } from '../../services/reclamation.service';
+import { VoiceRecorderService } from '../../services/voice-recorder.service';
 import { Router } from '@angular/router';
 import { Reclamation } from '../../models/reclamation.model';
 
@@ -18,9 +19,12 @@ export class ReclamationAddComponent {
   email1 = 'contact@example.com';
   reclamationForm: FormGroup;
   message: string = '';
+  isRecording = false;
+  audioUrl: string | null = null;
 
   constructor(
     private reclamationService: ReclamationService,
+     private voiceRecorder: VoiceRecorderService,
     private router: Router,
     private fb: FormBuilder
   ) {
@@ -66,6 +70,43 @@ export class ReclamationAddComponent {
       }
     );
   }
+
+
+// reclamation-add.component.ts
+// reclamation-add.component.ts
+async toggleRecording() {
+    if (this.isRecording) {
+      this.voiceRecorder.stopRecording();
+      this.isRecording = false;
+      return;
+    }
+
+    this.isRecording = true;
+    this.message = 'Parlez maintenant...';
+
+    try {
+      const voiceText = await this.voiceRecorder.startRecording();
+
+      if (voiceText && voiceText.trim().length > 0) {
+        const currentDesc = this.reclamationForm.value.description || '';
+        this.reclamationForm.patchValue({
+          description: `${currentDesc}\n\n[Transcription audio]:\n${voiceText}`
+        });
+        this.message = 'Transcription réussie!';
+      } else {
+        this.message = 'Aucune parole détectée';
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+      this.message = typeof error === 'string' ? error : 'Erreur de transcription';
+    } finally {
+      this.isRecording = false;
+    }
+  }
+
+
+
+
 
   private markFormGroupTouched(formGroup: FormGroup) {
     Object.values(formGroup.controls).forEach(control => {
