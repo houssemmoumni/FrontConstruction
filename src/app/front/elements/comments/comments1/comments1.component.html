@@ -1,72 +1,20 @@
-<ol class="comment-list">
-  <li class="comment">
-    <div class="comment-body">
-      <div class="comment-author vcard"> <img class="avatar photo" src="assets/images/testimonials/pic1.jpg" alt="">
-        <cite class="fn">Oliver</cite> <span class="says">says:</span> </div>
-      <div class="comment-meta"> <a href="javascript:void(0);">October 6, 2024 at 7:15 am</a> </div>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae neqnsectetur adipiscing elit. Nam viaeneqnsectetur adipiscing elit. Nam vitae neque vitae sapien malesuada aliquet. </p>
-      <div class="reply"> <a href="javascript:void(0);" class="comment-reply-link">Reply</a> </div>
-    </div>
-    <ol class="children">
-      <li class="comment odd parent">
-        <div class="comment-body">
-          <div class="comment-author vcard"> <img class="avatar photo" src="assets/images/testimonials/pic2.jpg" alt="">
-            <cite class="fn">Harry</cite> <span class="says">says:</span> </div>
-          <div class="comment-meta"> <a href="javascript:void(0);">October 6, 2024 at 7:15 am</a> </div>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae neque vitae sapien malesuada aliquet. In viverra dictum justo in vehicula. Fusce et massa eu ante ornare molestie. Sed vestibulum sem felis, ac elementum ligula blandit ac.</p>
-          <div class="reply"> <a href="javascript:void(0);" class="comment-reply-link">Reply</a> </div>
-        </div>
-        <ol class="children">
-          <li class="comment odd parent">
-            <div class="comment-body">
-              <div class="comment-author vcard">
-                <img class="avatar photo" src="assets/images/testimonials/pic3.jpg"alt=""> <cite class="fn">Thomas</cite> <span class="says">says:</span>
-              </div>
-              <div class="comment-meta"> <a href="javascript:void(0);">October 6, 2024 at 7:15 am</a> </div>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae neque vitae sapien malesuada
-                aliquet.
-                In viverra dictum justo in vehicula. Fusce et massa eu ante ornare molestie. Sed vestibulum sem felis,
-                ac elementum ligula blandit ac.</p>
-              <div class="reply"> <a href="javascript:void(0);" class="comment-reply-link">Reply</a> </div>
-            </div>
-          </li>
-        </ol>
-        <!-- list END -->
-      </li>
-    </ol>
-    <!-- list END -->
-  </li>
-  <li class="comment">
-    <div class="comment-body">
-      <div class="comment-author vcard">
-        <img class="avatar photo" src="assets/images/testimonials/pic1.jpg" alt="">
-        <cite class="fn">Stacy poe</cite> <span class="says">says:</span>
-      </div>
-      <div class="comment-meta"> <a href="javascript:void(0);">October 6, 2024 at 7:15 am</a> </div>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae neque vitae sapien malesuada aliquet. In viverra dictum justo in vehicula. Fusce et massa eu ante ornare molestie. Sed vestibulum sem felis, ac elementum ligula blandit ac.</p>
-      <div class="reply"> <a href="javascript:void(0);" class="comment-reply-link">Reply</a> </div>
-    </div>
-  </li>
-  <li class="comment">
-    <div class="comment-body">
-      <div class="comment-author vcard">
-        <img class="avatar photo" src="assets/images/testimonials/pic2.jpg" alt="">
-        <cite class="fn">Jamie</cite> <span class="says">says:</span>
-      </div>
-      <div class="comment-meta"> <a href="javascript:void(0);">October 6, 2024 at 7:15 am</a> </div>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae neque vitae sapien malesuada aliquet. In viverra dictum justo in vehicula. Fusce et massa eu ante ornare molestie. Sed vestibulum sem felis, ac elementum ligula blandit ac.</p>
-      <div class="reply"> <a href="javascript:void(0);" class="comment-reply-link">Reply</a> </div>
-    </div>
-  </li>
-  <li class="comment">
-    <div class="comment-body">
-      <div class="comment-author vcard"> <img class="avatar photo" src="assets/images/testimonials/pic3.jpg" alt="">
-        <cite class="fn">Anna</cite> <span class="says">says:</span> </div>
-      <div class="comment-meta"> <a href="javascript:void(0);">October 6, 2024 at 7:15 am</a> </div>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae neque vitae sapien malesuada aliquet.
-        In viverra dictum justo in vehicula. Fusce et massa eu ante ornare molestie. Sed vestibulum sem felis,
-        ac elementum ligula blandit ac.</p>
-      <div class="reply"> <a href="javascript:void(0);" class="comment-reply-link">Reply</a> </div>
-    </div>
-  </li>
-</ol>
+<ul *ngIf="!isLoading && comments && comments.length > 0">
+    <li *ngFor="let comment of comments">
+      <img *ngIf="comment.avatar" [src]="comment.avatar" alt="Avatar" class="avatar">
+      <strong>{{ comment.author }}</strong> :
+      <p>{{ comment.content }}</p>
+      <small>{{ comment.date }}</small>
+
+      <!-- Affichage des réponses imbriquées -->
+      <ul *ngIf="comment.replies && comment.replies.length > 0">
+        <li *ngFor="let reply of comment.replies">
+          <img *ngIf="reply.avatar" [src]="reply.avatar" alt="Avatar" class="avatar">
+          <strong>{{ reply.author }}</strong> :
+          <p>{{ reply.content }}</p>
+          <small>{{ reply.date }}</small>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <p *ngIf="!isLoading && comments.length === 0">Aucun commentaire pour cet article.</p>

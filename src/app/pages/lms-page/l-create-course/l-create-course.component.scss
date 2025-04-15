@@ -26,7 +26,6 @@
                             font-size: 15px !important;
                             border: 1px solid var(--daxaColor);
                             background-color: var(--daxaColor);
-    
                             &:not(:first-child) {
                                 border-color: #c2cada;
                                 color: var(--blackColor);
@@ -104,3 +103,32 @@
 
 /* Min width 1600px */
 @media only screen and (min-width: 1600px) {}
+
+.create-course-card {
+    max-width: 1000px; /* Augmente la largeur du formulaire */
+    margin: 0 auto; /* Centre le formulaire horizontalement */
+    padding: 20px;
+}
+
+.full-width {
+    width: 100%; /* S'assure que le champ description prend toute la largeur disponible */
+}
+
+.mat-form-field textarea {
+    font-size: 16px; /* Augmente la taille de la police du champ description */
+    padding: 10px; /* Ajoute un peu d'espace autour du texte */
+    resize: vertical; /* Permet à l'utilisateur de redimensionner verticalement */
+}
+
+.btn-box {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+@media only screen and (max-width: 767px) {
+    .create-course-card {
+        max-width: 90%; /* Réduit la largeur sur petits écrans */
+        padding: 15px;
+    }
+}

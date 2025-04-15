@@ -5,16 +5,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute,RouterLink } from '@angular/router';
-import { CarouselModule } from 'ngx-owl-carousel-o';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { StarRatingComponent } from './star-rating/star-rating.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Import CommonModule
-
+import { CarouselModule } from 'ngx-owl-carousel-o'; // Import CarouselModule
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { NgIf } from '@angular/common';
 
 import { MaterialService } from '../../../services/material.service';
 import { MaterialResponse } from '../../../models/material-response';

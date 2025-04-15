@@ -1,0 +1,167 @@
+/* Styles pour la section des commentaires */
+.comments-area {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .comments-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  /* Styles pour chaque commentaire */
+  .comment-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .comment {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .comment-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .comment-author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .author-name {
+    font-weight: bold;
+    color: #333;
+  }
+
+  .comment-date {
+    margin-left: auto;
+    font-size: 12px;
+    color: #777;
+  }
+
+  .comment-content {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  /* Styles pour les réponses aux commentaires */
+  .children {
+    list-style: none;
+    padding-left: 40px;
+    margin-top: 15px;
+  }
+
+  .children .comment {
+    background-color: #f1f1f1;
+  }
+
+  /* Styles pour le formulaire de commentaire */
+  .comment-form {
+    margin-top: 30px;
+  }
+
+  .comment-form .form-group {
+    margin-bottom: 15px;
+  }
+
+  .comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical;
+  }
+
+  .comment-form .btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .comment-form .btn-primary:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  /* Message si aucun commentaire */
+  .no-comments {
+    font-size: 16px;
+    color: #777;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+
+
+  /* Styles pour les actions de commentaire */
+.comment-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .btn-like,
+  .btn-dislike,
+  .btn-reply {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .btn-like {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .btn-dislike {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .btn-reply {
+    background-color: #007bff;
+    color: white;
+  }
+
+  /* Styles pour le formulaire de réponse */
+  .reply-form {
+    margin-top: 10px;
+  }
+
+  .reply-form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical;
+  }
+
+  .reply-form button {
+    margin-top: 5px;
+  }

@@ -149,7 +149,6 @@
                         .mat-mdc-tab-group {
                             .mat-mdc-tab-header {
                                 text-align: left;
-                                
                                 .mat-mdc-tab {
                                     margin-right: 10px;
                                     margin: {
@@ -244,7 +243,6 @@
                             .mat-mdc-tab-group {
                                 .mat-mdc-tab-header {
                                     text-align: right;
-                                    
                                     .mat-mdc-tab {
                                         margin: {
                                             right: 0;
@@ -305,6 +303,28 @@
     }
 
 }
+
+
+
+.filters-container {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .filter-field {
+    flex: 1;
+    max-width: 200px;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
 
 /* Min width 768px to Max width 991px */
 @media only screen and (min-width : 768px) and (max-width : 991px) {

@@ -1,0 +1,123 @@
+.container {
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .reclamation-card {
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .back-button {
+    margin-bottom: 20px;
+    color: #007bff;
+    font-weight: 600;
+  }
+
+  .response-item {
+    border-bottom: 1px solid #ddd;
+    padding: 12px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .response-item .mat-icon {
+    margin-right: 10px;
+  }
+
+  .response-date {
+    color: #999;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+
+  .no-responses {
+    color: #999;
+    padding: 20px 0;
+    text-align: center;
+  }
+
+  .loading {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .badge-pending {
+    background-color: #ffc107;
+    color: #000;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: inline-block;
+    font-weight: 500;
+  }
+
+  .badge-resolved {
+    background-color: #28a745;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: inline-block;
+    font-weight: 500;
+  }
+
+  .badge-closed {
+    background-color: #6c757d;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: inline-block;
+    font-weight: 500;
+  }
+
+  .badge-default {
+    background-color: #17a2b8;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: inline-block;
+    font-weight: 500;
+  }
+
+  mat-card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  mat-card-title {
+    font-size: 1.2em;
+    font-weight: 600;
+  }
+
+  mat-card-subtitle {
+    font-size: 0.9em;
+    font-weight: 400;
+  }
+
+  mat-list-item {
+    display: flex;
+    align-items: center;
+  }
+
+  mat-list-item:hover {
+    background-color: #f1f1f1;
+  }
+
+  mat-list-item .mat-icon {
+    color: #007bff;
+  }
+
+  mat-spinner {
+    color: #007bff;
+  }

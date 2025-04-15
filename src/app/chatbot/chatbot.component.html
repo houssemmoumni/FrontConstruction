@@ -1,0 +1,51 @@
+<div class="chatbot-container" [class.show-chatbot]="isChatOpen">
+    <!-- Bouton du chatbot -->
+    <button class="chatbot-toggler" (click)="toggleChat()">
+      <span class="material-symbols-rounded">mode_comment</span>
+      <span class="material-symbols-rounded">close</span>
+    </button>
+
+    <!-- Fenêtre de chat -->
+    <div class="chatbot">
+      <header>
+        <h2>Assistant Virtuel</h2>
+        <div class="header-actions">
+            <button class="reclamation-mini-btn"
+        [class.active]="isReclamationMode"
+        (click)="toggleReclamationMode()"
+        [title]="isReclamationMode ? 'Désactiver le mode réclamation' : 'Activer le mode réclamation'">
+  <span class="material-symbols-rounded">warning</span>
+</button>
+          <button class="close-btn" (click)="toggleChat()">&times;</button>
+        </div>
+      </header>
+
+      <div class="chatbox">
+        <div *ngFor="let message of messages"
+             class="chat"
+             [class.incoming]="!message.isUser"
+             [class.outgoing]="message.isUser">
+          <div class="content">
+            <p>{{message.text}}</p>
+          </div>
+        </div>
+        <div *ngIf="isLoading" class="chat incoming">
+          <div class="content">
+            <p class="typing-animation">
+              <span></span>
+              <span></span>
+              <span></span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <form class="chat-input" (submit)="sendMessage($event)">
+        <textarea [(ngModel)]="userInput" name="message"
+                  placeholder="Écrivez un message..." required></textarea>
+        <button type="submit" class="send-btn">
+          <span class="material-symbols-rounded">send</span>
+        </button>
+      </form>
+    </div>
+  </div>

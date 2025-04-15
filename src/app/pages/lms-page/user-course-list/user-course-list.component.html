@@ -1,0 +1,32 @@
+<!-- src/app/components/user-course-list/user-course-list.component.html -->
+<div class="user-course-list">
+    <h2>Liste des Cours Disponibles</h2>
+
+    <!-- Barre de recherche -->
+    <div class="search-container">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Rechercher un cours..."
+        (input)="applyFilter()"
+      />
+      <button (click)="clearSearch()">Effacer</button>
+    </div>
+
+    <!-- Liste des cours sous forme de cartes -->
+    <div class="course-cards">
+      <div *ngFor="let course of filteredCourses" class="course-card">
+        <!-- <img [src]="course.imageUrl || 'assets/default-course-image.jpg'" alt="{{ course.title }}" class="course-image"> -->
+        <div class="course-content">
+          <h3>{{ course.title }}</h3>
+          <p>{{ course.description }}</p>
+          <div class="course-details">
+            <span><strong>Durée :</strong> {{ course.duration }} minutes</span>
+            <span><strong>Instructeur :</strong> {{ course.instructor }}</span>
+          </div>
+          <button (click)="viewCourseDetails(course.id)">Voir les Détails</button>
+          <button (click)="enrollInCourse(course.id)">S'inscrire</button>
+        </div>
+      </div>
+    </div>
+  </div>

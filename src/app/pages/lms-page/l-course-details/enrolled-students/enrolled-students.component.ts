@@ -1,96 +1,45 @@
-import { Component } from '@angular/core';
+// src/app/components/enrolled-students/enrolled-students.component.ts
+import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CustomizerSettingsService } from '../../../../customizer-settings/customizer-settings.service';
+import { CourseService } from '../../../../services/course.service';
+import { User } from '../../../../models/user.model';
 
 @Component({
-    selector: 'app-enrolled-students',
-    imports: [MatCardModule, MatMenuModule, MatButtonModule, MatTableModule, MatProgressBarModule],
-    templateUrl: './enrolled-students.component.html',
-    styleUrl: './enrolled-students.component.scss'
+  selector: 'app-enrolled-students',
+  imports: [MatCardModule, MatMenuModule, MatButtonModule, MatTableModule, MatProgressBarModule],
+  templateUrl: './enrolled-students.component.html',
+  styleUrls: ['./enrolled-students.component.scss'],
 })
-export class EnrolledStudentsComponent {
+export class EnrolledStudentsComponent implements OnInit {
+  @Input() courseId!: number; // Propriété d'entrée pour recevoir l'ID du cours
 
-    displayedColumns: string[] = ['userID', 'student', 'email'];
-    dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  displayedColumns: string[] = ['userID', 'student', 'email'];
+  dataSource = new MatTableDataSource<User>();
 
-    constructor(
-        public themeService: CustomizerSettingsService
-    ) {}
+  constructor(
+    public themeService: CustomizerSettingsService,
+    private courseService: CourseService
+  ) {}
 
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-    {
-        userID: '#ARP-158',
-        student: {
-            img: 'images/users/user15.jpg',
-            name: 'Walter Frazier'
-        },
-        email: 'walter@example.com'
-    },
-    {
-        userID: '#ARP-132',
-        student: {
-            img: 'images/users/user7.jpg',
-            name: 'Kimberly Anderson'
-        },
-        email: 'kimberly@example.com'
-    },
-    {
-        userID: '#ARP-142',
-        student: {
-            img: 'images/users/user5.jpg',
-            name: 'Roscoe Guerrero'
-        },
-        email: 'roscoe@example.com'
-    },
-    {
-        userID: '#ARP-125',
-        student: {
-            img: 'images/users/user12.jpg',
-            name: 'Robert Stewart'
-        },
-        email: 'robert@example.com'
-    },
-    {
-        userID: '#ARP-176',
-        student: {
-            img: 'images/users/user15.jpg',
-            name: 'Walter Frazier'
-        },
-        email: 'walter@example.com'
-    },
-    {
-        userID: '#ARP-199',
-        student: {
-            img: 'images/users/user7.jpg',
-            name: 'Kimberly Anderson'
-        },
-        email: 'kimberly@example.com'
-    },
-    {
-        userID: '#ARP-162',
-        student: {
-            img: 'images/users/user5.jpg',
-            name: 'Roscoe Guerrero'
-        },
-        email: 'roscoe@example.com'
-    },
-    {
-        userID: '#ARP-187',
-        student: {
-            img: 'images/users/user12.jpg',
-            name: 'Robert Stewart'
-        },
-        email: 'robert@example.com'
+  ngOnInit(): void {
+    if (this.courseId) {
+      this.loadEnrolledStudents(this.courseId); // Charger les étudiants inscrits si courseId est défini
     }
-];
-export interface PeriodicElement {
-    userID: string;
-    student: any;
-    email: string;
+  }
+
+  loadEnrolledStudents(courseId: number): void {
+    this.courseService.getEnrolledStudents(courseId).subscribe({
+      next: (students) => {
+        this.dataSource.data = students;
+      },
+      error: (err) => {
+        console.error('Failed to load enrolled students:', err);
+      },
+    });
+  }
 }

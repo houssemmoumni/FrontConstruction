@@ -1,6 +1,5 @@
-
 import { NgClass, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Banner1Component } from '../../elements/banner/banner1/banner1.component';
 import { Footer13Component } from '../../elements/footer/footer13/footer13.component';
@@ -11,154 +10,70 @@ import { CategoryList1Component } from '../../elements/widgets/category-list1/ca
 import { OurGallery1Component } from '../../elements/widgets/our-gallery1/our-gallery1.component';
 import { RecentPosts1Component } from '../../elements/widgets/recent-posts1/recent-posts1.component';
 import { TagList1Component } from '../../elements/widgets/tag-list1/tag-list1.component';
+import { CommonModule } from '@angular/common';
+import { BlogService } from '../../../services/blog.service';
+import { Blog } from '../../../models/blog.model';
 
-declare  var jQuery:  any;
-interface blogType {
-  image: string,
-  date: string,
-  userName: string,
-  title: string,
-  decs: string,
-}
 @Component({
-    selector: 'app-grid3-sidebar',
-    imports: [
-        NgIf,
-        NgClass,
-        RouterLink,
-        HeaderLight3Component,
-        Banner1Component,
-        Footer13Component,
-        SearchForm2Component,
-        RecentPosts1Component,
-        Newsletter1Component,
-        OurGallery1Component,
-        CategoryList1Component,
-        TagList1Component
-    ],
-    templateUrl: './grid3-sidebar.component.html',
-    styleUrl: './grid3-sidebar.component.css'
+  selector: 'app-grid3-sidebar',
+  standalone: true,
+  imports: [
+    NgIf,
+    NgClass,
+    RouterLink,
+    HeaderLight3Component,
+    Banner1Component,
+    Footer13Component,
+    SearchForm2Component,
+    RecentPosts1Component,
+    Newsletter1Component,
+    OurGallery1Component,
+    CategoryList1Component,
+    TagList1Component,
+    CommonModule,
+  ],
+  templateUrl: './grid3-sidebar.component.html',
+  styleUrls: ['./grid3-sidebar.component.css']
 })
-export class Grid3SidebarComponent {
+export class Grid3SidebarComponent implements OnInit {
 
-  banner : any = {
-		pagetitle: "Blog grid 3 with sidebar",
-		bg_image: "assets/images/banner/bnr1.jpg",
-		title: "Blog grid 3 with sidebar",
-	}
-	layout : any = {
-		sidebar: true,
-		sidebarPosition:"right",
-		gridClass:"col-lg-4"
-	}
-  constructor() { }
+  blogList: Blog[] = [];
+  banner = {
+    pagetitle: 'Blog grid 3 with sidebar',
+    bg_image: 'assets/images/banner/bnr1.jpg',
+    title: 'Blog grid 3 with sidebar',
+  };
+  layout = {
+    sidebar: true,
+    sidebarPosition: 'right',
+    gridClass: 'col-lg-4',
+  };
 
-	ngOnInit(): void {
-		(function ($) {
-			var self = jQuery("#masonry, .masonry");
-				self.imagesLoaded(function () {
-					self.masonry({
-						gutterWidth: 15,
-						isAnimated: true,
-						itemSelector: ".card-container"
-					});
-				});
+  constructor(private blogService: BlogService) { }
 
-		})(jQuery);
-	}
+  ngOnInit() {
+    this.getBlogs();
+  }
 
-  scroll_top() {
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
+  getBlogs() {
+    this.blogService.getBlogs().subscribe({
+      next: (data) => {
+        console.log("Données reçues :", data);
+        this.blogList = data;
+      },
+      error: (err) => {
+        console.error("Erreur lors du chargement des blogs :", err);
+      }
     });
   }
 
-  blogList: blogType[] = [
-    {
-      image: 'assets/images/blog/grid/pic1.jpg',
-      date: '17 Aug 2024',
-      userName: 'Oliver',
-      title: 'Why Are Children So Obsessed',
-      decs: `All the Lorem Ipsum generators on the Internet tend to repeat.`,
-    },
-    {
-      image: 'assets/images/blog/grid/pic2.jpg',
-      date: '16 Aug 2024',
-      userName: 'Harry',
-      title: 'The Shocking Revelation',
-      decs: `All the Lorem Ipsum generators on the Internet tend to repeat.`,
-    },
-    {
-      image: 'assets/images/blog/grid/pic3.jpg',
-      date: '16 Aug 2024',
-      userName: 'Aaron',
-      title: 'The Story Of Industry Has Just',
-      decs: `All the Lorem Ipsum generators on the Internet tend to repeat.`,
-    },
-    {
-      image: 'assets/images/blog/grid/pic4.jpg',
-      date: '15 Aug 2024',
-      userName: 'Jamie',
-      title: 'Seven Outrageous Ideas Industry',
-      decs: `All the Lorem Ipsum generators on the Internet tend to repeat.`,
-    },
-    {
-      image: 'assets/images/blog/grid/pic1.jpg',
-      date: '17 Aug 2024',
-      userName: 'Oliver',
-      title: 'Why Are Children So Obsessed',
-      decs: `All the Lorem Ipsum generators on the Internet tend to repeat.`,
-    },
-    {
-      image: 'assets/images/blog/grid/pic2.jpg',
-      date: '16 Aug 2024',
-      userName: 'Harry',
-      title: 'The Shocking Revelation',
-      decs: `All the Lorem Ipsum generators on the Internet tend to repeat.`,
-    },
-    {
-      image: 'assets/images/blog/grid/pic3.jpg',
-      date: '16 Aug 2024',
-      userName: 'Aaron',
-      title: 'The Story Of Industry Has Just',
-      decs: `All the Lorem Ipsum generators on the Internet tend to repeat.`,
-    },
-    {
-      image: 'assets/images/blog/grid/pic4.jpg',
-      date: '15 Aug 2024',
-      userName: 'Jamie',
-      title: 'Seven Outrageous Ideas Industry',
-      decs: `All the Lorem Ipsum generators on the Internet tend to repeat.`,
-    },
-    {
-      image: 'assets/images/blog/grid/pic1.jpg',
-      date: '17 Aug 2024',
-      userName: 'Oliver',
-      title: 'Why Are Children So Obsessed',
-      decs: `All the Lorem Ipsum generators on the Internet tend to repeat.`,
-    },
-    {
-      image: 'assets/images/blog/grid/pic2.jpg',
-      date: '16 Aug 2024',
-      userName: 'Harry',
-      title: 'The Shocking Revelation',
-      decs: `All the Lorem Ipsum generators on the Internet tend to repeat.`,
-    },
-    {
-      image: 'assets/images/blog/grid/pic3.jpg',
-      date: '16 Aug 2024',
-      userName: 'Aaron',
-      title: 'The Story Of Industry Has Just',
-      decs: `All the Lorem Ipsum generators on the Internet tend to repeat.`,
-    },
-    {
-      image: 'assets/images/blog/grid/pic4.jpg',
-      date: '15 Aug 2024',
-      userName: 'Jamie',
-      title: 'Seven Outrageous Ideas Industry',
-      decs: `All the Lorem Ipsum generators on the Internet tend to repeat.`,
-    }
-  ]
+  scroll_top() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+// ✅ Ajout de la fonction trackById pour optimiser *ngFor
+trackById(index: number, blog: Blog): number {
+  return blog.id;
+}
+
 }

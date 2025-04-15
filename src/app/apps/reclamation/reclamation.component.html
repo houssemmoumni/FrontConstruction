@@ -1,0 +1,107 @@
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">Liste des réclamations</h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+      <li class="breadcrumb-item position-relative">
+        <a routerLink="/" class="d-inline-block position-relative">
+          <i class="ri-home-8-line"></i>
+          Dashboard
+        </a>
+      </li>
+      <li class="breadcrumb-item position-relative">Apps</li>
+      <li class="breadcrumb-item position-relative">Liste des réclamations</li>
+    </ol>
+  </div>
+
+  <mat-card class="daxa-card contacts-list-card mb-25 border-radius bg-white border-none d-block">
+    <mat-card-header>
+      <mat-card-title>
+        <form class="search-box position-relative">
+          <i class="material-symbols-outlined">search</i>
+          <input
+            type="text"
+            class="input-search d-block w-100 border-none outline-0"
+            placeholder="Search..."
+            (keyup)="applyFilter($event)"
+            #input
+          />
+        </form>
+      </mat-card-title>
+    </mat-card-header>
+
+
+        <!-- Ajoutez ceci près de votre bouton de recherche -->
+<!-- Dans reclamation.component.html -->
+<div class="notification-badge" *ngIf="pendingCount > 0">
+    {{pendingCount}}
+  </div>
+
+    <mat-card-content>
+      <div class="contacts-list-table">
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource">
+            <!-- ID Reclamation Column -->
+            <ng-container matColumnDef="idreclamation">
+              <th mat-header-cell *matHeaderCellDef> ID </th>
+              <td mat-cell *matCellDef="let element"> {{ element.idreclamation }} </td>
+            </ng-container>
+
+            <!-- Titre Column -->
+            <ng-container matColumnDef="titre">
+              <th mat-header-cell *matHeaderCellDef> Titre </th>
+              <td mat-cell *matCellDef="let element"> {{ element.titre }} </td>
+            </ng-container>
+
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef> Description </th>
+              <td mat-cell *matCellDef="let element"> {{ element.description }} </td>
+            </ng-container>
+
+            <!-- Date Reclamation Column -->
+            <ng-container matColumnDef="dateReclamation">
+              <th mat-header-cell *matHeaderCellDef> Date </th>
+              <td mat-cell *matCellDef="let element"> {{ element.dateReclamation }} </td>
+            </ng-container>
+
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let reclamation">
+                <div [ngClass]="getStatusClass(reclamation.status)">
+                    {{reclamation.status}}
+                  </div>
+              </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> Actions </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="primary" (click)="viewReclamation(element)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button mat-icon-button color="accent" (click)="replyReclamation(element)">
+                    <mat-icon>reply</mat-icon>
+                  </button>
+                <button mat-icon-button color="warn" (click)="deleteReclamation(element.idreclamation)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <!-- Table Rows -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+    </mat-card-content>
+
+
+
+    <!-- Pagination -->
+<mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+  </mat-card>
+
+  <!-- Formulaire de réponse (masqué par défaut) -->
+

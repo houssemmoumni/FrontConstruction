@@ -1,0 +1,86 @@
+/* Styles pour le formulaire de réponse */
+.add-reponse-card {
+    max-width: 800px;
+    width: 100%;
+    margin: 20px auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.form-container {
+    padding: 0 20px;
+}
+
+.main-label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: rgba(0, 0, 0, 0.1);
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #007bff;
+}
+
+.textarea textarea {
+    min-height: 200px;
+    resize: vertical;
+}
+
+.btn-box {
+    display: flex;
+    justify-content: center; /* Centrage des boutons */
+    gap: 20px; /* Espacement accru */
+    margin-top: 30px;
+}
+
+.btn-box button {
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-box button[color="primary"] {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-box button[color="primary"]:hover {
+    background-color: #0069d9;
+    transform: translateY(-2px);
+}
+
+.btn-box button[color="warn"] {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-box button[color="warn"]:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .add-reponse-card {
+        padding: 20px;
+    }
+
+    .btn-box {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

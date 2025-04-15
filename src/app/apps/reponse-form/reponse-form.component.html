@@ -1,0 +1,58 @@
+<!-- Breadcrumb -->
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
+    <h5 class="mb-0">Répondre à la réclamation</h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+        <li class="breadcrumb-item position-relative">
+            <a routerLink="/" class="d-inline-block position-relative">
+                <i class="ri-home-8-line"></i> Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item position-relative">Réclamations</li>
+        <li class="breadcrumb-item position-relative">Répondre</li>
+    </ol>
+</div>
+<!-- Formulaire de réponse -->
+<div class="row justify-content-center"> <!-- Ajout de justify-content-center -->
+    <div class="col-xxl-8 col-xxxl-8"> <!-- Augmentation légère de la largeur -->
+        <mat-card class="daxa-card add-reponse-card mb-25 border-radius bg-white border-none d-block">
+            <mat-card-header class="text-center"> <!-- Centrage du titre -->
+                <mat-card-title>
+                    <h4 class="mb-0">Répondre à la réclamation</h4> <!-- h4 au lieu de h5 -->
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <form (ngSubmit)="submitReply()" class="form-container">
+                    <div class="row">
+                        <!-- Titre de la réponse -->
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <mat-form-field appearance="outline" class="w-100"> <!-- Ajout de appearance="outline" -->
+                                    <mat-label>Titre de la réponse</mat-label> <!-- Label plus descriptif -->
+                                    <input matInput [(ngModel)]="reply.titre" name="titre" required>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Contenu de la réponse -->
+                        <div class="col-sm-12">
+                            <div class="mb-25">
+                                <mat-form-field appearance="outline" class="w-100 textarea"> <!-- Ajout de appearance="outline" -->
+                                    <mat-label>Votre réponse détaillée</mat-label> <!-- Label plus descriptif -->
+                                    <textarea matInput [(ngModel)]="reply.reponse" name="reponse" rows="8" required></textarea> <!-- Augmentation des rows -->
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-box">
+                        <button mat-raised-button color="primary" type="submit"> <!-- mat-raised-button -->
+                            <mat-icon>send</mat-icon> Envoyer
+                        </button>
+                        <button mat-raised-button color="warn" (click)="cancelReply()"> <!-- mat-raised-button -->
+                            <mat-icon>cancel</mat-icon> Annuler
+                        </button>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

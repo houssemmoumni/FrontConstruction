@@ -1,0 +1,51 @@
+.notification-bell {
+    position: relative;
+
+    &.disconnected {
+      opacity: 0.7;
+      .material-icons {
+        color: #ff6b6b;
+      }
+    }
+
+    .connection-dot {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff6b6b;
+
+      &.connected {
+        background: #51cf66;
+      }
+    }
+  }
+
+  .connection-alert {
+    padding: 10px;
+    background: #fff3bf;
+    color: #5f3dc4;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+
+    .material-icons {
+      font-size: 1.2rem;
+    }
+  }
+
+  .notification-status {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    background: #e9ecef;
+    color: #495057;
+
+    &.pending {
+      background: #fff3bf;
+      color: #e67700;
+    }
+  }

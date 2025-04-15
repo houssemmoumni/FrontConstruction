@@ -1,76 +1,47 @@
 import { Injectable } from '@angular/core';
-import * as Stomp from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
 import { Subject } from 'rxjs';
-import { NotificationDTO } from '../models/notification-dto';
+import * as SockJS from 'sockjs-client';
+import { Client } from '@stomp/stompjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
-
-  private stompClient!: Stomp.Client;
-  private notificationSubject = new Subject<NotificationDTO>();
-  private connectionStatusSubject = new Subject<boolean>();
-
-  notification$ = this.notificationSubject.asObservable();
-  connectionStatus$ = this.connectionStatusSubject.asObservable();
+  private stompClient: Client;
+  public newNotification = new Subject<{message: string, count: number}>();
 
   constructor() {
-    this.initializeConnection();
-  }
-
-  private initializeConnection(): void {
-    const socket = new SockJS('http://localhost:8051/ws');
-    this.stompClient = new Stomp.Client({
-      webSocketFactory: () => socket,
+    this.stompClient = new Client({
+      brokerURL: 'ws://localhost:8083/ws',
       reconnectDelay: 5000,
-      debug: (str) => console.log('STOMP: ' + str),
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000
     });
 
-    this.stompClient.onConnect = (frame) => {
-      console.log('Connected: ' + frame);
-      this.connectionStatusSubject.next(true);
-      this.subscribeToNotifications();
-    };
+    this.initConnection();
+  }
 
-    this.stompClient.onStompError = (frame) => {
-      console.error('Broker reported error: ' + frame.headers['message']);
-      console.error('Additional details: ' + frame.body);
-      this.connectionStatusSubject.next(false);
-    };
-
-    this.stompClient.onWebSocketClose = () => {
-      console.log('WebSocket connection closed');
-      this.connectionStatusSubject.next(false);
+  private initConnection(): void {
+    this.stompClient.onConnect = () => {
+      this.stompClient.subscribe('/topic/admin-notifications', (message) => {
+        if (message.body) {
+          this.handleNotification(message.body);
+        }
+      });
     };
 
     this.stompClient.activate();
   }
 
-  private subscribeToNotifications(): void {
-    this.stompClient.subscribe('/topic/notifications', (message) => {
-      try {
-        const notification: NotificationDTO = JSON.parse(message.body);
-        this.notificationSubject.next(notification);
-      } catch (error) {
-        console.error('Error parsing notification:', error);
-      }
-    });
-  }
-
-  disconnect(): void {
-    if (this.stompClient?.connected) {
-      this.stompClient.deactivate().then(() => {
-        console.log('Disconnected gracefully');
+  private handleNotification(message: string): void {
+    try {
+      const notification = JSON.parse(message);
+      this.newNotification.next({
+        message: notification.message || 'Nouvelle réclamation',
+        count: notification.count || 1
       });
+    } catch (e) {
+      console.error('Error parsing notification', e);
     }
   }
-
-  // Optional: Manual reconnect if needed
-  reconnect(): void {
-    if (!this.stompClient?.connected) {
-      this.initializeConnection();
-    }
-  
-  }}
+}

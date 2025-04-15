@@ -5,6 +5,7 @@ import { ProjectManagementComponent } from './dashboard/project-management/proje
 import { CrmComponent } from './dashboard/crm/crm.component';
 import { LmsComponent } from './dashboard/lms/lms.component';
 import { HelpDeskComponent } from './dashboard/help-desk/help-desk.component';
+import { ViewResponsesDialogComponentComponent } from './view-responses-dialog-component/view-responses-dialog-component.component';
 import { UiElementsComponent } from './ui-elements/ui-elements.component';
 import { AlertsComponent } from './ui-elements/alerts/alerts.component';
 import { AutocompleteComponent } from './ui-elements/autocomplete/autocomplete.component';
@@ -150,6 +151,12 @@ import { LEditCourseComponent } from './pages/lms-page/l-edit-course/l-edit-cour
 import { LCreateCourseComponent } from './pages/lms-page/l-create-course/l-create-course.component';
 import { LCourseDetailsComponent } from './pages/lms-page/l-course-details/l-course-details.component';
 import { LCoursesComponent } from './pages/lms-page/l-courses/l-courses.component';
+import { UserCourseListComponent } from './pages/lms-page/user-course-list/user-course-list.component';
+import { MyCoursesComponent } from './pages/lms-page/my-courses/my-courses.component';
+import { UserDetailsCourseComponent } from './pages/lms-page/user-details-course/user-details-course.component';
+
+//import { CourseContentComponent } from './pages/lms-page/l-course-details/course-content/course-content.component';
+import { AddContentComponent } from './pages/lms-page/add-content/add-content.component';
 import { LmsPageComponent } from './pages/lms-page/lms-page.component';
 import { PmEditUserComponent } from './pages/project-management-page/pm-edit-user/pm-edit-user.component';
 import { PmCreateUserComponent } from './pages/project-management-page/pm-create-user/pm-create-user.component';
@@ -194,8 +201,34 @@ import { EProductsListComponent } from './pages/ecommerce-page/e-products-list/e
 import { EProductsGridComponent } from './pages/ecommerce-page/e-products-grid/e-products-grid.component';
 import { EcommercePageComponent } from './pages/ecommerce-page/ecommerce-page.component';
 import { TeamMembersComponent } from './pages/users-page/team-members/team-members.component';
+//blog-Backoffice
+import { BlogComponent } from './apps/blog/blog.component';
+import { AddBlogComponent } from './apps/add-blog/add-blog.component';
+
+import { MesReclamationsComponent } from './mes-reclamations/mes-reclamations.component';
+
+//reclaamtion backoffice
+import { ReclamationComponent } from './apps/reclamation/reclamation.component';
+import { ReponseFormComponent } from './apps/reponse-form/reponse-form.component';
+
+
+//
+
+
+
+
+
+
+
+
+
 
 //front
+
+import { ReclamationAddComponent } from './front/reclamation-add/reclamation-add.component';
+
+
+
 import { HeaderStyle1Component } from './front/features/header-style1/header-style1.component';
 import { HeaderStyle2Component } from './front/features/header-style2/header-style2.component';
 import { HeaderStyle3Component } from './front/features/header-style3/header-style3.component';
@@ -267,8 +300,26 @@ import { HomeShipIndustryComponent } from './front/home-ship-industry/home-ship-
 import { HomeSolarPlantComponent } from './front/home-solar-plant/home-solar-plant.component';
 import { HomeSteelPlantComponent } from './front/home-steel-plant/home-steel-plant.component';
 import { IndexComponent } from './front/index/index.component';
+import { EditBlogComponent } from './apps/edit-blog/edit-blog.component';
+import { ChatbotComponent } from './chatbot/chatbot.component';
+//import { NotificationsComponent } from './notifications/notifications.component';
+
+
+
+
+// Removed invalid route definition
+
 
 export const routes: Routes = [
+
+
+    { path: 'reclamation', component: ReclamationComponent },
+    //{ path: 'notifications', component: NotificationsComponent },
+
+    { path: 'chatbot', component: ChatbotComponent },
+    { path: 'reponse/:id', component: ReponseFormComponent },
+    { path: 'view/:id', component: ViewResponsesDialogComponentComponent },
+
     { path: '', component: EcommerceComponent },
     { path: 'crm', component: CrmComponent },
     { path: 'project-management', component: ProjectManagementComponent },
@@ -278,6 +329,10 @@ export const routes: Routes = [
     { path: 'calendar', component: CalendarComponent },
     { path: 'contacts', component: ContactsComponent },
     { path: 'chat', component: ChatComponent },
+    //{ path: 'chat', component: ChatComponent },
+    { path: 'blog', component: BlogComponent },
+    { path: 'add-blog', component: AddBlogComponent },
+    { path: 'blogs/edit/:id', component: EditBlogComponent },
     { path: 'kanban-board', component: KanbanBoardComponent },
     {
         path: 'file-manager',
@@ -363,10 +418,17 @@ export const routes: Routes = [
         component: LmsPageComponent,
         children: [
             { path: '', component: LCoursesComponent },
-            { path: 'course-details', component: LCourseDetailsComponent },
+            { path: 'course-details/:id', component: LCourseDetailsComponent },
             { path: 'create-course', component: LCreateCourseComponent },
-            { path: 'edit-course', component: LEditCourseComponent },
+            { path: 'edit-course/:id', component: LEditCourseComponent },
             { path: 'instructors', component: LInstructorsComponent },
+            { path: 'add-content/:courseId', component: AddContentComponent },
+            { path: 'UserCourselist', component: UserCourseListComponent },
+            { path: 'mycourse', component: MyCoursesComponent },
+            { path: 'detailscourse/:id', component: UserDetailsCourseComponent },
+      //      { path: 'coursecontent/:courseId', component: CourseContentComponent },
+
+
         ],
     },
     {
@@ -501,6 +563,8 @@ export const routes: Routes = [
             { path: 'data-table', component: DataTableComponent },
         ],
     },
+
+
     {
         path: 'ui-kit',
         component: UiElementsComponent,
@@ -699,13 +763,16 @@ export const routes: Routes = [
     },
     { path: 'front/blog-grid-4', component: Grid4Component },
     { path: 'front/blog-single', component: SingleComponent },
-    { path: 'front/blog-single-sidebar', component: SingleSidebarComponent },
+    { path: 'front/blog-single-sidebar/:id', component: SingleSidebarComponent },
+
     {
         path: 'front/blog-single-left-sidebar',
         component: SingleSidebarLeftComponent,
     },
 
     // Contact ---
+    { path: 'front/reclamation/add', component: ReclamationAddComponent },
+    { path: 'front/reclamation', component: MesReclamationsComponent },
     { path: 'front/contact-1', component: ContactUs1Component },
     { path: 'front/contact-2', component: ContactUs2Component },
     { path: 'front/contact-3', component: ContactUs3Component },

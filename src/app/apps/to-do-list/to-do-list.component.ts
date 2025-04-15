@@ -25,7 +25,7 @@ import { Subscription } from 'rxjs';
 import { CustomizerSettingsService } from '../../customizer-settings/customizer-settings.service';
 import { TaskService } from '../../../app/services/task.service';
 import { UserService } from '../../../app/services/user.service';
-import { NotificationService } from '../../services/notification.service';
+import { Notification1Service } from '../../services/notification1.service';
 
 // Models
 import { Task } from '../../../app/models/task';
@@ -103,7 +103,7 @@ export class ToDoListComponent implements OnInit, OnDestroy {
         private dialog: MatDialog,
         private taskService: TaskService,
         private userService: UserService,
-        private notificationService: NotificationService,
+        private notificationService: Notification1Service,
         private snackBar: MatSnackBar
     ) {
         this.minDate = new Date();

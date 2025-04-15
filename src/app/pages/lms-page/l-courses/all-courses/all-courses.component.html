@@ -1,3 +1,24 @@
+
+<!-- Barre de recherche -->
+
+<div class="search-container">
+    <mat-form-field appearance="outline" class="search-input">
+      <mat-label>Rechercher un cours</mat-label>
+      <input
+        matInput
+        [(ngModel)]="searchQuery"
+        (input)="applyFilter()"
+        placeholder="Titre, description, instructeur..."
+      />
+      <!-- <button mat-icon-button matSuffix (click)="clearSearch()">
+        <mat-icon>close</mat-icon>
+      </button> -->
+    </mat-form-field>
+  </div>
+
+
+
+
 <div class="courses-table">
     <div class="table-responsive">
         <table mat-table [dataSource]="dataSource">
@@ -12,25 +33,35 @@
                 </td>
             </ng-container>
 
-            <!-- Course Name Column -->
-            <ng-container matColumnDef="courseName">
+            <!-- Title Column -->
+            <ng-container matColumnDef="title">
                 <th mat-header-cell *matHeaderCellDef>
-                    Course Name
+                    Title
                 </th>
                 <td mat-cell *matCellDef="let element" class="fw-medium">
                     <a routerLink="/lms-page/course-details">
-                        {{element.courseName}}
+                        {{element.title}}
                     </a>
                 </td>
             </ng-container>
 
-            <!-- Category Column -->
-            <ng-container matColumnDef="category">
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
                 <th mat-header-cell *matHeaderCellDef>
-                    Category
+                    Description
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    {{element.category}}
+                    {{element.description || 'N/A'}}
+                </td>
+            </ng-container>
+
+            <!-- Duration Column -->
+            <ng-container matColumnDef="duration">
+                <th mat-header-cell *matHeaderCellDef>
+                    Duration (minutes)
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.duration || 'N/A'}}
                 </td>
             </ng-container>
 
@@ -44,91 +75,62 @@
                 </td>
             </ng-container>
 
-            <!-- Enrolled Students Column -->
-            <ng-container matColumnDef="enrolledStudents">
-                <th mat-header-cell *matHeaderCellDef>
-                    Enrolled Students
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.enrolledStudents}}
-                </td>
-            </ng-container>
+        <!-- Status Column -->
+<!-- Status Column -->
+<ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>
+        Status
+    </th>
+    <td mat-cell *matCellDef="let element">
+        <span class="daxa-badge active d-inline-block" *ngIf="element.isPublished === 'true'">
+            Published
+        </span>
+        <span class="daxa-badge deactive d-inline-block" *ngIf="element.isPublished === 'false'">
+            Unpublished
+        </span>
+    </td>
+</ng-container>
 
-            <!-- Start Date Column -->
-            <ng-container matColumnDef="startDate">
-                <th mat-header-cell *matHeaderCellDef>
-                    Start Date
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.startDate}}
-                </td>
-            </ng-container>
+<!-- Action Column -->
+<!-- Action Column -->
+<ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>Action</th>
+    <td mat-cell *matCellDef="let element">
+      <div class="action-icons">
+        <!-- Bouton "View Course" -->
+        <button
+          [routerLink]="['/lms-page/course-details', element.id]"
+          matTooltip="View Course"
+          matTooltipPosition="above"
+        >
+          <mat-icon class="view-icon">visibility</mat-icon>
+        </button>
 
-            <!-- End Date Column -->
-            <ng-container matColumnDef="endDate">
-                <th mat-header-cell *matHeaderCellDef>
-                    End Date
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.endDate}}
-                </td>
-            </ng-container>
+        <!-- Bouton "Edit Course" -->
+        <button
+          [routerLink]="['/lms-page/edit-course', element.id]"
+          matTooltip="Edit Course"
+          matTooltipPosition="above"
+        >
+          <mat-icon class="edit-icon">edit</mat-icon>
+        </button>
 
-            <!-- Price Column -->
-            <ng-container matColumnDef="price">
-                <th mat-header-cell *matHeaderCellDef>
-                    Price
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.price}}
-                </td>
-            </ng-container>
-
-            <!-- Status Column -->
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef>
-                    Status
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <span class="daxa-badge active d-inline-block" *ngIf="element.status.active">
-                        {{element.status.active}}
-                    </span>
-                    <span class="daxa-badge deactive d-inline-block" *ngIf="element.status.deactive">
-                        {{element.status.deactive}}
-                    </span>
-                </td>
-            </ng-container>
-
-            <!-- Action Column -->
-            <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef>
-                    Action
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <div class="action-info">
-                        <a mat-button routerLink="/lms-page/course-details" matTooltip="View Course" matTooltipPosition="above">
-                            <i class="material-symbols-outlined">
-                                {{element.action.view}}
-                            </i>
-                        </a>
-                        <a mat-button routerLink="/lms-page/edit-course" matTooltip="Edit Course" matTooltipPosition="above">
-                            <i class="material-symbols-outlined">
-                                {{element.action.edit}}
-                            </i>
-                        </a>
-                        <button type="button" mat-button matTooltip="Delete" matTooltipPosition="above">
-                            <i class="material-symbols-outlined">
-                                {{element.action.delete}}
-                            </i>
-                        </button>
-                    </div>
-                </td>
-            </ng-container>
+        <!-- Bouton "Delete" -->
+        <button
+          (click)="deleteCourse(element.id)"
+          matTooltip="Delete"
+          matTooltipPosition="above"
+        >
+          <mat-icon class="delete-icon">delete</mat-icon>
+        </button>
+      </div>
+    </td>
+  </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
         </table>
     </div>
-    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
 </div>

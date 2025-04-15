@@ -1,0 +1,91 @@
+<div class="page-wraper">
+    <app-header-light3></app-header-light3>
+
+    <div class="page-content bg-white">
+      <div class="section-full content-inner bg-white">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <h3 class="title-box font-weight-300 m-t0 m-b10">Mes Réclamations <span class="bg-primary"></span></h3>
+
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="bg-primary text-white">
+                    <tr>
+                      <th>Titre</th>
+                      <th>Description</th>
+                      <th>Type</th>
+                      <th>Date</th>
+                      <th>Statut</th>
+                      <th>Réponse</th>
+                      <th>Actions</th> <!-- Nouvelle colonne -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let rec of reclamations">
+                      <tr>
+                        <td>{{ rec.titre }}</td>
+                        <td>{{ rec.description }}</td>
+                        <td>{{ rec.type }}</td>
+                        <td>{{ rec.dateReclamation | date:'dd/MM/yyyy' }}</td>
+                        <td>
+                          <span [ngClass]="{
+                            'badge badge-warning': rec.status === 'En attente',
+                            'badge badge-success': rec.status === 'Résolue',
+                            'badge badge-danger': rec.status === 'Rejetée'
+                          }">
+                            {{ rec.status }}
+                          </span>
+                        </td>
+                        <td>
+                            <button class="response-btn"
+                                    *ngIf="rec.idreclamation !== undefined"
+                                    (click)="toggleReponses(rec.idreclamation)">
+                              Voir réponses
+                            </button>
+                        </td>
+                        <td class="text-center">
+                          <!-- Boutons d'action -->
+                          <button class="btn btn-sm btn-primary mr-2" (click)="editReclamation(rec)">
+                            <i class="fa fa-edit"></i> <!-- Icône d'édition -->
+                          </button>
+                          <button class="btn btn-sm btn-danger" *ngIf="rec.idreclamation !== undefined" (click)="confirmDelete(rec.idreclamation)">
+                            <i class="fa fa-trash"></i> <!-- Icône de suppression -->
+                          </button>
+                        </td>
+                      </tr>
+
+                      <!-- Affichage des réponses -->
+                      <tr *ngIf="rec.idreclamation && reponsesMap[rec.idreclamation]">
+                        <td colspan="7"> <!-- Modifié de 6 à 7 pour couvrir toutes les colonnes -->
+                          <div class="reponse-wrapper">
+                            <strong class="reponse-title">Réponses :</strong>
+                            <ul *ngIf="reponsesMap[rec.idreclamation].length > 0; else noReponse" class="reponse-list">
+                              <li *ngFor="let rep of reponsesMap[rec.idreclamation]" class="reponse-item">
+                                <span class="reponse-text">{{ rep.reponse }}</span>
+                                <small class="reponse-date">{{ rep.date_reponse | date:'dd/MM/yyyy' }}</small>
+                              </li>
+                            </ul>
+                            <ng-template #noReponse>
+                              <p class="text-muted">Aucune réponse disponible.</p>
+                            </ng-template>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-container>
+
+                    <tr *ngIf="reclamations.length === 0">
+                      <td colspan="7" class="text-center">Aucune réclamation trouvée</td> <!-- Modifié de 6 à 7 -->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-footer13></app-footer13>
+</div>

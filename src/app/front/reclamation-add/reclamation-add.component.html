@@ -1,0 +1,146 @@
+<div class="page-wraper">
+    <!-- Header -->
+    <app-header-light3></app-header-light3>
+
+    <!-- Content -->
+    <div class="page-content bg-white">
+      <!-- Contact Form -->
+      <div class="section-full content-inner contact-page-9 overlay-black-dark" style="background-image: url(assets/images/background/bg5.jpg); background-position: 30% 100%">
+        <div class="container">
+          <div class="row">
+            <!-- Informations de contact -->
+            <div class="col-lg-4 col-md-12 text-white">
+              <div class="row">
+                <div class="col-lg-12 col-md-12 m-b30">
+                  <div class="icon-bx-wraper bx-style-1 p-a20 radius-sm">
+                    <div class="icon-content">
+                      <h5 class="dlab-tilte">
+                        <span class="icon-sm text-primary"><i class="ti-location-pin"></i></span>
+                        Adresse
+                      </h5>
+                      <p>007 Dummy Street, City, Country</p>
+                      <h6 class="m-b15 text-black font-weight-400"><i class="ti-alarm-clock"></i> Heures de bureau</h6>
+                      <p class="m-b0">Lundi à Samedi - 10h00 - 19h00</p>
+                      <p>Dimanche - Fermé</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-md-6 m-b30">
+                  <div class="icon-bx-wraper bx-style-1 p-a20 radius-sm">
+                    <div class="icon-content">
+                      <h5 class="dlab-tilte">
+                        <span class="icon-sm text-primary"><i class="ti-email"></i></span> E-mail
+                      </h5>
+                      <p class="m-b0">{{ email1 }}</p>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-md-6 m-b30">
+                  <div class="icon-bx-wraper bx-style-1 p-a20 radius-sm">
+                    <div class="icon-content">
+                      <h5 class="dlab-tilte">
+                        <span class="icon-sm text-primary"><i class="ti-mobile"></i></span> Téléphone
+                      </h5>
+                      <p class="m-b0">+216 12 345 678</p>
+                      <p class="m-b0">+216 98 765 432</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Formulaire de réclamation -->
+            <div class="col-lg-8 col-md-12 m-b30">
+              <form class="inquiry-form wow box-shadow bg-white fadeInUp" (ngSubmit)="onSubmit(reclamationForm)" #reclamationForm="ngForm">
+                <h3 class="title-box font-weight-300 m-t0 m-b10">Déposer une réclamation <span class="bg-primary"></span></h3>
+                <p>Si vous avez un problème ou une suggestion, n'hésitez pas à nous en informer.</p>
+
+                <div class="row">
+                  <!-- Titre -->
+                  <div class="col-lg-12 col-md-12">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="ti-file text-primary"></i></span>
+                        <input name="titre" type="text" required class="form-control" placeholder="Titre de la réclamation" [(ngModel)]="reclamation.titre" #titre="ngModel">
+                      </div>
+                      <div *ngIf="titre.invalid && titre.touched" class="text-danger">Le titre est requis.</div>
+                    </div>
+                  </div>
+
+                  <!-- Description -->
+                  <div class="col-lg-12 col-md-12">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="ti-agenda text-primary"></i></span>
+                        <textarea name="description" rows="4" class="form-control" required placeholder="Description" [(ngModel)]="reclamation.description" #description="ngModel"></textarea>
+                      </div>
+                      <div *ngIf="description.invalid && description.touched" class="text-danger">La description est requise.</div>
+                    </div>
+                  </div>
+
+
+
+
+                  <div class="col-lg-12 col-md-12">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="ti-agenda text-primary"></i></span>
+                        <textarea name="Type" rows="4" class="form-control" required placeholder="Type" [(ngModel)]="reclamation.type" #description="ngModel"></textarea>
+                      </div>
+                      <div *ngIf="description.invalid && description.touched" class="text-danger">Le type est requise.</div>
+                    </div>
+                  </div>
+
+
+
+
+                  <!-- Type de réclamation -->
+                  <!-- <div class="col-lg-6 col-md-6">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="ti-check-box text-primary"></i></span>
+                        <select name="type" class="form-control" required [(ngModel)]="reclamation.type" #type="ngModel">
+                          <option value="">Sélectionnez le type</option>
+                          <option value="Technique">Technique</option>
+                          <option value="Administratif">Administratif</option>
+                          <option value="Autre">Autre</option>
+                        </select>
+                      </div>
+                      <div *ngIf="type.invalid && type.touched" class="text-danger">Le type est requis.</div>
+                    </div>
+                  </div> -->
+
+                  <!-- Fichier joint -->
+
+
+                  <!-- Bouton d'envoi -->
+                  <div class="col-lg-12 col-md-12">
+                    <button name="submit" type="submit" value="Submit" class="site-button button-md" [disabled]="reclamationForm.invalid">
+                      <span>Envoyer</span>
+                    </button>
+                  </div>
+
+                  <!-- Message de succès ou d'erreur -->
+                  <div *ngIf="message" class="col-lg-12 col-md-12 mt-3">
+                    <div class="alert alert-info">{{ message }}</div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Contact Form END -->
+    </div>
+    <!-- Content END-->
+
+    <!-- Footer -->
+    <app-footer13></app-footer13>
+    <!-- Footer End -->
+
+    <!-- Bouton de retour en haut -->
+    <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" rel="stylesheet" />
+  </div>

@@ -1,424 +1,124 @@
-import { NgIf } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { Component, Input, ViewChild, AfterViewInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { Course } from '../../../../models/course.model';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CourseService } from '../../../../services/course.service';
+import { RouterModule } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormField } from '@angular/material/form-field';
+
 import { MatCardModule } from '@angular/material/card';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
+
 
 @Component({
-    selector: 'app-all-courses',
-    imports: [RouterLink, MatCardModule, MatMenuModule, MatButtonModule, MatTableModule, MatPaginatorModule, NgIf, MatTooltipModule],
-    templateUrl: './all-courses.component.html',
-    styleUrl: './all-courses.component.scss'
-})
-export class AllCoursesComponent {
+  selector: 'app-all-courses',
+  templateUrl: './all-courses.component.html',
+  imports: [
+    CommonModule,
 
-    displayedColumns: string[] = ['id', 'courseName', 'category', 'instructor', 'enrolledStudents', 'startDate', 'endDate', 'price', 'status', 'action'];
-    dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+    MatCardModule,
+    MatIconModule,
+    MatFormField,
+    MatPaginatorModule,
+    MatTableModule,
+    RouterModule,
+    MatFormFieldModule,
+    MatInputModule ,
+    FormsModule
+
+  ],
+  styleUrls: ['./all-courses.component.scss'],
+})
+export class AllCoursesComponent implements AfterViewInit, OnChanges {
+    @Input() courses: Course[] = []; // Reçoit les cours du parent
+
+    displayedColumns: string[] = [
+      'id',
+      'title',
+      'description',
+      'duration',
+      'instructor',
+      'status',
+      'action',
+    ];
+    dataSource = new MatTableDataSource<Course>();
+    searchQuery: string = ''; // Requête de recherche
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-    ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
+    constructor(
+      private cdr: ChangeDetectorRef,
+      private snackBar: MatSnackBar,
+      private courseService: CourseService
+    ) {}
+
+    ngAfterViewInit(): void {
+      console.log('Courses received in child component:', this.courses); // Afficher les données reçues
+      this.dataSource.data = this.courses; // Initialiser les données de la table
+      this.dataSource.paginator = this.paginator;
+
+      // Personnaliser le filtre pour rechercher dans les colonnes spécifiques
+      this.dataSource.filterPredicate = (data: Course, filter: string) => {
+        const searchText = filter.toLowerCase();
+        return Object.values(data)
+        .map(value => value?.toString().toLowerCase() || '')
+        .some(text => text.includes(searchText));
+    };
+
+      this.cdr.detectChanges(); // Forcer la détection des changements
     }
 
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-    {
-        id: '#258',
-        courseName: 'Introduction to python',
-        category: 'Technology',
-        instructor: 'Ann Cohen',
-        enrolledStudents: '120',
-        startDate: '01 Aug, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$30.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
+    ngOnChanges(changes: SimpleChanges): void {
+      if (changes['courses'] && changes['courses'].currentValue) {
+        console.log('Courses updated in child component:', this.courses); // Afficher les données mises à jour
+        this.dataSource.data = this.courses; // Mettre à jour les données de la table
+        if (this.paginator) {
+          this.dataSource.paginator = this.paginator;
         }
-    },
-    {
-        id: '#648',
-        courseName: 'Data science fundamentals',
-        category: 'Science',
-        instructor: 'Lea Lewis',
-        enrolledStudents: '99',
-        startDate: '15 Aug, 2024',
-        endDate: '15 Dec, 2024',
-        price: '$25.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#945',
-        courseName: 'Graphic design basics',
-        category: 'Arts & design',
-        instructor: 'Lillie Walker',
-        enrolledStudents: '75',
-        startDate: '01 Sep, 2024',
-        endDate: '30 Nov, 2024',
-        price: '$19.99',
-        status: {
-            // active: 'Active',
-            deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#186',
-        courseName: 'Web development basics',
-        category: 'Technology',
-        instructor: 'Lynn Flinn',
-        enrolledStudents: '140',
-        startDate: '15 Sep, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$14.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#439',
-        courseName: 'Business finance',
-        category: 'Business',
-        instructor: 'Mark Rivera',
-        enrolledStudents: '50',
-        startDate: '01 Oct, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$20.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#752',
-        courseName: 'Advanced app development',
-        category: 'Technology',
-        instructor: 'Chad Campos',
-        enrolledStudents: '90',
-        startDate: '15 Oct, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$22.99',
-        status: {
-            // active: 'Active',
-            deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#658',
-        courseName: 'Photoshop mastery',
-        category: 'Photoshop',
-        instructor: 'Richard Flannery',
-        enrolledStudents: '60',
-        startDate: '20 Oct, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$42.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#951',
-        courseName: 'Graphic design principles',
-        category: 'Design',
-        instructor: 'Toni Chancellor',
-        enrolledStudents: '35',
-        startDate: '25 Oct, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$20.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#357',
-        courseName: 'Python basics',
-        category: 'Python',
-        instructor: 'Mary Williams',
-        enrolledStudents: '50',
-        startDate: '30 Oct, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$14.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#852',
-        courseName: 'Java programming',
-        category: 'Technology',
-        instructor: 'Joel Ogilvie',
-        enrolledStudents: '40',
-        startDate: '01 Nov, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$32.99',
-        status: {
-            // active: 'Active',
-            deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#852',
-        courseName: 'Java programming',
-        category: 'Technology',
-        instructor: 'Joel Ogilvie',
-        enrolledStudents: '40',
-        startDate: '01 Nov, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$32.99',
-        status: {
-            // active: 'Active',
-            deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#357',
-        courseName: 'Python basics',
-        category: 'Python',
-        instructor: 'Mary Williams',
-        enrolledStudents: '50',
-        startDate: '30 Oct, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$14.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#951',
-        courseName: 'Graphic design principles',
-        category: 'Design',
-        instructor: 'Toni Chancellor',
-        enrolledStudents: '35',
-        startDate: '25 Oct, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$20.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#658',
-        courseName: 'Photoshop mastery',
-        category: 'Photoshop',
-        instructor: 'Richard Flannery',
-        enrolledStudents: '60',
-        startDate: '20 Oct, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$42.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#752',
-        courseName: 'Advanced app development',
-        category: 'Technology',
-        instructor: 'Chad Campos',
-        enrolledStudents: '90',
-        startDate: '15 Oct, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$22.99',
-        status: {
-            // active: 'Active',
-            deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#439',
-        courseName: 'Business finance',
-        category: 'Business',
-        instructor: 'Mark Rivera',
-        enrolledStudents: '50',
-        startDate: '01 Oct, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$20.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#186',
-        courseName: 'Web development basics',
-        category: 'Technology',
-        instructor: 'Lynn Flinn',
-        enrolledStudents: '140',
-        startDate: '15 Sep, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$14.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#945',
-        courseName: 'Graphic design basics',
-        category: 'Arts & design',
-        instructor: 'Lillie Walker',
-        enrolledStudents: '75',
-        startDate: '01 Sep, 2024',
-        endDate: '30 Nov, 2024',
-        price: '$19.99',
-        status: {
-            // active: 'Active',
-            deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#648',
-        courseName: 'Data science fundamentals',
-        category: 'Science',
-        instructor: 'Lea Lewis',
-        enrolledStudents: '99',
-        startDate: '15 Aug, 2024',
-        endDate: '15 Dec, 2024',
-        price: '$25.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#258',
-        courseName: 'Introduction to python',
-        category: 'Technology',
-        instructor: 'Ann Cohen',
-        enrolledStudents: '120',
-        startDate: '01 Aug, 2024',
-        endDate: '30 Dec, 2024',
-        price: '$30.99',
-        status: {
-            active: 'Active',
-            // deactive: 'Deactive',
-        },
-        action: {
-            view: 'visibility',
-            edit: 'edit',
-            delete: 'delete'
-        }
+        this.cdr.detectChanges(); // Forcer la détection des changements
+      }
     }
-];
 
-export interface PeriodicElement {
-    id: string;
-    courseName: string;
-    category: string;
-    instructor: string;
-    enrolledStudents: string;
-    startDate: string;
-    endDate: string;
-    price: string;
-    status: any;
-    action: any;
+    // Appliquer le filtre de recherche
+    applyFilter(): void {
+        this.dataSource.filter = this.searchQuery.trim().toLowerCase();
+      }
+
+      // Effacer le champ de recherche
+clearSearch(): void {
+  this.searchQuery = '';
+  this.applyFilter();
 }
+
+    // Méthode pour supprimer un cours
+    deleteCourse(courseId: number): void {
+      if (confirm('Are you sure you want to delete this course?')) {
+        this.courseService.deleteCourse(courseId).subscribe({
+          next: () => {
+            this.snackBar.open('Course deleted successfully!', 'Close', {
+              duration: 3000,
+              panelClass: ['success-snackbar'],
+            });
+            // Recharger les données ou mettre à jour la table
+            this.courses = this.courses.filter((course) => course.id !== courseId); // Mettre à jour la liste des cours
+            this.dataSource.data = this.courses; // Mettre à jour la source de données de la table
+          },
+          error: (err: any) => {
+            console.error('Failed to delete course:', err);
+            this.snackBar.open('Failed to delete course. Please try again.', 'Close', {
+              duration: 3000,
+              panelClass: ['error-snackbar'],
+            });
+          },
+        });
+      }
+    }
+  }

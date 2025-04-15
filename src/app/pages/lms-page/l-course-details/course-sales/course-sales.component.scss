@@ -41,7 +41,6 @@
             &.course-sales-card {
                 .mat-mdc-card-content {
                     height: 210px;
-          
                     .chart {
                         left: -37px;
                         right: -25px;
@@ -68,3 +67,48 @@
 
 /* Min width 1600px */
 @media only screen and (min-width: 1600px) {}
+
+
+
+// src/app/pages/lms-page/l-course-details/course-sales/course-sales.component.scss
+.chart {
+    width: 200%;
+    height: 200px; // Augmentez la hauteur pour un meilleur affichage
+    margin-top:20px;
+    position: relative;
+  }
+
+  .daxa-card {
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Ajoutez une ombre pour un effet plus moderne
+    border-radius: 8px; // Arrondissez les coins de la carte
+  }
+
+  .mat-card-header {
+    margin-bottom: 20px;
+  }
+
+  .mat-card-title {
+    font-size: 1.5rem; // Augmentez la taille du titre
+    font-weight: bold;
+  }
+
+  .mat-card-subtitle {
+    font-size: 1rem;
+    color: #666; // Utilisez une couleur plus douce pour le sous-titre
+  }
+
+  .daxa-up-down-badge {
+    background-color: #4CAF50; // Couleur de fond pour le badge
+    color: white; // Couleur du texte
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .material-symbols-outlined {
+    font-size: 1rem; // Ajustez la taille de l'icône
+  }
