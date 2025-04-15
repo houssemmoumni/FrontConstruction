@@ -1,22 +1,26 @@
-<div class="financial-report-container">
-    <div class="stat-item">
+<section class="financial-report-section">
+    <header class="section-header">
         <h5>Financial Report</h5>
-        <div *ngIf="(financialReports?.length ?? 0) > 0; else noReports">
-            <mat-form-field appearance="fill" class="report-selector">
-                <mat-label>Select a Report</mat-label>
-                <mat-select [(value)]="selectedReportId" aria-label="Select a financial report">
-                    <mat-option *ngFor="let report of financialReports" [value]="report.id_rapport">
-                        {{ report.date_rapport }} - {{ report.email }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <button class="download-report-btn" (click)="downloadSelectedReport()" [disabled]="!selectedReportId">
-                Download Selected PDF
-            </button>
-        </div>
-        <ng-template #noReports>
-            <p class="no-reports-message">No financial reports available.</p>
-        </ng-template>
-        <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+    </header>
+    <div *ngIf="(financialReports?.length ?? 0) > 0; else noReports">
+        <mat-form-field appearance="fill" class="report-selector">
+            <mat-label>Select a Report</mat-label>
+            <mat-select [(value)]="selectedReportId" aria-label="Select a financial report">
+                <mat-option *ngFor="let report of financialReports" [value]="report.id_rapport">
+                    {{ report.date_rapport }} - {{ report.email }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button
+            class="btn btn-primary download-report-btn"
+            (click)="downloadSelectedReport()"
+            [disabled]="!selectedReportId"
+        >
+            Download Selected PDF
+        </button>
     </div>
-</div>
+    <ng-template #noReports>
+        <p class="no-reports-message">No financial reports available.</p>
+    </ng-template>
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+</section>

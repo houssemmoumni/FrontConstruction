@@ -48,4 +48,8 @@ export class RevenueService {
         map(revenues => revenues.reduce((total, revenue) => total + revenue.amount, 0))
     );
   }
+
+  getAverageRevenue(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/average`);
+  }
 }

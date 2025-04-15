@@ -43,9 +43,21 @@ export class FinancialReportService {
 
   sendFinancialReport(report: FinancialReport): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}/send`, report).pipe(
+        map(response => {
+            console.log('Financial Report sent successfully:', response);
+            return response;
+        }),
         catchError(error => {
+            let errorMessage = 'Financial Report sent successfully.';
+            if (error.status === 400) {
+                errorMessage = 'Invalid request. Please check the report details.';
+            } else if (error.status === 500) {
+                errorMessage = 'Server error. Please try again later.';
+            } else if (error.status === 0) {
+                errorMessage = 'Network error. Please check your internet connection.';
+            }
             console.error('Error sending financial report:', error);
-            return throwError(error);
+            return throwError(() => new Error(errorMessage));
         })
     );
   }

@@ -1,42 +1,53 @@
-<div
-    class="stat-item position-relative"
-    [class.rtl-enabled]="themeService.isRTLEnabled()"
->
-    <h5>
-        Revenue Growth
-    </h5>
-    <div class="number lh-1 fw-medium">
-        {{ revenueData?.amount | currency:'USD' }}
-    </div>
-    <span
-        class="daxa-up-down-badge"
-        [ngClass]="{
-            up: revenueData?.growthPercentage > 0,
-            down: revenueData?.growthPercentage < 0
-        }"
+<section class="revenue-growth-section">
+    <header class="section-header">
+        <h5>Revenue Growth</h5>
+    </header>
+    <div
+        class="stat-item position-relative"
+        [class.rtl-enabled]="themeService.isRTLEnabled()"
     >
-        <i class="material-symbols-outlined">
-            {{ revenueData?.growthPercentage > 0 ? 'trending_up' : 'trending_down' }}
-        </i>
-        {{ revenueData?.growthPercentage || '0%' }}
-    </span>
-    <div class="chart">
-        <div id="crm_page_revenue_growth_chart"></div>
-        <div class="title d-block text-body">
-            Weekly Growth
+        <div class="number lh-1 fw-medium">
+            {{ revenueData?.amount | currency:'USD' }}
+        </div>
+        <span
+            class="daxa-up-down-badge"
+            [ngClass]="{
+                up: revenueData?.growthPercentage > 0,
+                down: revenueData?.growthPercentage < 0
+            }"
+        >
+            <i class="material-symbols-outlined">
+                {{ revenueData?.growthPercentage > 0 ? 'trending_up' : 'trending_down' }}
+            </i>
+            {{ revenueData?.growthPercentage || '0%' }}
+        </span>
+        <div class="chart">
+            <div id="crm_page_revenue_growth_chart"></div>
+            <div class="title d-block text-body">Weekly Growth</div>
         </div>
     </div>
-</div>
 
-<div class="external-projects">
-    <h5>External Projects</h5>
-    <ul *ngIf="externalProjects && externalProjects.length > 0; else noProjects">
-        <li *ngFor="let project of externalProjects">
-            <strong>{{ project.name }}</strong> - {{ project.description }}
-        </li>
-    </ul>
-    <ng-template #noProjects>
-        <p *ngIf="!errorMessage">No external projects available.</p>
-        <p *ngIf="errorMessage">{{ errorMessage }}</p>
-    </ng-template>
-</div>
+    <div class="average-revenue">
+        <header class="section-header">
+            <h5>Average Revenue</h5>
+        </header>
+        <div class="number lh-1 fw-medium">
+            {{ averageRevenue | currency:'USD' }}
+        </div>
+    </div>
+
+    <div class="external-projects">
+        <header class="section-header">
+            <h5>External Projects</h5>
+        </header>
+        <ul *ngIf="externalProjects && externalProjects.length > 0; else noProjects">
+            <li *ngFor="let project of externalProjects">
+                <strong>{{ project.name }}</strong> - {{ project.description }}
+            </li>
+        </ul>
+        <ng-template #noProjects>
+            <p *ngIf="!errorMessage">No external projects available.</p>
+            <p *ngIf="errorMessage">{{ errorMessage }}</p>
+        </ng-template>
+    </div>
+</section>
