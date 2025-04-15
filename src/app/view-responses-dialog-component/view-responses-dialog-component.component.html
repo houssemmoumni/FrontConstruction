@@ -4,35 +4,55 @@
     </button>
 
     <mat-card *ngIf="reclamation" class="reclamation-card">
-      <mat-card-header>
-        <mat-card-title>Réclamation #{{reclamation.idreclamation}}</mat-card-title>
-        <mat-card-subtitle>{{reclamation.dateReclamation | date}}</mat-card-subtitle>
+      <mat-card-header class="reclamation-header">
+        <mat-card-title class="reclamation-title">Réclamation #{{reclamation.idreclamation}}</mat-card-title>
+        <mat-card-subtitle class="reclamation-subtitle">{{reclamation.dateReclamation | date:'mediumDate'}}</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content>
+      <mat-card-content class="reclamation-body">
         <h3>{{reclamation.titre}}</h3>
         <p>{{reclamation.description}}</p>
-        <div [ngClass]="getStatusClass(reclamation.status)">
+        <div [ngClass]="'status-badge ' + getStatusClass(reclamation.status)">
           {{reclamation.status}}
         </div>
       </mat-card-content>
     </mat-card>
 
-    <h2>Réponses ({{reponses.length}})</h2>
+    <div class="responses-header">
+      <h2>Réponses ({{reponses.length}})</h2>
+    </div>
 
     <div *ngIf="isLoading" class="loading">
       <mat-spinner diameter="50"></mat-spinner>
     </div>
 
-    <mat-list *ngIf="!isLoading">
-      <mat-list-item *ngFor="let reponse of reponses" class="response-item">
-        <mat-icon mat-list-icon>reply</mat-icon>
-        <div mat-line>{{reponse.reponse}}</div>
-        <div mat-line class="response-date">{{reponse.date_reponse| date}}</div>
-      </mat-list-item>
+    <div *ngIf="!isLoading" class="response-list">
+      <div *ngFor="let reponse of reponses" class="response-item">
+        <div class="response-header">
+          <div class="response-icon">
+            <mat-icon>reply</mat-icon>
+          </div>
+          <h3 class="response-title">{{reponse.titre}}</h3>
+        </div>
 
-      <mat-list-item *ngIf="reponses.length === 0 && !isLoading" class="no-responses">
-        <mat-icon mat-list-icon>info</mat-icon>
-        <div mat-line>Aucune réponse pour cette réclamation</div>
-      </mat-list-item>
-    </mat-list>
+        <div class="response-content">{{reponse.reponse}}</div>
+
+        <div class="response-footer">
+          <div class="response-date">{{reponse.date_reponse | date:'medium'}}</div>
+
+          <div class="action-buttons">
+            <button mat-icon-button color="primary" (click)="editReponse(reponse)" matTooltip="Modifier">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteReponse(reponse.idreponse!)" matTooltip="Supprimer">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="reponses.length === 0" class="no-responses">
+        <mat-icon>info</mat-icon>
+        <p>Aucune réponse pour cette réclamation</p>
+      </div>
+    </div>
   </div>

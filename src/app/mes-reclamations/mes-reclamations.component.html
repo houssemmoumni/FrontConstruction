@@ -2,89 +2,130 @@
     <app-header-light3></app-header-light3>
 
     <div class="page-content bg-white">
-      <div class="section-full content-inner bg-white">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <h3 class="title-box font-weight-300 m-t0 m-b10">Mes Réclamations <span class="bg-primary"></span></h3>
+        <div class="section-full content-inner bg-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="page-title">Mes Réclamations</h2>
+                            <button class="btn btn-primary" (click)="addReclamation()">
+                                <i class="fas fa-plus-circle mr-2"></i>Nouvelle Réclamation
+                              </button>
+                        </div>
 
-              <div class="table-responsive">
-                <table class="table table-bordered">
-                  <thead class="bg-primary text-white">
-                    <tr>
-                      <th>Titre</th>
-                      <th>Description</th>
-                      <th>Type</th>
-                      <th>Date</th>
-                      <th>Statut</th>
-                      <th>Réponse</th>
-                      <th>Actions</th> <!-- Nouvelle colonne -->
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <ng-container *ngFor="let rec of reclamations">
-                      <tr>
-                        <td>{{ rec.titre }}</td>
-                        <td>{{ rec.description }}</td>
-                        <td>{{ rec.type }}</td>
-                        <td>{{ rec.dateReclamation | date:'dd/MM/yyyy' }}</td>
-                        <td>
-                          <span [ngClass]="{
-                            'badge badge-warning': rec.status === 'En attente',
-                            'badge badge-success': rec.status === 'Résolue',
-                            'badge badge-danger': rec.status === 'Rejetée'
-                          }">
-                            {{ rec.status }}
-                          </span>
-                        </td>
-                        <td>
-                            <button class="response-btn"
-                                    *ngIf="rec.idreclamation !== undefined"
-                                    (click)="toggleReponses(rec.idreclamation)">
-                              Voir réponses
-                            </button>
-                        </td>
-                        <td class="text-center">
-                          <!-- Boutons d'action -->
-                          <button class="btn btn-sm btn-primary mr-2" (click)="editReclamation(rec)">
-                            <i class="fa fa-edit"></i> <!-- Icône d'édition -->
-                          </button>
-                          <button class="btn btn-sm btn-danger" *ngIf="rec.idreclamation !== undefined" (click)="confirmDelete(rec.idreclamation)">
-                            <i class="fa fa-trash"></i> <!-- Icône de suppression -->
-                          </button>
-                        </td>
-                      </tr>
+                        <div class="card shadow-sm">
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th width="15%">Titre</th>
+                                                <th width="20%">Description</th>
+                                                <th width="10%">Type</th>
+                                                <th width="12%">Date</th>
+                                                <th width="12%">Statut</th>
+                                                <th width="16%">Réponses</th>
+                                                <th width="15%" class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let rec of reclamations">
+                                                <tr class="reclamation-row">
+                                                    <td class="font-weight-600">{{ rec.titre }}</td>
+                                                    <td class="text-truncate" [title]="rec.description">{{ rec.description  }}</td>
+                                                    <td>
+                                                        <span class="badge badge-type">{{ rec.type }}</span>
+                                                    </td>
+                                                    <td>{{ rec.dateReclamation | date:'dd/MM/yyyy' }}</td>
+                                                    <td>
+                                                        <span class="badge" [ngClass]="{
+                                                            'badge-warning': rec.status === 'En attente',
+                                                            'badge-success': rec.status === 'Résolue',
+                                                            'badge-danger': rec.status === 'Rejetée'
+                                                        }">
+                                                            {{ rec.status }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary response-btn"
+                                                                (click)="toggleReponses(rec.idreclamation ?? 0)">
+                                                            {{ rec.idreclamation && reponsesMap[rec.idreclamation] ? 'Masquer' : 'Voir' }} réponses
+                                                            <i class="fas" [ngClass]="{
+                                                                'fa-chevron-down': rec.idreclamation !== undefined && !reponsesMap[rec.idreclamation],
+                                                                'fa-chevron-up': rec.idreclamation !== undefined && reponsesMap[rec.idreclamation]
+                                                            }"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="btn-group" role="group">
+                                                            <button class="btn btn-sm btn-icon btn-edit" (click)="editReclamation(rec)">
+                                                                <i class="fas fa-pencil-alt"></i>
+                                                              </button>
 
-                      <!-- Affichage des réponses -->
-                      <tr *ngIf="rec.idreclamation && reponsesMap[rec.idreclamation]">
-                        <td colspan="7"> <!-- Modifié de 6 à 7 pour couvrir toutes les colonnes -->
-                          <div class="reponse-wrapper">
-                            <strong class="reponse-title">Réponses :</strong>
-                            <ul *ngIf="reponsesMap[rec.idreclamation].length > 0; else noReponse" class="reponse-list">
-                              <li *ngFor="let rep of reponsesMap[rec.idreclamation]" class="reponse-item">
-                                <span class="reponse-text">{{ rep.reponse }}</span>
-                                <small class="reponse-date">{{ rep.date_reponse | date:'dd/MM/yyyy' }}</small>
-                              </li>
-                            </ul>
-                            <ng-template #noReponse>
-                              <p class="text-muted">Aucune réponse disponible.</p>
-                            </ng-template>
-                          </div>
-                        </td>
-                      </tr>
-                    </ng-container>
+                                                              <button class="btn btn-sm btn-icon btn-delete" (click)="confirmDelete(rec.idreclamation ?? 0)">
+                                                                <i class="fas fa-trash"></i>
+                                                              </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
 
-                    <tr *ngIf="reclamations.length === 0">
-                      <td colspan="7" class="text-center">Aucune réclamation trouvée</td> <!-- Modifié de 6 à 7 -->
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                                                <!-- Ligne des réponses -->
+                                                <tr *ngIf="rec.idreclamation && reponsesMap[rec.idreclamation]"
+                                                    class="response-row">
+                                                    <td colspan="7">
+                                                        <div class="response-container">
+                                                            <h5 class="response-header">
+                                                                <i class="fas fa-comments mr-2"></i>
+                                                                Réponses ({{ reponsesMap[rec.idreclamation].length }})
+                                                            </h5>
 
+                                                            <div *ngIf="reponsesMap[rec.idreclamation].length > 0; else noReponse">
+                                                                <div *ngFor="let rep of reponsesMap[rec.idreclamation]"
+                                                                     class="response-item">
+                                                                    <div class="response-content">
+                                                                        <p class="response-text">{{ rep.reponse }}</p>
+                                                                        <div class="response-meta">
+                                                                            <span class="response-date">
+                                                                                <i class="far fa-clock mr-1"></i>
+                                                                                {{ rep.date_reponse | date:'dd/MM/yyyy HH:mm' }}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <ng-template #noReponse>
+                                                                <div class="no-responses">
+                                                                    <i class="far fa-comment-dots"></i>
+                                                                    <p>Aucune réponse disponible</p>
+                                                                </div>
+                                                            </ng-template>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+
+                                            <tr *ngIf="reclamations.length === 0">
+                                                <td colspan="7" class="text-center py-4">
+                                                    <div class="empty-state">
+                                                        <i class="far fa-folder-open fa-3x mb-3"></i>
+                                                        <h4>Aucune réclamation trouvée</h4>
+                                                        <p class="text-muted">Vous n'avez pas encore créé de réclamation</p>
+                                                        <button class="btn btn-primary mt-2" (click)="addReclamation()">
+                                                            <i class="fas fa-plus mr-2"></i>Créer une réclamation
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
 
     <app-footer13></app-footer13>

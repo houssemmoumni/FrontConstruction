@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reponse } from '../models/reponse.model';
-import { retry } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -41,5 +41,26 @@ addReponse(reponse: { titre: string; reponse: string }, reclamationId: number, u
   // Récupérer une réponse par ID
   getReponseById(id: number): Observable<Reponse> {
     return this.http.get<Reponse>(`${this.apiUrl}/${id}`);
+  }
+
+
+  // Dans reponse.service.ts
+
+// Mettre à jour une réponse
+updateReponse(id: number, reponse: { reponse: string }, userId: number): Observable<Reponse> {
+    return this.http.put<Reponse>(
+      `${this.apiUrl}/update/${id}?userId=${userId}`,
+      reponse
+    ).pipe(
+      retry(2),
+      catchError(error => {
+        console.error('Erreur de mise à jour:', error);
+        let errorMessage = 'Une erreur est survenue';
+        if (error.error && error.error.message) {
+          errorMessage = error.error.message;
+        }
+        throw new Error(errorMessage);
+      })
+    );
   }
 }

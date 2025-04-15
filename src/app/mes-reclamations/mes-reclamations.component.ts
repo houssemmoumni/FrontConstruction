@@ -6,12 +6,14 @@ import { HeaderLight3Component } from "../front/elements/header/header-light3/he
 import { CommonModule } from '@angular/common';
 import { Footer13Component } from "../front/elements/footer/footer13/footer13.component";
 import { Reponse } from '../models/reponse.model'; // à créer si pas encore fait
+import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-mes-reclamations',
   standalone: true,
-  imports: [HeaderLight3Component, CommonModule, Footer13Component],
+  imports: [HeaderLight3Component, CommonModule, Footer13Component ,MatIconModule],
   templateUrl: './mes-reclamations.component.html',
   styleUrl: './mes-reclamations.component.scss'
 })
@@ -19,7 +21,8 @@ export class MesReclamationsComponent implements OnInit {
     reclamations: Reclamation[] = [];
     reponsesMap: { [key: number]: Reponse[] } = {};
 
-    constructor(private reclamationService: ReclamationService) {}
+
+    constructor(private reclamationService: ReclamationService ,  private router: Router) {}
 
     ngOnInit(): void {
       this.loadReclamations();
@@ -57,12 +60,10 @@ export class MesReclamationsComponent implements OnInit {
 
 
 
-      editReclamation(reclamation: any) {
-        // Implémentez la logique d'édition
-        console.log('Édition de la réclamation:', reclamation);
-        // Vous pouvez ouvrir un modal ou naviguer vers une page d'édition
-      }
+      editReclamation(reclamation: Reclamation) {
+        this.router.navigate(['front/reclamation/edit', reclamation.idreclamation]);
 
+      }
       confirmDelete(reclamationId: number) {
         if (confirm('Êtes-vous sûr de vouloir supprimer cette réclamation ?')) {
           this.deleteReclamation(reclamationId);
@@ -82,6 +83,10 @@ export class MesReclamationsComponent implements OnInit {
             alert('Échec de la suppression');
           }
         );
+      }
+
+      addReclamation() {
+        this.router.navigate(['/front/reclamation/add']); // Adaptez le chemin selon votre routing
       }
 
     }

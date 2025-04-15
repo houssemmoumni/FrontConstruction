@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reclamation } from '../../app/models/reclamation.model';
 import { Reponse } from '../models/reponse.model';
@@ -47,11 +47,26 @@ export class ReclamationService {
     // );
   }
 
-  // Modifier une réclamation
   updateReclamation(id: number, reclamation: Reclamation, userId: number): Observable<Reclamation> {
-    return this.http.put<Reclamation>(`${this.apiUrl}/modifier/${id}?userId=${userId}`, reclamation);
-  }
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
 
+    // Convertir la date ISO en format compatible avec Spring Boot (LocalDateTime)
+    const payload = {
+      ...reclamation,
+      dateReclamation: reclamation.dateReclamation ?
+        new Date(reclamation.dateReclamation).toISOString().replace('Z', '') :
+        null,
+      user: undefined // Ne pas envoyer l'objet user complet
+    };
+
+    return this.http.put<Reclamation>(
+      `${this.apiUrl}/modifier/${id}?userId=${userId}`,
+      payload,
+      { headers: headers }
+    );
+  }
    // Supprimer une réclamation
    deleteReclamation(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/supprimer/${id}`);
