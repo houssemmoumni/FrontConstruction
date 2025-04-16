@@ -7,7 +7,7 @@ import { maintenance } from '../models/maintenance';
   providedIn: 'root'
 })
 export class MaintenanceService {
-  private apiUrl = 'http://localhost:8030/api/maintenances'; // Update with your backend API URL
+  private apiUrl = 'http://localhost:8222/api/assurance/maintenances'; // Update with your backend API URL
 
   constructor(private http: HttpClient) {}
 

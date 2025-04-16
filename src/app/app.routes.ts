@@ -275,6 +275,9 @@ import { HomeSolarPlantComponent } from './front/home-solar-plant/home-solar-pla
 import { HomeSteelPlantComponent } from './front/home-steel-plant/home-steel-plant.component';
 import { IndexComponent } from './front/index/index.component';
 import { CreateMaintenanceComponent } from './front/pages/maintenance/create-maintenance/create-maintenance.component';
+import { CreatePointageComponent } from './front/pages/pointage/create-pointage/create-pointage.component';
+
+
 
 
 export const routes: Routes = [
@@ -394,6 +397,22 @@ export const routes: Routes = [
             { path: 'maintenances-list', component: PmMaintenanceListComponent },
             { path: 'front/create-maintenance', component: CreateMaintenanceComponent },
             { path: 'update-maintenance/:id', component: PmUpdateMaintenanceComponent },
+            //{ path: 'clients', component: PmClientsComponent },
+            //{ path: 'teams', component: PmTeamsComponent },
+            //{ path: 'kanban-board', component: PmKanbanBoardComponent },
+            //{ path: 'users', component: PmUsersComponent },
+            //{ path: 'create-user', component: PmCreateUserComponent },
+            //{ path: 'edit-user', component: PmEditUserComponent },
+        ],
+    },
+    {
+        path: 'pointage-page',
+        component: ContratPageComponent,
+        children: [
+            { path: '', component: PmProjectOverviewComponent },
+            //{ path: 'maintenances-list', component: PmMaintenanceListComponent },
+            { path: 'front/create-pointage', component: CreatePointageComponent },
+            //{ path: 'update-maintenance/:id', component: PmUpdateMaintenanceComponent },
             //{ path: 'clients', component: PmClientsComponent },
             //{ path: 'teams', component: PmTeamsComponent },
             //{ path: 'kanban-board', component: PmKanbanBoardComponent },
@@ -614,6 +633,8 @@ export const routes: Routes = [
     { path: 'fron/home', component: IndexComponent },
     { path: 'front/index', component: IndexComponent },
     { path: 'front/create-maintenance', component: CreateMaintenanceComponent },
+    { path: 'front/create-pointage', component: CreatePointageComponent },
+
     { path: 'front/index-2', component: HomeOilPlantComponent },
     { path: 'front/home-oil-plant', component: HomeOilPlantComponent },
     { path: 'front/index-3', component: HomeSteelPlantComponent },

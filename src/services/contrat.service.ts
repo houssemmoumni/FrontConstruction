@@ -8,7 +8,7 @@ import { tap, catchError, map } from 'rxjs/operators';
     providedIn: 'root'
 })
 export class ContratService {
-    private apiUrl = 'http://localhost:8030/api/contrats';
+    private apiUrl = 'http://localhost:8222/api/assurance/contrats';
 
     constructor(private httpClient: HttpClient) {}
 
