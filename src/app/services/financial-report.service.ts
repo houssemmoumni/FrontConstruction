@@ -10,9 +10,7 @@ import { ExpenseService } from './expense.service'; // Import ExpenseService
   providedIn: 'root'
 })
 export class FinancialReportService {
-  getReport() {
-      throw new Error('Method not implemented.');
-  }
+ 
   private apiUrl = 'http://localhost:8045/api/financial-reports';
 
   constructor(
@@ -20,7 +18,9 @@ export class FinancialReportService {
     private revenueService: RevenueService, // Inject RevenueService
     private expenseService: ExpenseService // Inject ExpenseService
   ) {}
-
+  getReport() {
+    throw new Error('Method not implemented.');
+}
   getAllFinancialReports(): Observable<FinancialReport[]> {
     return this.http.get<FinancialReport[]>(this.apiUrl);
   }

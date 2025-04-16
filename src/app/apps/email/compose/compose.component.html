@@ -1,9 +1,9 @@
 <!-- Breadcrumb -->
 <div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
-    <h5 class="mb-0">Compose</h5>
+    <h5 class="mb-0">Compose Financial Report</h5>
     <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
         <li class="breadcrumb-item position-relative">
-            <a routerLink="/" class="d-inline-block position-relative">
+            <a routerLink="/" class="d-inline-block position-relative" matTooltip="Go to Dashboard">
                 <i class="ri-home-8-line"></i> Dashboard
             </a>
         </li>
@@ -16,7 +16,7 @@
 <!-- Compose -->
 <div class="row">
     <div class="col-lg-3 col-md-12">
-        <app-sidebar /> <!-- Updated to match the sidebar in read.component.html -->
+        <app-sidebar></app-sidebar>
     </div>
     <div class="col-lg-9 col-md-12">
         <mat-card class="daxa-card email-compose-card mb-25 border-radius bg-white border-none d-block">
@@ -27,37 +27,56 @@
             </mat-card-header>
             <mat-card-content>
                 <form [formGroup]="emailForm" (ngSubmit)="sendReport()">
-                    
                     <div class="mb-25">
-                        <mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Email</mat-label>
                             <input matInput formControlName="email" placeholder="Recipient email address" />
+                            <mat-error *ngIf="emailForm.get('email')?.invalid && emailForm.get('email')?.touched">
+                                Please enter a valid email address.
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="mb-25">
-                        <mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Total Revenue</mat-label>
                             <input matInput type="number" formControlName="total_revenue" placeholder="Total revenue" />
+                            <mat-error *ngIf="emailForm.get('total_revenue')?.invalid && emailForm.get('total_revenue')?.touched">
+                                Total revenue is required.
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="mb-25">
-                        <mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Net Profit</mat-label>
                             <input matInput type="number" formControlName="net_profit" placeholder="Net profit" />
+                            <mat-error *ngIf="emailForm.get('net_profit')?.invalid && emailForm.get('net_profit')?.touched">
+                                Net profit is required.
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="mb-25">
-                        <mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Date</mat-label>
                             <input matInput type="date" formControlName="date_rapport" />
+                            <mat-error *ngIf="emailForm.get('date_rapport')?.invalid && emailForm.get('date_rapport')?.touched">
+                                Date is required.
+                            </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="btn-box d-flex align-items-center">
-                        <button mat-button class="btn" type="submit">Download Report with signature</button>
-                        <button mat-button class="btn send-email-btn" type="button" (click)="sendEmail()">Send Email</button>
+                    <div class="btn-box d-flex align-items-center justify-content-between">
+                        <button mat-raised-button color="primary" type="submit" class="btn">
+                            <i class="ri-download-line"></i> Download Report with Signature
+                        </button>
+                        <button mat-raised-button color="accent" type="button" class="btn send-email-btn" (click)="sendEmail()">
+                            <i class="ri-mail-send-line"></i> Send Email
+                        </button>
                     </div>
-                    <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
-                    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+                    <p *ngIf="successMessage" class="success-message text-success mt-3">
+                        <i class="ri-check-line"></i> {{ successMessage }}
+                    </p>
+                    <p *ngIf="errorMessage" class="error-message text-danger mt-3">
+                        <i class="ri-error-warning-line"></i> {{ errorMessage }}
+                    </p>
                 </form>
             </mat-card-content>
         </mat-card>
