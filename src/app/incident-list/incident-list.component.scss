@@ -1,37 +1,87 @@
 // src/app/incident-list/incident-list.component.scss
-.status-resolved {
-    color: #4caf50;
-    font-weight: 500;
-  }
+/* Table Styles */
+.table {
+    width: 100%;
+    border-collapse: collapse;
 
-  .status-reopened {
-    color: #ff9800;
-    font-weight: 500;
-  }
+    &.table-bordered {
+        border: 1px solid #dee2e6;
 
-  .status-new {
-    color: #2196f3;
-    font-weight: 500;
-  }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            vertical-align: middle;
+        }
 
-  .history-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-    padding: 8px;
-    background: #f5f5f5;
+        th {
+            background-color: #343a40;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        tr:hover td {
+            background-color: #f8f9fa;
+        }
+    }
+}
+
+/* Badges */
+.badge {
+    padding: 6px 12px;
     border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: capitalize;
 
-    mat-icon {
-      color: #757575;
+    &-primary {
+        background-color: #3498db;
+        color: white;
     }
 
-    div {
-      flex: 1;
+    &-success {
+        background-color: #2ecc71;
+        color: white;
     }
 
-    small {
-      color: #757575;
+    &-warning {
+        background-color: #f39c12;
+        color: white;
     }
-  }
+}
+
+/* Empty State */
+.empty-state {
+    padding: 20px;
+    text-align: center;
+    color: #6c757d;
+
+    h4 {
+        color: #343a40;
+        margin-bottom: 0.5rem;
+    }
+
+    .fa-folder-open {
+        color: #e9ecef;
+    }
+}
+
+/* Page Title */
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #343a40;
+}
+
+/* Card */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

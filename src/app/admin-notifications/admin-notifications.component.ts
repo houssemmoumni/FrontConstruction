@@ -170,4 +170,4 @@ export class AdminNotificationsComponent implements OnInit, OnDestroy {
       default: return 'notifications';
     }
   }
-}
+}   

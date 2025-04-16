@@ -27,7 +27,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Notification, IncidentReport } from '../models/incident.model';
 import { Router } from '@angular/router';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmDialogComponent  } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 
@@ -54,7 +54,7 @@ import { DatePipe } from '@angular/common';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    ConfirmationDialogComponent,
+    ConfirmDialogComponent ,
     DatePipe
   ],
   animations: [
@@ -204,7 +204,7 @@ export class ProjectComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent , {
       width: '350px',
       data: {
         title: 'Assign Incident',

@@ -1,393 +1,174 @@
-// Variables modernes
-$primary-color: #4361ee;
-$secondary-color: #3f37c9;
-$success-color: #4cc9f0;
-$danger-color: #f72585;
-$light-bg: #f8f9fa;
-$dark-text: #2b2d42;
-$light-text: #8d99ae;
-$border-color: rgba(0, 0, 0, 0.08);
+/* Variables */
+$primary-color: #3498db;
+$success-color: #2ecc71;
+$warning-color: #f39c12;
+$danger-color: #e74c3c;
+$light-gray: #f8f9fa;
+$border-color: #e0e0e0;
 
-// Mixins réutilisables
-@mixin card-shadow {
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.15);
-  }
+/* Styles globaux */
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0;
 }
 
-@mixin glass-effect {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+.card {
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
 }
 
-.job-offers-container {
-  padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-  min-height: 100vh;
+.table {
+    thead th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+        border-top: none;
+        padding: 1rem 1.25rem;
+    }
+
+    td {
+        padding: 1rem 1.25rem;
+        vertical-align: middle;
+        border-top: 1px solid $border-color;
+    }
 }
 
-.mat-mdc-card {
-  &.daxa-card {
-    &.job-offers-card {
-      @include card-shadow;
-      @include glass-effect;
-      border-radius: 16px;
-      overflow: hidden;
-      border: none;
+/* Badges */
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    border-radius: 50px;
 
-      .mat-mdc-card-content {
-        padding: 2rem;
+    &-success {
+        background-color: $success-color;
+    }
 
-        // Header moderne avec recherche
-        .card-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 2rem;
-          flex-wrap: wrap;
-          gap: 1rem;
+    &-danger {
+        background-color: $danger-color;
+    }
+}
 
-          h2 {
-            color: $dark-text;
-            font-weight: 700;
-            margin: 0;
-            font-size: 1.75rem;
-          }
+/* Boutons */
+.btn {
+    &-primary {
+        background-color: $primary-color;
+        border-color: $primary-color;
+    }
 
-          .search-bar {
-            position: relative;
-            min-width: 280px;
-            max-width: 320px;
-            margin-left: auto;
+    &-icon {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border-radius: 50%;
 
-            .mat-form-field {
-              width: 100%;
+        &.btn-edit {
+            color: $primary-color;
+            background-color: rgba($primary-color, 0.1);
+            border: none;
+            margin-right: 8px;
 
-              .mat-form-field-wrapper {
-                padding-bottom: 0;
-              }
-
-              .mat-form-field-outline {
-                background: white;
-                border-radius: 50px;
-                border: none;
-              }
-
-              .mat-form-field-infix {
-                padding: 0.8em 0;
-                border-top: 0;
-              }
-
-              .mat-input-element {
-                font-size: 0.95rem;
-                padding-left: 1rem;
-                color: $dark-text;
-              }
-
-              .mat-icon {
-                color: $primary-color;
-                margin-right: 0.5rem;
-              }
+            &:hover {
+                background-color: rgba($primary-color, 0.2);
             }
-          }
         }
 
-        // Tableau moderne avec bordures
-        .job-offers-table {
-          overflow: hidden;
-          border-radius: 12px;
-          @include card-shadow;
-          border: 1px solid $border-color;
+        &.btn-delete {
+            color: $danger-color;
+            background-color: rgba($danger-color, 0.1);
+            border: none;
+            margin-right: 8px;
 
-          .styled-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
+            &:hover {
+                background-color: rgba($danger-color, 0.2);
+            }
+        }
 
-            thead {
-              tr {
-                th {
-                  background: linear-gradient(to right, $primary-color, $secondary-color);
-                  color: white;
-                  padding: 1.25rem 1.5rem;
-                  font-weight: 600;
-                  text-transform: uppercase;
-                  font-size: 0.8rem;
-                  letter-spacing: 0.5px;
-                  border-right: 1px solid rgba(255, 255, 255, 0.2);
-                  position: relative;
+        &.btn-success {
+            color: $success-color;
+            background-color: rgba($success-color, 0.1);
+            border: none;
 
-                  &:last-child {
-                    border-right: none;
-                  }
-
-                  &:first-child {
-                    border-top-left-radius: 12px;
-                  }
-
-                  &:last-child {
-                    border-top-right-radius: 12px;
-                  }
-                }
-              }
+            &:hover {
+                background-color: rgba($success-color, 0.2);
             }
 
-            tbody {
-              tr {
-                transition: background 0.2s ease;
-                border-bottom: 1px solid $border-color;
-
-                &:last-child {
-                  border-bottom: none;
-                }
-
-                &:nth-child(even) {
-                  background-color: rgba($light-bg, 0.5);
-                }
-
-                &:hover {
-                  background-color: rgba($primary-color, 0.05);
-                }
-
-                td {
-                  padding: 1.25rem 1.5rem;
-                  color: $dark-text;
-                  border-right: 1px solid $border-color;
-                  transition: transform 0.2s ease;
-
-                  &:last-child {
-                    border-right: none;
-                  }
-
-                  &:hover {
-                    transform: translateX(2px);
-                  }
-
-                  .description-container {
-                    max-width: 400px;
-                    max-height: 100px;
-                    overflow-y: auto;
-                    padding-right: 0.5rem;
-
-                    &::-webkit-scrollbar {
-                      width: 4px;
-                    }
-
-                    &::-webkit-scrollbar-thumb {
-                      background: rgba($primary-color, 0.3);
-                      border-radius: 2px;
-                    }
-                  }
-
-                  .daxa-badge {
-                    display: inline-block;
-                    padding: 0.35rem 0.8rem;
-                    border-radius: 50px;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                    letter-spacing: 0.3px;
-
-                    &.active {
-                      background: rgba($success-color, 0.1);
-                      color: darken($success-color, 15%);
-                    }
-
-                    &.deactive {
-                      background: rgba($danger-color, 0.1);
-                      color: darken($danger-color, 15%);
-                    }
-                  }
-                }
-              }
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
             }
-          }
         }
-
-        // Pagination moderne
-        .mat-paginator {
-          background: transparent;
-          margin-top: 1.5rem;
-          border-radius: 0 0 12px 12px;
-        }
-      }
     }
-  }
 }
 
-// Boutons d'action modernes avec alignement parfait
-::ng-deep {
-  .action-info {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-    padding-right: 0.5rem;
+/* État vide */
+.empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: #7f8c8d;
 
-    .mat-mdc-button {
-      min-width: 32px;
-      width: 32px;
-      height: 32px;
-      padding: 0;
-      border-radius: 8px !important;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba($primary-color, 0.1);
-      position: relative;
-      overflow: hidden;
-
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.2);
-        opacity: 0;
-        transition: opacity 0.2s ease;
-      }
-
-      &:hover::after {
-        opacity: 1;
-      }
-
-      .mat-icon {
-        font-size: 18px;
-        color: $primary-color;
-        width: 18px;
-        height: 18px;
-        transition: color 0.2s ease;
-      }
-
-      &:hover {
-        background: $primary-color;
-
-        .mat-icon {
-          color: white;
-        }
-      }
-
-      &.edit-btn {
-        background: rgba($success-color, 0.1);
-
-        .mat-icon {
-          color: darken($success-color, 10%);
-        }
-
-        &:hover {
-          background: $success-color;
-
-          .mat-icon {
-            color: white;
-          }
-        }
-      }
-
-      &.delete-btn {
-        background: rgba($danger-color, 0.1);
-
-        .mat-icon {
-          color: $danger-color;
-        }
-
-        &:hover {
-          background: $danger-color;
-
-          .mat-icon {
-            color: white;
-          }
-        }
-      }
-
-      &.view-btn {
-        background: rgba($light-text, 0.1);
-
-        .mat-icon {
-          color: $light-text;
-        }
-
-        &:hover {
-          background: $light-text;
-
-          .mat-icon {
-            color: white;
-          }
-        }
-      }
+    h4 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
     }
-  }
 }
 
-// Animation d'entrée pour les lignes du tableau
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* Pagination personnalisée */
+.custom-paginator {
+    background: transparent;
+    border: none;
 
-.mat-row {
-  animation: fadeIn 0.3s ease forwards;
-  opacity: 0;
-
-  @for $i from 1 through 10 {
-    &:nth-child(#{$i}) {
-      animation-delay: $i * 0.05s;
+    .mat-paginator-container {
+        justify-content: center;
     }
-  }
+
+    .mat-paginator-page-size {
+        align-items: center;
+    }
 }
 
-// Responsive design
-@media (max-width: 768px) {
-  .job-offers-container {
-    padding: 1rem;
-  }
+/* Search bar */
+.search-bar {
+    .input-group {
+        max-width: 400px;
 
-  .mat-mdc-card {
-    &.daxa-card {
-      &.job-offers-card {
-        .mat-mdc-card-content {
-          padding: 1rem;
+        .form-control {
+            border-right: none;
 
-          .card-header {
-            flex-direction: column;
-            align-items: flex-start;
-
-            .search-bar {
-              margin-left: 0;
-              width: 100%;
-              max-width: 100%;
+            &:focus {
+                box-shadow: none;
+                border-color: $primary-color;
             }
-          }
-
-          .job-offers-table {
-            overflow-x: auto;
-
-            .styled-table {
-              min-width: 600px;
-            }
-          }
         }
-      }
-    }
-  }
 
-  // Ajustement des boutons d'action en mobile
-  ::ng-deep {
-    .action-info {
-      flex-wrap: wrap;
-      justify-content: center;
+        .input-group-text {
+            background-color: white;
+            border-left: none;
+            color: #6c757d;
 
-      .mat-mdc-button {
-        margin: 0.25rem;
-      }
+            &:focus {
+                border-color: $primary-color;
+            }
+        }
     }
-  }
+}
+
+/* Truncate text */
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
 }

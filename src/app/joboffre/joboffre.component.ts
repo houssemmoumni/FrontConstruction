@@ -12,6 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent  } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-joboffre',
@@ -29,23 +31,27 @@ import { MatIconModule } from '@angular/material/icon';
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDialogModule
   ],
 })
 export class JoboffreComponent implements OnInit {
-  jobOffers: JobOffer[] = []; // Liste complète des offres
-  filteredJobOffers: JobOffer[] = []; // Liste filtrée des offres
-  paginatedJobOffers: JobOffer[] = []; // Offres à afficher sur la page actuelle
-  searchText: string = ''; // Texte de recherche
-  pageSize: number = 5; // Nombre d'offres par page
-  currentPage: number = 0; // Page actuelle
+  jobOffers: JobOffer[] = [];
+  filteredJobOffers: JobOffer[] = [];
+  paginatedJobOffers: JobOffer[] = [];
+  searchText: string = '';
+  pageSize: number = 5;
+  currentPage: number = 0;
 
-  constructor(public jobOfferService: JobOfferService, public router: Router) {}
+  constructor(
+    public jobOfferService: JobOfferService,
+    public router: Router,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.loadJobOffers();
   }
 
-  // Charger les offres d'emploi
   loadJobOffers(): void {
     this.jobOfferService.getJobOffers().subscribe(
       (data: JobOffer[]) => {
@@ -59,7 +65,6 @@ export class JoboffreComponent implements OnInit {
     );
   }
 
-  // Appliquer le filtre de recherche
   applyFilter(): void {
     this.filteredJobOffers = this.jobOffers.filter(offer => {
       const title = offer.title ? offer.title.toLowerCase() : '';
@@ -69,67 +74,68 @@ export class JoboffreComponent implements OnInit {
         description.includes(this.searchText.toLowerCase())
       );
     });
-    this.currentPage = 0; // Réinitialiser la pagination après une recherche
+    this.currentPage = 0;
     this.updatePaginatedOffers();
   }
 
-  // Mettre à jour les offres paginées
   updatePaginatedOffers(): void {
     const startIndex = this.currentPage * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.paginatedJobOffers = this.filteredJobOffers.slice(startIndex, endIndex);
   }
 
-  // Gérer le changement de page
   onPageChange(event: PageEvent): void {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
     this.updatePaginatedOffers();
   }
 
-  // Modifier une offre
   editOffer(offer: JobOffer): void {
-    console.log('Modifier l\'offre :', offer);
     this.router.navigate(['/addjob', offer.id]);
   }
 
-  // Supprimer une offre
   deleteOffer(offer: JobOffer): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette offre ?')) {
-      this.jobOfferService.deleteJobOffer(offer.id).subscribe(
-        () => {
-          this.loadJobOffers();
-        },
-        (error) => {
-          console.error('Erreur lors de la suppression :', error);
-        }
-      );
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '450px',
+      data: {
+        title: 'Confirmation de suppression',
+        message: 'Êtes-vous sûr de vouloir supprimer cette offre de travail ?',
+        confirmText: 'Supprimer',
+        cancelText: 'Annuler'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.jobOfferService.deleteJobOffer(offer.id).subscribe(
+          () => {
+            this.loadJobOffers();
+          },
+          (error) => {
+            console.error('Erreur lors de la suppression :', error);
+          }
+        );
+      }
+    });
   }
 
-  // Publier une offre
   publishOffer(offer: JobOffer): void {
     if (offer.id) {
       this.jobOfferService.publishJobOffer(offer.id).subscribe({
         next: (updatedOffer: JobOffer) => {
-          console.log('Offre publiée :', updatedOffer);
-          // Mettre à jour l'offre localement
           const index = this.jobOffers.findIndex(o => o.id === offer.id);
           if (index !== -1) {
             this.jobOffers[index] = updatedOffer;
-            this.applyFilter(); // Rafraîchir la liste filtrée
+            this.applyFilter();
           }
         },
         error: (error) => {
           console.error('Erreur lors de la publication :', error);
         },
       });
-    } else {
-      console.error('Erreur : L\'offre n\'a pas d\'ID.');
     }
   }
 
-  // Redirection vers l'ajout d'une offre
   navigate(): void {
     this.router.navigate(['/addjob']);
   }
