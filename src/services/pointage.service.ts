@@ -30,55 +30,54 @@ export class PointageService {
     );
   }
 
-  createPointage(pointage: CreatePointageDto): Observable<HistoriquePointage> {
+  createPointage(pointage: CreatePointageDto, userPhone: number): Observable<HistoriquePointage> {
     const headers = new HttpHeaders({
-        'Content-Type': 'application/json'
+      'Content-Type': 'application/json'
     });
 
-    // Transform to match backend expectations
     const backendPayload = {
-        ...pointage,
-        user: { 
-            id: pointage.user.id,
-            telephone: 0,       // Default value (backend only needs ID)
-            image: ''           // Default value (backend only needs ID)
-        }
+      ...pointage,
+      user: { 
+        id: pointage.user.id,
+        telephone: userPhone, // Now using dynamic phone number
+        image: ''
+      }
     };
 
     return this.httpClient.post<HistoriquePointage>(
-        this.apiUrl,
-        backendPayload,
-        { headers, withCredentials: true }
+      this.apiUrl,
+      backendPayload,
+      { headers, withCredentials: true }
     ).pipe(
-        tap(response => console.log('Created pointage:', response)),
-        catchError(this.handleError)
+      tap(response => console.log('Created pointage:', response)),
+      catchError(this.handleError)
     );
-}
+  }
 
-updatePointage(id: number, pointage: HistoriquePointage): Observable<HistoriquePointage> {
+  updatePointage(id: number, pointage: HistoriquePointage): Observable<HistoriquePointage> {
     const headers = new HttpHeaders({
-        'Content-Type': 'application/json'
+      'Content-Type': 'application/json'
     });
 
-    // Ensure user object is properly structured for update
     const updatePayload = {
-        ...pointage,
-        user: {
-            id: pointage.user.id,
-            telephone: pointage.user.telephone || 0,
-            image: pointage.user.image || ''
-        }
+      ...pointage,
+      user: {
+        id: pointage.user.id,
+        telephone: pointage.user.telephone || 0,
+        image: pointage.user.image || ''
+      }
     };
 
     return this.httpClient.put<HistoriquePointage>(
-        `${this.apiUrl}/${id}`,
-        updatePayload,
-        { headers, withCredentials: true }
+      `${this.apiUrl}/${id}`,
+      updatePayload,
+      { headers, withCredentials: true }
     ).pipe(
-        tap(response => console.log('Updated pointage:', response)),
-        catchError(this.handleError)
+      tap(response => console.log('Updated pointage:', response)),
+      catchError(this.handleError)
     );
-}
+  }
+
   deletePointage(id: number): Observable<void> {
     return this.httpClient.delete<void>(
       `${this.apiUrl}/${id}`,
@@ -100,17 +99,18 @@ updatePointage(id: number, pointage: HistoriquePointage): Observable<HistoriqueP
     );
   }
 
+  getPointagePdfUrl(pointageId: number): string {
+    return `${this.apiUrl}/${pointageId}/download`;
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred';
     
     if (error.error instanceof ErrorEvent) {
-      // Client-side error
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      // Server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
       
-      // Specific error messages based on status code
       switch (error.status) {
         case 400:
           errorMessage = 'Bad request - please check your data';

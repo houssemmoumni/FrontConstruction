@@ -36,7 +36,7 @@ import { Banner1Component } from "../../../elements/banner/banner1/banner1.compo
     MatSnackBarModule,
     RouterModule,
     Banner1Component
-],
+  ],
   templateUrl: './create-pointage.component.html',
   styleUrls: ['./create-pointage.component.scss']
 })
@@ -46,7 +46,7 @@ export class CreatePointageComponent implements OnInit {
   todayDate: string;
   entryTime: Date | null = null;
   exitTime: Date | null = null;
-
+  isLoading = false;
   banner: any = {
     pagetitle: "Create Pointage",
     bg_image: "assets/images/banner/bnr2.jpg",
@@ -78,15 +78,14 @@ export class CreatePointageComponent implements OnInit {
 
   loadUsers(): void {
     this.userService.getAllUsers().subscribe({
-      next: (users) => {
-        this.users = users;
-      },
+      next: (users) => this.users = users,
       error: (err) => {
         console.error('Failed to load users:', err);
         this.snackBar.open('Failed to load users', 'Close', { duration: 3000 });
       }
     });
   }
+
   registerEntry(): void {
     const now = new Date();
     this.entryTime = now;
@@ -109,29 +108,49 @@ export class CreatePointageComponent implements OnInit {
 
   createPointage(): void {
     if (this.pointageForm.valid) {
-      // Transform the form data to match backend structure
+      this.isLoading = true;
+      
       const formData = this.pointageForm.value;
+      const selectedUser = this.users.find(user => user.id === formData.id_user);
+      
+      if (!selectedUser) {
+        this.showError('Selected user not found');
+        this.isLoading = false;
+        return;
+      }
+
       const pointageData: CreatePointageDto = {
         ...formData,
-        user: { id: formData.id_user },  // Convert id_user to user object
-        // Remove id_user if it exists in the DTO
+        user: { id: formData.id_user },
         id_user: undefined
       };
-  
-      this.pointageService.createPointage(pointageData).subscribe({
-        next: () => {
-          this.snackBar.open('Pointage created successfully!', 'Close', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
-          this.router.navigate(['/pointages']);
+
+      // Pass the selected user's phone number to the service
+      this.pointageService.createPointage(pointageData, selectedUser.telephone).subscribe({
+        next: (createdPointage) => {
+          if (createdPointage?.id) {
+            this.displayPdfInBrowser(createdPointage.id);
+            this.snackBar.open('Pointage created successfully!', 'Close', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+          }
         },
         error: (err) => {
+          this.isLoading = false;
           console.error('Error creating pointage:', err);
           this.showError('Failed to create pointage');
+        },
+        complete: () => {
+          this.isLoading = false;
         }
       });
     }
+  }
+
+  private displayPdfInBrowser(pointageId: number): void {
+    const pdfUrl = this.pointageService.getPointagePdfUrl(pointageId);
+    window.open(pdfUrl, '_blank');
   }
 
   private showError(message: string): void {
