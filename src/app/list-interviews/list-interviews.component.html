@@ -1,0 +1,64 @@
+<div class="container py-5">
+    <h2 class="mb-4">Entretiens Terminés</h2>
+
+    @if (isLoading) {
+      <div class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    }
+
+    @if (error) {
+      <div class="alert alert-danger">
+        {{ error }}
+      </div>
+    }
+
+    @if (!isLoading && !error) {
+      @if (interviews.length > 0) {
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Candidat</th>
+                <th>Poste</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (interview of interviews; track interview.id) {
+                <tr>
+                  <td>{{ interview.candidateName }}</td>
+                  <td>{{ interview.jobTitle }}</td>
+                  <td>{{ formatDate(interview.interviewDate) }}</td>
+                  <td>
+                    <button class="btn btn-primary me-2"
+                            [routerLink]="['/applications', interview.applicationId]">
+                      Voir Candidature
+                    </button>
+                    <button class="btn btn-success"
+                            (click)="generateContract(interview.applicationId)"
+                            [disabled]="generatingContractId === interview.applicationId">
+                      @if (generatingContractId !== interview.applicationId) {
+                        Générer Contrat
+                      }
+                      @if (generatingContractId === interview.applicationId) {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Génération...
+                      }
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <div class="alert alert-info">
+          Aucun entretien terminé pour le moment.
+        </div>
+      }
+    }
+  </div>

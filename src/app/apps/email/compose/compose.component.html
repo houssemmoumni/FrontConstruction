@@ -1,193 +1,82 @@
 <!-- Breadcrumb -->
 <div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
-    <h5 class="mb-0">
-        Compose
-    </h5>
+    <h5 class="mb-0">Compose Financial Report</h5>
     <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
         <li class="breadcrumb-item position-relative">
-            <a routerLink="/" class="d-inline-block position-relative">
-                <i class="ri-home-8-line"></i>
-                Dashboard
+            <a routerLink="/" class="d-inline-block position-relative" matTooltip="Go to Dashboard">
+                <i class="ri-home-8-line"></i> Dashboard
             </a>
         </li>
-        <li class="breadcrumb-item position-relative">
-            Apps
-        </li>
-        <li class="breadcrumb-item position-relative">
-            Email
-        </li>
-        <li class="breadcrumb-item position-relative">
-            Compose
-        </li>
+        <li class="breadcrumb-item position-relative">Apps</li>
+        <li class="breadcrumb-item position-relative">Email</li>
+        <li class="breadcrumb-item position-relative">Compose</li>
     </ol>
 </div>
 
 <!-- Compose -->
 <div class="row">
     <div class="col-lg-3 col-md-12">
-        <app-sidebar />
+        <app-sidebar></app-sidebar>
     </div>
     <div class="col-lg-9 col-md-12">
-        <mat-card
-            class="daxa-card email-compose-card mb-25 border-radius bg-white border-none d-block"
-            [class.rtl-enabled]="themeService.isRTLEnabled()"
-        >
+        <mat-card class="daxa-card email-compose-card mb-25 border-radius bg-white border-none d-block">
             <mat-card-header>
                 <mat-card-title>
-                    <h5 class="mb-0">
-                        New Message
-                    </h5>
+                    <h5 class="mb-0">New Financial Report</h5>
                 </mat-card-title>
-                <mat-card-subtitle>
-                    <div class="info-buttons-list d-flex align-items-center">
-                        <button mat-button class="text-body">
-                            <i class="material-symbols-outlined">
-                                refresh
-                            </i>
-                        </button>
-                        <button mat-button class="text-body">
-                            <i class="material-symbols-outlined">
-                                print
-                            </i>
-                        </button>
-                        <button mat-button class="text-body">
-                            <i class="material-symbols-outlined">
-                                report_gmailerrorred
-                            </i>
-                        </button>
-                        <button mat-button class="text-body">
-                            <i class="material-symbols-outlined">
-                                delete
-                            </i>
-                        </button>
-                        <button type="button" class="text-body" mat-button [matMenuTriggerFor]="emailHeaderMenu">
-                            <i class="material-symbols-outlined">
-                                more_horiz
-                            </i>
-                        </button>
-                        <mat-menu #emailHeaderMenu="matMenu" class="card-header-menu" xPosition="before">
-                            <button mat-menu-item>
-                                Recent
-                            </button>
-                            <button mat-menu-item>
-                                Unread
-                            </button>
-                            <button mat-menu-item>
-                                Mark All Read
-                            </button>
-                            <button mat-menu-item>
-                                Spam
-                            </button>
-                            <button mat-menu-item>
-                                Delete All
-                            </button>
-                        </mat-menu>
-                    </div>
-                </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-                <form>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-25">
-                                <label class="main-label d-block lh-1 text-black">
-                                    To
-                                </label>
-                                <mat-form-field>
-                                    <mat-label>To</mat-label>
-                                    <mat-select [formControl]="emails" multiple>
-                                        @for (email of emailList; track email) {
-                                            <mat-option [value]="email">
-                                                {{email}}
-                                            </mat-option>
-                                        }
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-25">
-                                <label class="main-label d-block lh-1 text-black">
-                                    Cc
-                                </label>
-                                <mat-form-field>
-                                    <mat-label>Cc</mat-label>
-                                    <mat-select [formControl]="emails" multiple>
-                                        @for (email of emailList; track email) {
-                                            <mat-option [value]="email">
-                                                {{email}}
-                                            </mat-option>
-                                        }
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-25">
-                                <label class="main-label d-block lh-1 text-black">
-                                    Bcc
-                                </label>
-                                <mat-form-field>
-                                    <mat-label>Bcc</mat-label>
-                                    <mat-select [formControl]="emails" multiple>
-                                        @for (email of emailList; track email) {
-                                            <mat-option [value]="email">
-                                                {{email}}
-                                            </mat-option>
-                                        }
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-25">
-                                <label class="main-label d-block lh-1 text-black">
-                                    Subject
-                                </label>
-                                <mat-form-field>
-                                    <mat-label>
-                                        Write your subject
-                                    </mat-label>
-                                    <input matInput placeholder="E.g. Hand Watch">
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="mb-25">
-                                <label class="main-label d-block lh-1 text-black">
-                                    Your Email
-                                </label>
-                                <div class="NgxEditor__Wrapper">
-                                    <ng-container *ngIf="editor">
-                                        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"></ngx-editor-menu>
-                                        <ngx-editor [editor]="editor"></ngx-editor>
-                                    </ng-container>
-                                </div>
-                            </div>
-                        </div>
+                <form [formGroup]="emailForm" (ngSubmit)="sendReport()">
+                    <div class="mb-25">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email" placeholder="Recipient email address" />
+                            <mat-error *ngIf="emailForm.get('email')?.invalid && emailForm.get('email')?.touched">
+                                Please enter a valid email address.
+                            </mat-error>
+                        </mat-form-field>
                     </div>
-                    <div class="btn-box d-flex align-items-center">
-                        <button mat-button class="btn">
-                            Send
+                    <div class="mb-25">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Total Revenue</mat-label>
+                            <input matInput type="number" formControlName="total_revenue" placeholder="Total revenue" />
+                            <mat-error *ngIf="emailForm.get('total_revenue')?.invalid && emailForm.get('total_revenue')?.touched">
+                                Total revenue is required.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mb-25">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Net Profit</mat-label>
+                            <input matInput type="number" formControlName="net_profit" placeholder="Net profit" />
+                            <mat-error *ngIf="emailForm.get('net_profit')?.invalid && emailForm.get('net_profit')?.touched">
+                                Net profit is required.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mb-25">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Date</mat-label>
+                            <input matInput type="date" formControlName="date_rapport" />
+                            <mat-error *ngIf="emailForm.get('date_rapport')?.invalid && emailForm.get('date_rapport')?.touched">
+                                Date is required.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="btn-box d-flex align-items-center justify-content-between">
+                        <button mat-raised-button color="primary" type="submit" class="btn">
+                            <i class="ri-download-line"></i> Download Report with Signature
                         </button>
-                        <div class="buttons-list d-flex align-items-center">
-                            <button mat-button class="text-body">
-                                <i class="material-symbols-outlined">
-                                    sentiment_satisfied
-                                </i>
-                            </button>
-                            <button mat-button class="text-body">
-                                <i class="material-symbols-outlined">
-                                    attach_file
-                                </i>
-                            </button>
-                            <button mat-button class="text-body">
-                                <i class="material-symbols-outlined">
-                                    image
-                                </i>
-                            </button>
-                        </div>
+                        <button mat-raised-button color="accent" type="button" class="btn send-email-btn" (click)="sendEmail()">
+                            <i class="ri-mail-send-line"></i> Send Email
+                        </button>
                     </div>
+                    <p *ngIf="successMessage" class="success-message text-success mt-3">
+                        <i class="ri-check-line"></i> {{ successMessage }}
+                    </p>
+                    <p *ngIf="errorMessage" class="error-message text-danger mt-3">
+                        <i class="ri-error-warning-line"></i> {{ errorMessage }}
+                    </p>
                 </form>
             </mat-card-content>
         </mat-card>

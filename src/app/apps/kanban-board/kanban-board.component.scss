@@ -61,7 +61,7 @@
             &.kanban-board-card {
                 .mat-mdc-card-header {
                     margin-bottom: 0;
-                    
+
                     .mat-mdc-card-header-text {
                         .mat-mdc-card-title {
                             h5 {
@@ -81,7 +81,7 @@
                                     position: absolute;
                                     color: var(--whiteColor);
                                     transform: translateY(-50%);
-        
+
                                     &::after {
                                         display: none;
                                     }
@@ -291,7 +291,7 @@
                     .mat-mdc-card-content {
                         .btn-box {
                             text-align: left;
-    
+
                             .mat-mdc-button {
                                 &:first-child {
                                     margin: {
@@ -321,7 +321,7 @@
 
                         span {
                             font-size: 14px;
-                            
+
                             &:nth-child(1) {
                                 font-size: 16px;
                             }
@@ -399,7 +399,7 @@
         .add-another-task-popup {
             .popup-dialog {
                 max-width: 400px;
-                
+
                 .daxa-card {
                     .mat-mdc-card-header {
                         margin: {
@@ -525,7 +525,7 @@
       width: 32px;
       height: 32px;
       line-height: 32px;
-      
+
       mat-icon {
         font-size: 18px;
       }

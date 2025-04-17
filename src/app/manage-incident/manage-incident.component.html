@@ -1,0 +1,36 @@
+<!-- <div class="container">
+    <h2>Gestion des Incidents</h2>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Projet</th>
+          <th>Déclaré par</th>
+          <th>Description</th>
+          <th>Gravité</th>
+          <th>Affecter à</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let incident of incidents">
+          <td>{{ incident.project?.name }}</td>
+          <td>{{ incident.reportedBy || 'Non spécifié' }}</td>
+          <td>{{ incident.description }}</td>
+          <td>
+            <span [class]="'badge severity-' + incident.severity.toLowerCase()">
+              {{ incident.severity }}
+            </span>
+          </td>
+          <td>
+            <select class="form-control"
+                    (change)="assignTechnician(incident.id, ($event.target as HTMLSelectElement)?.value)">
+              <option value="">Non assigné</option>
+              <option *ngFor="let tech of technicians" [value]="tech">
+                {{ tech }}
+              </option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</div> -->

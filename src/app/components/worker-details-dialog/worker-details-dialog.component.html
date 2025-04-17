@@ -1,0 +1,41 @@
+<div class="dialog-header" [style.background-color]="projectColor">
+    <h2 mat-dialog-title>
+        <mat-icon class="team-icon">groups</mat-icon>
+        <div class="title-content">
+            <div class="project-name">{{data.projectName}}</div>
+            <div class="team-count">{{data.workers.length}} Team Member{{data.workers.length !== 1 ? 's' : ''}}</div>
+        </div>
+    </h2>
+</div>
+
+<mat-dialog-content>
+    <div class="worker-list">
+        <div *ngIf="data.workers.length === 0" class="no-workers">
+            <mat-icon>person_off</mat-icon>
+            <p>No team members assigned to this project</p>
+            <small>Team members can be assigned from the Users page</small>
+        </div>
+        
+        <div *ngFor="let worker of data.workers" class="worker-item">
+            <div class="worker-avatar" [style.background-color]="getRandomColor(worker.name)">
+                <span class="initial">{{worker.name.charAt(0)}}</span>
+            </div>
+            <div class="worker-info">
+                <h3>{{worker.name}}</h3>
+                <div class="worker-details">
+                    <span class="role-badge" [class.manager-role]="worker.role === 'CHEF_PROJET'">
+                        {{worker.role | titlecase}}
+                    </span>
+                    <span class="email">{{worker.email}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="close()">
+        <mat-icon>close</mat-icon>
+        Close
+    </button>
+</mat-dialog-actions>

@@ -30,6 +30,44 @@
     }
 }
 
+.loading-shade {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 396px;
+}
+
+.stats-summary {
+    .stat-item {
+        padding: 10px;
+        border-radius: 4px;
+        
+        &.in-progress {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+        
+        &.not-started {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+        
+        &.completed {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+        
+        p {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        strong {
+            font-size: 18px;
+        }
+    }
+}
+
 /* Max width 767px */
 @media only screen and (max-width : 767px) {
 

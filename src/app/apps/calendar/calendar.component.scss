@@ -117,7 +117,7 @@
                                 }
                                 &:nth-child(4) {
                                     --fc-event-bg-color: var(--successColor);
-                                    --fc-event-border-color: var(--successColor);
+                                    --fc-event-border-color: var (--successColor);
                                 }
                                 &:nth-child(5) {
                                     --fc-event-bg-color: var(--dangerColor);
@@ -222,6 +222,104 @@
                     }
                 }
             }
+        }
+    }
+    .fc-event-main-content {
+        padding: 4px;
+
+        .event-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+            font-size: 0.9em;
+        }
+
+        .event-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8em;
+
+            .status-badge {
+                padding: 2px 6px;
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.2);
+            }
+
+            .worker-count {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+        }
+    }
+
+    .event-workers {
+        margin-top: 12px;
+        border-top: 1px solid #eee;
+        padding-top: 12px;
+
+        ul {
+            list-style: none;
+            padding-left: 16px;
+            margin: 8px 0 0;
+
+            li {
+                margin: 4px 0;
+                font-size: 0.9em;
+                color: #666;
+            }
+        }
+    }
+
+    .dark-theme {
+        .event-workers {
+            border-color: #444;
+
+            ul li {
+                color: #999;
+            }
+        }
+    }
+
+    .fc-event {
+        margin: 2px 0;
+        padding: 2px 0;
+        cursor: pointer;
+        
+        .fc-event-main-content {
+            padding: 4px 8px;
+
+            .event-title {
+                font-weight: 500;
+                margin-bottom: 4px;
+                font-size: 0.9em;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .event-details {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 0.8em;
+
+                .status-badge {
+                    padding: 2px 6px;
+                    border-radius: 12px;
+                    background: rgba(255, 255, 255, 0.2);
+                }
+
+                .worker-count {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                }
+            }
+        }
+
+        &:hover {
+            filter: brightness(1.1);
         }
     }
 }

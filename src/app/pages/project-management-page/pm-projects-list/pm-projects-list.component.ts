@@ -1,515 +1,255 @@
-import { NgIf } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { NgIf, CommonModule, DatePipe } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
+import { ProjectManagementService } from '../../../services/project-management.service';
+import { project, StatutProjet } from '../../../models/projectt.model';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { WorkerDetailsDialogComponent } from '../../../components/worker-details-dialog/worker-details-dialog.component';
+import { ProjectQrDialogComponent } from '../../../components/project-qr-dialog/project-qr-dialog.component';
 
 @Component({
     selector: 'app-pm-projects-list',
-    imports: [MatCardModule, MatMenuModule, MatButtonModule, RouterLink, MatTableModule, MatPaginatorModule, NgIf, MatTooltipModule, MatProgressBarModule],
     templateUrl: './pm-projects-list.component.html',
-    styleUrl: './pm-projects-list.component.scss'
-})
-export class PmProjectsListComponent {
+    styleUrls: ['./pm-projects-list.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatButtonModule,
+        MatIconModule,
+        RouterLink,
+        MatSortModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+        MatMenuModule,
+        MatFormFieldModule,
+        MatInputModule,
+        DatePipe,
+        MatDialogModule
 
-    displayedColumns: string[] = ['id', 'projectName', 'startDate', 'endDate', 'projectManager', 'budget', 'teamMembers', 'progress', 'status', 'action'];
-    dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+    ]
+})
+export class PmProjectsListComponent implements OnInit {
+    displayedColumns: string[] = [
+        'projet_name',
+        'projet_description',
+        'start_date',
+        'end_date',
+        'projectManager',
+        'budget_estime',
+        'statut_projet',
+        'action'
+    ];
+    dataSource = new MatTableDataSource<project>();
+    isLoading = true;
+    error: any;
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-    ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
-    }
+    @ViewChild(MatSort) sort!: MatSort;
 
     constructor(
-        public themeService: CustomizerSettingsService
+        public themeService: CustomizerSettingsService,
+        private projectService: ProjectManagementService,
+        private snackBar: MatSnackBar,
+        private dialog: MatDialog
     ) {}
 
-}
+    ngOnInit() {
+        console.log('Component initialized');
+        this.loadProjects();
 
-const ELEMENT_DATA: PeriodicElement[] = [
-    {
-        id: '#951',
-        projectName: 'Hotel management system',
-        startDate: '15 Nov, 2024',
-        endDate: '15 Dec, 2024',
-        projectManager: 'Walter Frazier',
-        budget: '$5,250',
-        teamMembers: {
-            img1: 'images/users/user5.jpg',
-            img2: 'images/users/user13.jpg'
-        },
-        progress: 90,
-        status: {
-            inProgress: 'In Progress',
-            // pending: 'Pending',
-            // completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
+        // Updated filter predicate to search across all fields
+        this.dataSource.filterPredicate = (data: project, filter: string): boolean => {
+            const searchStr = filter.toLowerCase();
+
+            const searchableValues = [
+                data.projet_name?.toLowerCase(),
+                data.projet_description?.toLowerCase(),
+                data.projectManager?.toLowerCase(),
+                data.statut_projet?.toLowerCase(),
+                this.formatDateForSearch(data.start_date),
+                this.formatDateForSearch(data.end_date),
+                data.budget_estime?.toString(),
+                data.risque_retard?.toString(),
+                data.latitude?.toString(),
+                data.longitude?.toString()
+            ];
+
+            return searchableValues.some(value => value?.includes(searchStr));
+        };
+    }
+
+    ngAfterViewInit() {
+        if (this.paginator) {
+            this.dataSource.paginator = this.paginator;
         }
-    },
-    {
-        id: '#547',
-        projectName: 'Product development',
-        startDate: '14 Nov, 2024',
-        endDate: '14 Dec, 2024',
-        projectManager: 'Kimberly Anderson',
-        budget: '$4,870',
-        teamMembers: {
-            img1: 'images/users/user7.jpg',
-            img2: 'images/users/user9.jpg',
-            img3: 'images/users/user12.jpg'
-        },
-        progress: 85,
-        status: {
-            // inProgress: 'In Progress',
-            pending: 'Pending',
-            // completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#658',
-        projectName: 'Python upgrade',
-        startDate: '13 Nov, 2024',
-        endDate: '13 Dec, 2024',
-        projectManager: 'Roscoe Guerrero',
-        budget: '$3,500',
-        teamMembers: {
-            img1: 'images/users/user16.jpg',
-            img2: 'images/users/user17.jpg'
-        },
-        progress: 100,
-        status: {
-            // inProgress: 'In Progress',
-            // pending: 'Pending',
-            completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#367',
-        projectName: 'Project monitoring',
-        startDate: '12 Nov, 2024',
-        endDate: '12 Dec, 2024',
-        projectManager: 'Robert Stewart',
-        budget: '$7,550',
-        teamMembers: {
-            img1: 'images/users/user11.jpg',
-            img2: 'images/users/user3.jpg',
-            img3: 'images/users/user8.jpg'
-        },
-        progress: 5,
-        status: {
-            // inProgress: 'In Progress',
-            // pending: 'Pending',
-            // completed: 'Completed',
-            notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#469',
-        projectName: 'Project alpho',
-        startDate: '11 Nov, 2024',
-        endDate: '11 Dec, 2024',
-        projectManager: 'Dustin Fritch',
-        budget: '$2,500',
-        teamMembers: {
-            img1: 'images/users/user15.jpg',
-            img2: 'images/users/user6.jpg'
-        },
-        progress: 85,
-        status: {
-            inProgress: 'In Progress',
-            // pending: 'Pending',
-            // completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#431',
-        projectName: 'Daxa dashboard design',
-        startDate: '10 Nov, 2024',
-        endDate: '10 Dec, 2024',
-        projectManager: 'Carol Camacho',
-        budget: '$6,500',
-        teamMembers: {
-            img1: 'images/users/user10.jpg',
-            img2: 'images/users/user5.jpg'
-        },
-        progress: 90,
-        status: {
-            inProgress: 'In Progress',
-            // pending: 'Pending',
-            // completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#547',
-        projectName: 'Vaxo app design',
-        startDate: '09 Nov, 2024',
-        endDate: '09 Dec, 2024',
-        projectManager: 'Robert Heinemann',
-        budget: '$2,950',
-        teamMembers: {
-            img1: 'images/users/user7.jpg',
-            img2: 'images/users/user12.jpg',
-            img3: 'images/users/user16.jpg'
-        },
-        progress: 70,
-        status: {
-            // inProgress: 'In Progress',
-            pending: 'Pending',
-            // completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#658',
-        projectName: 'Aoriv ai design',
-        startDate: '08 Nov, 2024',
-        endDate: '08 Dec, 2024',
-        projectManager: 'Jonathan Jones',
-        budget: '$4,350',
-        teamMembers: {
-            img1: 'images/users/user17.jpg',
-            img2: 'images/users/user13.jpg'
-        },
-        progress: 100,
-        status: {
-            // inProgress: 'In Progress',
-            // pending: 'Pending',
-            completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#367',
-        projectName: 'Beja banking finance',
-        startDate: '07 Nov, 2024',
-        endDate: '07 Dec, 2024',
-        projectManager: 'David Williams',
-        budget: '$3,500',
-        teamMembers: {
-            img1: 'images/users/user3.jpg',
-            img2: 'images/users/user8.jpg'
-        },
-        progress: 5,
-        status: {
-            // inProgress: 'In Progress',
-            // pending: 'Pending',
-            // completed: 'Completed',
-            notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#469',
-        projectName: 'Aegis accounting service',
-        startDate: '06 Nov, 2024',
-        endDate: '06 Dec, 2024',
-        projectManager: 'Steve Smith',
-        budget: '$8,000',
-        teamMembers: {
-            img1: 'images/users/user6.jpg',
-            img2: 'images/users/user13.jpg'
-        },
-        progress: 85,
-        status: {
-            inProgress: 'In Progress',
-            // pending: 'Pending',
-            // completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#469',
-        projectName: 'Aegis accounting service',
-        startDate: '06 Nov, 2024',
-        endDate: '06 Dec, 2024',
-        projectManager: 'Steve Smith',
-        budget: '$8,000',
-        teamMembers: {
-            img1: 'images/users/user6.jpg',
-            img2: 'images/users/user13.jpg'
-        },
-        progress: 85,
-        status: {
-            inProgress: 'In Progress',
-            // pending: 'Pending',
-            // completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#367',
-        projectName: 'Beja banking finance',
-        startDate: '07 Nov, 2024',
-        endDate: '07 Dec, 2024',
-        projectManager: 'David Williams',
-        budget: '$3,500',
-        teamMembers: {
-            img1: 'images/users/user3.jpg',
-            img2: 'images/users/user8.jpg'
-        },
-        progress: 5,
-        status: {
-            // inProgress: 'In Progress',
-            // pending: 'Pending',
-            // completed: 'Completed',
-            notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#658',
-        projectName: 'Aoriv ai design',
-        startDate: '08 Nov, 2024',
-        endDate: '08 Dec, 2024',
-        projectManager: 'Jonathan Jones',
-        budget: '$4,350',
-        teamMembers: {
-            img1: 'images/users/user17.jpg',
-            img2: 'images/users/user13.jpg'
-        },
-        progress: 100,
-        status: {
-            // inProgress: 'In Progress',
-            // pending: 'Pending',
-            completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#547',
-        projectName: 'Vaxo app design',
-        startDate: '09 Nov, 2024',
-        endDate: '09 Dec, 2024',
-        projectManager: 'Robert Heinemann',
-        budget: '$2,950',
-        teamMembers: {
-            img1: 'images/users/user7.jpg',
-            img2: 'images/users/user12.jpg',
-            img3: 'images/users/user16.jpg'
-        },
-        progress: 70,
-        status: {
-            // inProgress: 'In Progress',
-            pending: 'Pending',
-            // completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#431',
-        projectName: 'Daxa dashboard design',
-        startDate: '10 Nov, 2024',
-        endDate: '10 Dec, 2024',
-        projectManager: 'Carol Camacho',
-        budget: '$6,500',
-        teamMembers: {
-            img1: 'images/users/user10.jpg',
-            img2: 'images/users/user5.jpg'
-        },
-        progress: 90,
-        status: {
-            inProgress: 'In Progress',
-            // pending: 'Pending',
-            // completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#469',
-        projectName: 'Project alpho',
-        startDate: '11 Nov, 2024',
-        endDate: '11 Dec, 2024',
-        projectManager: 'Dustin Fritch',
-        budget: '$2,500',
-        teamMembers: {
-            img1: 'images/users/user15.jpg',
-            img2: 'images/users/user6.jpg'
-        },
-        progress: 85,
-        status: {
-            inProgress: 'In Progress',
-            // pending: 'Pending',
-            // completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#367',
-        projectName: 'Project monitoring',
-        startDate: '12 Nov, 2024',
-        endDate: '12 Dec, 2024',
-        projectManager: 'Robert Stewart',
-        budget: '$7,550',
-        teamMembers: {
-            img1: 'images/users/user11.jpg',
-            img2: 'images/users/user3.jpg',
-            img3: 'images/users/user8.jpg'
-        },
-        progress: 5,
-        status: {
-            // inProgress: 'In Progress',
-            // pending: 'Pending',
-            // completed: 'Completed',
-            notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#658',
-        projectName: 'Python upgrade',
-        startDate: '13 Nov, 2024',
-        endDate: '13 Dec, 2024',
-        projectManager: 'Roscoe Guerrero',
-        budget: '$3,500',
-        teamMembers: {
-            img1: 'images/users/user16.jpg',
-            img2: 'images/users/user17.jpg'
-        },
-        progress: 100,
-        status: {
-            // inProgress: 'In Progress',
-            // pending: 'Pending',
-            completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#547',
-        projectName: 'Product development',
-        startDate: '14 Nov, 2024',
-        endDate: '14 Dec, 2024',
-        projectManager: 'Kimberly Anderson',
-        budget: '$4,870',
-        teamMembers: {
-            img1: 'images/users/user7.jpg',
-            img2: 'images/users/user9.jpg',
-            img3: 'images/users/user12.jpg'
-        },
-        progress: 85,
-        status: {
-            // inProgress: 'In Progress',
-            pending: 'Pending',
-            // completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
-        }
-    },
-    {
-        id: '#951',
-        projectName: 'Hotel management system',
-        startDate: '15 Nov, 2024',
-        endDate: '15 Dec, 2024',
-        projectManager: 'Walter Frazier',
-        budget: '$5,250',
-        teamMembers: {
-            img1: 'images/users/user5.jpg',
-            img2: 'images/users/user13.jpg'
-        },
-        progress: 90,
-        status: {
-            inProgress: 'In Progress',
-            // pending: 'Pending',
-            // completed: 'Completed',
-            // notStarted: 'Not Started',
-        },
-        action: {
-            view: 'visibility',
-            delete: 'delete'
+        if (this.sort) {
+            this.dataSource.sort = this.sort;
         }
     }
-];
-export interface PeriodicElement {
-    id: string;
-    projectName: string;
-    startDate: string;
-    endDate: string;
-    projectManager: string;
-    budget: string;
-    teamMembers: any;
-    progress: number;
-    status: any;
-    action: any;
+
+    loadProjects() {
+        this.isLoading = true;
+        this.error = null;
+        this.dataSource.data = [];
+
+        this.projectService.getAllProjects().subscribe({
+            next: (projects) => {
+                console.log('Projects received:', projects);
+                if (projects && projects.length > 0) {
+                    this.dataSource.data = projects;
+                    this.error = null;
+                } else {
+                    this.dataSource.data = [];
+                    this.error = 'No projects found.';
+                }
+            },
+            error: (err) => {
+                console.error('Error loading projects:', err);
+                this.error = err.message || 'Failed to load projects';
+                this.dataSource.data = [];
+
+                // Add server check hint if it's a connection error
+                if (err.status === 0 || err.status === 500) {
+                    this.error += '\nPlease verify that:\n1. The server is running\n2. The API endpoint is correct\n3. You have an active internet connection';
+                }
+                this.showMessage(this.error, true);
+            },
+            complete: () => {
+                this.isLoading = false;
+            }
+        });
+    }
+
+    deleteProject(projet_id: number) {
+        const confirmSnackBar = this.snackBar.open(
+            'Are you sure you want to delete this project?',
+            'Delete',
+            {
+                duration: 5000,
+                panelClass: ['delete-confirmation-snackbar'],
+                horizontalPosition: 'center',
+                verticalPosition: 'top'
+            }
+        );
+
+        confirmSnackBar.onAction().subscribe(() => {
+            this.projectService.deleteProject(projet_id).subscribe({
+                next: () => {
+                    this.snackBar.open('Project deleted successfully! 🗑️', 'Close', {
+                        duration: 3000,
+                        panelClass: ['success-snackbar', 'notification-animation'],
+                        horizontalPosition: 'end',
+                        verticalPosition: 'top'
+                    });
+                    this.loadProjects();
+                },
+                error: (error) => {
+                    this.snackBar.open('Failed to delete project!', 'Close', {
+                        duration: 3000,
+                        panelClass: ['error-snackbar', 'notification-animation'],
+                        horizontalPosition: 'end',
+                        verticalPosition: 'top'
+                    });
+                    console.error('Error deleting project:', error);
+                }
+            });
+        });
+    }
+
+    getStatusClass(status: StatutProjet): string {
+        switch (status) {
+            case StatutProjet.EN_COURS: return 'in-progress';
+            case StatutProjet.PLANIFICATION: return 'pending';
+            case StatutProjet.TERMINÉ: return 'completed';
+            case StatutProjet.ANNULE: return 'not-started';
+            default: return '';
+        }
+    }
+
+    // Add refresh method
+    refreshList() {
+        this.loadProjects();
+    }
+
+    // Add search method
+    applyFilter(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.dataSource.filter = filterValue.trim().toLowerCase();
+
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
+
+    private formatDateForSearch(date: any): string {
+        if (!date) return '';
+        // Format date in multiple ways to make it searchable
+        const d = new Date(date);
+        if (isNaN(d.getTime())) return '';
+
+        return [
+            d.toLocaleDateString(), // e.g., "1/1/2024"
+            d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), // e.g., "Jan 1, 2024"
+            d.toISOString().split('T')[0] // e.g., "2024-01-01"
+        ].join(' ').toLowerCase();
+    }
+
+    showWorkerDetails(workers: any[]): void {
+        this.dialog.open(WorkerDetailsDialogComponent, {
+            width: '500px',
+            data: {
+                workers: workers || [],
+                projectName: 'Team Members'
+            },
+            panelClass: 'worker-details-dialog'
+        });
+    }
+
+    getRandomColor(name: string): string {
+        const colors = [
+            '#1976d2', '#388e3c', '#d32f2f', '#7b1fa2',
+            '#c2185b', '#0288d1', '#303f9f', '#ef6c00'
+        ];
+        const index = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        return colors[index % colors.length];
+    }
+
+    getWorkerCount(workers: any[]): string {
+        if (!workers?.length) return 'No team members';
+        return `${workers.length} member${workers.length !== 1 ? 's' : ''}`;
+    }
+
+    showQrCode(project: any): void {
+        console.log('Opening QR dialog for project:', project);
+        this.dialog.open(ProjectQrDialogComponent, {
+            width: '400px',
+            data: { project },
+            panelClass: 'qr-dialog'
+        });
+    }
+
+    private showMessage(message: string, isError = false): void {
+        this.snackBar.open(message, 'Close', {
+            duration: 5000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            panelClass: isError ? ['error-snackbar'] : ['success-snackbar']
+        });
+    }
 }

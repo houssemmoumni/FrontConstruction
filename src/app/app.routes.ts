@@ -154,8 +154,6 @@ import { LCoursesComponent } from './pages/lms-page/l-courses/l-courses.componen
 import { UserCourseListComponent } from './pages/lms-page/user-course-list/user-course-list.component';
 import { MyCoursesComponent } from './pages/lms-page/my-courses/my-courses.component';
 import { UserDetailsCourseComponent } from './pages/lms-page/user-details-course/user-details-course.component';
-
-//import { CourseContentComponent } from './pages/lms-page/l-course-details/course-content/course-content.component';
 import { AddContentComponent } from './pages/lms-page/add-content/add-content.component';
 import { LmsPageComponent } from './pages/lms-page/lms-page.component';
 import { PmEditUserComponent } from './pages/project-management-page/pm-edit-user/pm-edit-user.component';
@@ -201,34 +199,13 @@ import { EProductsListComponent } from './pages/ecommerce-page/e-products-list/e
 import { EProductsGridComponent } from './pages/ecommerce-page/e-products-grid/e-products-grid.component';
 import { EcommercePageComponent } from './pages/ecommerce-page/ecommerce-page.component';
 import { TeamMembersComponent } from './pages/users-page/team-members/team-members.component';
-//blog-Backoffice
 import { BlogComponent } from './apps/blog/blog.component';
 import { AddBlogComponent } from './apps/add-blog/add-blog.component';
-
+import { EditBlogComponent } from './apps/edit-blog/edit-blog.component';
 import { MesReclamationsComponent } from './mes-reclamations/mes-reclamations.component';
-
-//reclaamtion backoffice
 import { ReclamationComponent } from './apps/reclamation/reclamation.component';
 import { ReponseFormComponent } from './apps/reponse-form/reponse-form.component';
-
-
-//
-
-
-
-
-
-
-
-
-
-
-//front
-
 import { ReclamationAddComponent } from './front/reclamation-add/reclamation-add.component';
-
-
-
 import { HeaderStyle1Component } from './front/features/header-style1/header-style1.component';
 import { HeaderStyle2Component } from './front/features/header-style2/header-style2.component';
 import { HeaderStyle3Component } from './front/features/header-style3/header-style3.component';
@@ -300,26 +277,24 @@ import { HomeShipIndustryComponent } from './front/home-ship-industry/home-ship-
 import { HomeSolarPlantComponent } from './front/home-solar-plant/home-solar-plant.component';
 import { HomeSteelPlantComponent } from './front/home-steel-plant/home-steel-plant.component';
 import { IndexComponent } from './front/index/index.component';
-import { EditBlogComponent } from './apps/edit-blog/edit-blog.component';
 import { ChatbotComponent } from './chatbot/chatbot.component';
-//import { NotificationsComponent } from './notifications/notifications.component';
+import { AddJobComponent } from './addjob/addjob.component';
+import { ApplicationListComponent } from './application-list/application-list.component';
+import { JobApplicationFormComponent } from './front/job-application-form/job-application-form.component';
+import { JoboffreComponent } from './joboffre/joboffre.component';
+import { AdminNotificationsComponent } from './admin-notifications/admin-notifications.component';
+import { InterviewDetailComponent } from './front/interview-detail/interview-detail.component';
+import { ProjectComponent } from './project/project.component';
+import { DeclareIncidentComponent } from './front/declare-incident/declare-incident.component';
+import { AssignIncidentComponent } from './assign-incident/assign-incident.component';
+import { ResolveIncidentComponent } from './resolve-incident/resolve-incident.component';
+import { IncidentListComponent } from './incident-list/incident-list.component';
+import { ListInterviewsComponent } from './list-interviews/list-interviews.component';
 
-
-
-
-// Removed invalid route definition
-
+// ... [les imports restent les mêmes que dans la partie précédente]
 
 export const routes: Routes = [
-
-
-    { path: 'reclamation', component: ReclamationComponent },
-    //{ path: 'notifications', component: NotificationsComponent },
-
-    { path: 'chatbot', component: ChatbotComponent },
-    { path: 'reponse/:id', component: ReponseFormComponent },
-    { path: 'view/:id', component: ViewResponsesDialogComponentComponent },
-
+    // Routes communes
     { path: '', component: EcommerceComponent },
     { path: 'crm', component: CrmComponent },
     { path: 'project-management', component: ProjectManagementComponent },
@@ -329,11 +304,34 @@ export const routes: Routes = [
     { path: 'calendar', component: CalendarComponent },
     { path: 'contacts', component: ContactsComponent },
     { path: 'chat', component: ChatComponent },
-    //{ path: 'chat', component: ChatComponent },
+    { path: 'kanban-board', component: KanbanBoardComponent },
     { path: 'blog', component: BlogComponent },
     { path: 'add-blog', component: AddBlogComponent },
     { path: 'blogs/edit/:id', component: EditBlogComponent },
-    { path: 'kanban-board', component: KanbanBoardComponent },
+    { path: 'reclamation', component: ReclamationComponent },
+    { path: 'chatbot', component: ChatbotComponent },
+    { path: 'reponse/:id', component: ReponseFormComponent },
+    { path: 'view/:id', component: ViewResponsesDialogComponentComponent },
+    { path: 'mes-reclamations', component: MesReclamationsComponent },
+
+    // Routes recrutement/incident
+    { path: 'postuler/:jobId', component: JobApplicationFormComponent },
+    { path: 'joboffre', component: JoboffreComponent },
+    { path: 'editjob/:id', component: AddJobComponent },
+    { path: 'addjob', component: AddJobComponent },
+    { path: 'addjob/:id', component: AddJobComponent },
+    { path: 'applicationlist', component: ApplicationListComponent },
+    { path: 'interviews/candidate/:applicationId', component: InterviewDetailComponent },
+    { path: 'interview/:token', component: InterviewDetailComponent },
+    { path: 'projects', component: ProjectComponent },
+    { path: 'declare-incident', component: DeclareIncidentComponent },
+    { path: 'assign-incident/:id', component: AssignIncidentComponent },
+    { path: 'resolve/:id', component: ResolveIncidentComponent },
+    { path: 'incidents', component: IncidentListComponent },
+    { path: 'completed', component: ListInterviewsComponent, title: 'Completed Interviews' },
+    { path: 'admin-notifications', component: AdminNotificationsComponent },
+
+    // Routes imbriquées
     {
         path: 'file-manager',
         component: FileManagerComponent,
@@ -364,7 +362,7 @@ export const routes: Routes = [
             { path: 'products-list', component: EProductsListComponent },
             { path: 'product-details/:id', component: EProductDetailsComponent },
             { path: 'create-product', component: ECreateProductComponent },
-            {path: 'edit-product/:id', component: EEditProductComponent},
+            { path: 'edit-product/:id', component: EEditProductComponent },
             { path: 'orders', component: EOrdersComponent },
             { path: 'order-details', component: EOrderDetailsComponent },
             { path: 'create-order', component: ECreateOrderComponent },
@@ -426,9 +424,6 @@ export const routes: Routes = [
             { path: 'UserCourselist', component: UserCourseListComponent },
             { path: 'mycourse', component: MyCoursesComponent },
             { path: 'detailscourse/:id', component: UserDetailsCourseComponent },
-      //      { path: 'coursecontent/:courseId', component: CourseContentComponent },
-
-
         ],
     },
     {
@@ -563,8 +558,6 @@ export const routes: Routes = [
             { path: 'data-table', component: DataTableComponent },
         ],
     },
-
-
     {
         path: 'ui-kit',
         component: UiElementsComponent,
@@ -628,10 +621,10 @@ export const routes: Routes = [
         ],
     },
 
-    //front routes
+    // Front routes
     { path: 'front', component: IndexComponent },
     // home ---
-    { path: 'fron/home', component: IndexComponent },
+    { path: 'front/home', component: IndexComponent },
     { path: 'front/index', component: IndexComponent },
     { path: 'front/index-2', component: HomeOilPlantComponent },
     { path: 'front/home-oil-plant', component: HomeOilPlantComponent },
@@ -650,26 +643,17 @@ export const routes: Routes = [
     { path: 'front/index-9', component: HomeShipIndustryComponent },
     { path: 'front/home-ship-industry', component: HomeShipIndustryComponent },
     { path: 'front/index-10', component: HomeLeatherIndustryComponent },
-    {
-        path: 'front/home-leather-industry',
-        component: HomeLeatherIndustryComponent,
-    },
+    { path: 'front/home-leather-industry', component: HomeLeatherIndustryComponent },
     { path: 'front/index-11', component: HomeNuclearPlantComponent },
     { path: 'front/home-nuclear-plant', component: HomeNuclearPlantComponent },
     { path: 'front/index-12', component: HomeBeerFactoryComponent },
     { path: 'front/home-beer-factory', component: HomeBeerFactoryComponent },
     { path: 'front/index-13', component: HomeMiningIndustryComponent },
-    {
-        path: 'front/home-mining-industry',
-        component: HomeMiningIndustryComponent,
-    },
+    { path: 'front/home-mining-industry', component: HomeMiningIndustryComponent },
     { path: 'front/index-14', component: HomeCarIndustryComponent },
     { path: 'front/home-car-industry', component: HomeCarIndustryComponent },
     { path: 'front/index-15', component: HomePlasticIndustryComponent },
-    {
-        path: 'front/home-plastic-industry',
-        component: HomePlasticIndustryComponent,
-    },
+    { path: 'front/home-plastic-industry', component: HomePlasticIndustryComponent },
 
     // Features ----
     { path: 'front/header-style-1', component: HeaderStyle1Component },
@@ -684,20 +668,8 @@ export const routes: Routes = [
     { path: 'front/header-style-dark-4', component: HeaderStyleDark4Component },
     { path: 'front/header-style-dark-5', component: HeaderStyleDark5Component },
     { path: 'front/header-style-dark-6', component: HeaderStyleDark6Component },
-    // {path: 'footer-1', component: FooterStyle1Component},
-    // {path: 'footer-2', component: FooterStyle2Component},
-    // {path: 'footer-3', component: FooterStyle3Component},
-    // {path: 'footer-4', component: FooterStyle4Component},
-    // {path: 'footer-5', component: FooterStyle5Component},
-    // {path: 'footer-6', component: FooterStyle6Component},
-    // {path: 'footer-7', component: FooterStyle7Component},
-    // {path: 'footer-8', component: FooterStyle8Component},
-    // {path: 'footer-9', component: FooterStyle9Component},
-    // {path: 'footer-10', component: FooterStyle10Component},
-    // {path: 'footer-11', component: FooterStyle11Component},
-    // {path: 'footer-12', component: FooterStyle12Component},
 
-    // Pages  ----
+    // Pages ----
     { path: 'front/about-1', component: AboutUs1Component },
     { path: 'front/about-2', component: AboutUs2Component },
     { path: 'front/services-1', component: Services1Component },
@@ -720,10 +692,7 @@ export const routes: Routes = [
     // Shop ----
     { path: 'front/shop', component: ShopComponent },
     { path: 'front/shop-sidebar', component: ShopSidebarComponent },
-    {
-        path: 'front/shop-product-details/:id',
-        component: ShopProductDetailsComponent,
-    },
+    { path: 'front/shop-product-details/:id', component: ShopProductDetailsComponent },
     { path: 'front/shop-cart', component: ShopCartComponent },
     { path: 'front/shop-wishlist', component: ShopWishlistComponent },
     { path: 'front/shop-checkout', component: ShopCheckoutComponent },
@@ -732,43 +701,21 @@ export const routes: Routes = [
 
     // Blogs ----
     { path: 'front/blog-half-img', component: HalfImageComponent },
-    {
-        path: 'front/blog-half-img-sidebar',
-        component: HalfImageSidebarComponent,
-    },
-    {
-        path: 'front/blog-half-img-left-sidebar',
-        component: HalfImageSidebarLeftComponent,
-    },
+    { path: 'front/blog-half-img-sidebar', component: HalfImageSidebarComponent },
+    { path: 'front/blog-half-img-left-sidebar', component: HalfImageSidebarLeftComponent },
     { path: 'front/blog-large-img', component: LargeImageComponent },
-    {
-        path: 'front/blog-large-img-sidebar',
-        component: LargeImageSidebarComponent,
-    },
-    {
-        path: 'front/blog-large-img-left-sidebar',
-        component: LargeImageSidebarLeftComponent,
-    },
+    { path: 'front/blog-large-img-sidebar', component: LargeImageSidebarComponent },
+    { path: 'front/blog-large-img-left-sidebar', component: LargeImageSidebarLeftComponent },
     { path: 'front/blog-grid-2', component: Grid2Component },
     { path: 'front/blog-grid-2-sidebar', component: Grid2SidebarComponent },
-    {
-        path: 'front/blog-grid-2-sidebar-left',
-        component: Grid2SidebarLeftComponent,
-    },
+    { path: 'front/blog-grid-2-sidebar-left', component: Grid2SidebarLeftComponent },
     { path: 'front/blog-grid-3', component: Grid3Component },
     { path: 'front/blog-grid-3-sidebar', component: Grid3SidebarComponent },
-    {
-        path: 'front/blog-grid-3-sidebar-left',
-        component: Grid3SidebarLeftComponent,
-    },
+    { path: 'front/blog-grid-3-sidebar-left', component: Grid3SidebarLeftComponent },
     { path: 'front/blog-grid-4', component: Grid4Component },
     { path: 'front/blog-single', component: SingleComponent },
     { path: 'front/blog-single-sidebar/:id', component: SingleSidebarComponent },
-
-    {
-        path: 'front/blog-single-left-sidebar',
-        component: SingleSidebarLeftComponent,
-    },
+    { path: 'front/blog-single-left-sidebar', component: SingleSidebarLeftComponent },
 
     // Contact ---
     { path: 'front/reclamation/add', component: ReclamationAddComponent },
@@ -777,7 +724,6 @@ export const routes: Routes = [
     { path: 'front/contact-2', component: ContactUs2Component },
     { path: 'front/contact-3', component: ContactUs3Component },
     { path: 'front/contact-4', component: ContactUs4Component },
-    // Here add new pages component
 
-    { path: '**', component: NotFoundComponent }, // This line will remain down from the whole pages component list
+    { path: '**', component: NotFoundComponent }
 ];

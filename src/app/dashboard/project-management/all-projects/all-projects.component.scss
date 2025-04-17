@@ -29,18 +29,31 @@
                         .daxa-badge {
                             color: var(--daxaColor);
                             background: rgba(15, 121, 243, 0.10);
+                            padding: 5px 10px;
+                            border-radius: 4px;
+                            font-size: 12px;
 
                             &.in-progress {
                                 color: var(--warningColor);
                                 background: rgba(241, 179, 28, 0.10);
+                                background-color: #e3f2fd;
+                                color: #2196f3;
                             }
                             &.pending {
                                 color: var(--successColor);
                                 background: rgba(46, 212, 126, 0.10);
+                                background-color: #fff3e0;
+                                color: #ff9800;
+                            }
+                            &.completed {
+                                background-color: #e8f5e9;
+                                color: #4caf50;
                             }
                             &.not-started {
                                 color: var(--dangerColor);
                                 background: rgba(231, 76, 60, 0.10);
+                                background-color: #ffebee;
+                                color: #f44336;
                             }
                         }
                     }
@@ -270,4 +283,29 @@
         }
     }
 
+}
+
+.table-container {
+    position: relative;
+    min-height: 200px;
+}
+
+.loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.no-data-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

@@ -25,7 +25,7 @@ import { ChatbotComponent } from "./chatbot/chatbot.component";
     NgClass,
     ChatbotComponent
    ,
-   
+
 ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',

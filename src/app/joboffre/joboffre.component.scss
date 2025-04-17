@@ -1,0 +1,174 @@
+/* Variables */
+$primary-color: #3498db;
+$success-color: #2ecc71;
+$warning-color: #f39c12;
+$danger-color: #e74c3c;
+$light-gray: #f8f9fa;
+$border-color: #e0e0e0;
+
+/* Styles globaux */
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0;
+}
+
+.card {
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.table {
+    thead th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+        border-top: none;
+        padding: 1rem 1.25rem;
+    }
+
+    td {
+        padding: 1rem 1.25rem;
+        vertical-align: middle;
+        border-top: 1px solid $border-color;
+    }
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    border-radius: 50px;
+
+    &-success {
+        background-color: $success-color;
+    }
+
+    &-danger {
+        background-color: $danger-color;
+    }
+}
+
+/* Boutons */
+.btn {
+    &-primary {
+        background-color: $primary-color;
+        border-color: $primary-color;
+    }
+
+    &-icon {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border-radius: 50%;
+
+        &.btn-edit {
+            color: $primary-color;
+            background-color: rgba($primary-color, 0.1);
+            border: none;
+            margin-right: 8px;
+
+            &:hover {
+                background-color: rgba($primary-color, 0.2);
+            }
+        }
+
+        &.btn-delete {
+            color: $danger-color;
+            background-color: rgba($danger-color, 0.1);
+            border: none;
+            margin-right: 8px;
+
+            &:hover {
+                background-color: rgba($danger-color, 0.2);
+            }
+        }
+
+        &.btn-success {
+            color: $success-color;
+            background-color: rgba($success-color, 0.1);
+            border: none;
+
+            &:hover {
+                background-color: rgba($success-color, 0.2);
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+        }
+    }
+}
+
+/* État vide */
+.empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: #7f8c8d;
+
+    h4 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Pagination personnalisée */
+.custom-paginator {
+    background: transparent;
+    border: none;
+
+    .mat-paginator-container {
+        justify-content: center;
+    }
+
+    .mat-paginator-page-size {
+        align-items: center;
+    }
+}
+
+/* Search bar */
+.search-bar {
+    .input-group {
+        max-width: 400px;
+
+        .form-control {
+            border-right: none;
+
+            &:focus {
+                box-shadow: none;
+                border-color: $primary-color;
+            }
+        }
+
+        .input-group-text {
+            background-color: white;
+            border-left: none;
+            color: #6c757d;
+
+            &:focus {
+                border-color: $primary-color;
+            }
+        }
+    }
+}
+
+/* Truncate text */
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+}

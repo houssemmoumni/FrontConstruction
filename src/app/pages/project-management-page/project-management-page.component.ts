@@ -3,8 +3,9 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
     selector: 'app-project-management-page',
-    imports: [RouterOutlet],
     templateUrl: './project-management-page.component.html',
-    styleUrl: './project-management-page.component.scss'
+    styleUrls: ['./project-management-page.component.scss'],
+    standalone: true,
+    imports: [RouterOutlet]
 })
 export class ProjectManagementPageComponent {}

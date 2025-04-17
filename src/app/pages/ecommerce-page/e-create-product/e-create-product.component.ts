@@ -24,7 +24,7 @@ import { MatSnackBar } from '@angular/material/snack-bar'; // Optional: For disp
 
 @Component({
     selector: 'app-e-create-product',
-    imports: [CommonModule,MatCardModule, MatMenuModule, MatButtonModule, RouterLink, 
+    imports: [CommonModule,MatCardModule, MatMenuModule, MatButtonModule, RouterLink,
         FormsModule, MatFormFieldModule, MatInputModule, MatSelectModule,
          MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule, FileUploadModule, NgxEditorModule, NgIf],
     templateUrl: './e-create-product.component.html',
@@ -116,7 +116,7 @@ export class ECreateProductComponent implements OnInit{
             this.snackBar.open('Please fill all required fields.', 'Close', { duration: 3000 });
             return;
         }
-    
+
         // Update the material object with form values
         this.material = {
             name: this.form.value.name,
@@ -127,10 +127,10 @@ export class ECreateProductComponent implements OnInit{
             status: this.form.value.status,
         };
         const formData = new FormData();
-        
+
         formData.append('request', new Blob([JSON.stringify(this.material)], { type: 'application/json' }));
         formData.append('file', this.selectedFile);
-    
+
         this.materialService.createMaterial(1,formData).subscribe({
             next: (response) => {
                 this.snackBar.open('Material created successfully!', 'Close', { duration: 3000 });
@@ -143,7 +143,7 @@ export class ECreateProductComponent implements OnInit{
             }
         });
     }
-   
+
     onCancel(): void {
         this.router.navigate(['/ecommerce-page/products-list']); // Navigate to materials list
     }

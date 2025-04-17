@@ -28,8 +28,7 @@ import { Task } from '../models/task';
   imports: [
     MatDialogModule,
     MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
+
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -70,7 +69,7 @@ export class TaskCommentsDialogComponent implements OnInit, OnDestroy {
 
     this.loadComments();
 
-    
+
 
     this.webSocketService.connect(this.taskId);
     this.webSocketService.onComment().subscribe(comment => {
@@ -79,7 +78,7 @@ export class TaskCommentsDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-     
+
     this.webSocketService.disconnect();
   }
 

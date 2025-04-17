@@ -1,8 +1,6 @@
 <!-- Breadcrumb -->
 <div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-between">
-    <h5 class="mb-0">
-        Add User
-    </h5>
+    <h5 class="mb-0">Add Team Member</h5>
     <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
         <li class="breadcrumb-item position-relative">
             <a routerLink="/" class="d-inline-block position-relative">
@@ -19,256 +17,99 @@
     </ol>
 </div>
 
-<!-- Add User -->
 <div class="row">
-    <div class="col-xxl-7 col-xxxl-8">
-        <mat-card
-            class="daxa-card add-user-card mb-25 border-radius bg-white border-none d-block"
-            [class.rtl-enabled]="themeService.isRTLEnabled()"
-        >
+    <div class="col-12">
+        <mat-card class="daxa-card">
             <mat-card-header>
-                <mat-card-title>
-                    <h5 class="mb-0">
-                        Add User
-                    </h5>
-                </mat-card-title>
+                <mat-card-title>Add New Team Member</mat-card-title>
             </mat-card-header>
+
             <mat-card-content>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="mb-25">
-                            <label class="main-label d-block lh-1 text-black">
-                                User ID
-                            </label>
-                            <mat-form-field>
-                                <mat-label>
-                                    User ID
-                                </mat-label>
-                                <input matInput>
+                <form *ngIf="workerForm" [formGroup]="workerForm" (ngSubmit)="onSubmit()">
+                    <div class="row">
+                        <!-- Name Field -->
+                        <div class="col-md-6">
+                            <mat-form-field class="w-100">
+                                <mat-label>Full Name</mat-label>
+                                <input matInput formControlName="name" required>
+                                <mat-error *ngIf="workerForm?.get('name')?.errors?.['required']">
+                                    Name is required
+                                </mat-error>
+                                <mat-error *ngIf="workerForm?.get('name')?.errors?.['minlength']">
+                                    Name must be at least 3 characters
+                                </mat-error>
                             </mat-form-field>
                         </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-25">
-                            <label class="main-label d-block lh-1 text-black">
-                                User Name
-                            </label>
-                            <mat-form-field>
-                                <mat-label>
-                                    User name
-                                </mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-25">
-                            <label class="main-label d-block lh-1 text-black">
-                                Email Address
-                            </label>
-                            <mat-form-field>
-                                <mat-label>
-                                    Email address
-                                </mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-25">
-                            <label class="main-label d-block lh-1 text-black">
-                                Location
-                            </label>
-                            <mat-form-field>
-                                <mat-label>
-                                    Select
-                                </mat-label>
-                                <mat-select>
-                                    <mat-option value="option1">
-                                        Washington D.C	
-                                    </mat-option>
-                                    <mat-option value="option2">
-                                        Chicago
-                                    </mat-option>
-                                    <mat-option value="option3">
-                                        Oklahoma City
-                                    </mat-option>
-                                    <mat-option value="option4">
-                                        San Diego
-                                    </mat-option>
-                                    <mat-option value="option5">
-                                        Los Angeles
-                                    </mat-option>
-                                    <mat-option value="option6">
-                                        Las Vegas
-                                    </mat-option>
-                                    <mat-option value="option7">
-                                        San Francisco
+
+                        <!-- Role Field -->
+                        <div class="col-md-6">
+                            <mat-form-field class="w-100">
+                                <mat-label>Role</mat-label>
+                                <mat-select formControlName="role" required>
+                                    <mat-option *ngFor="let role of roles" [value]="role">
+                                        {{role}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-25">
-                            <label class="main-label d-block lh-1 text-black">
-                                Phone No
-                            </label>
-                            <mat-form-field>
-                                <mat-label>
-                                    Phone no
-                                </mat-label>
-                                <input matInput>
+
+                        <!-- Email Field -->
+                        <div class="col-md-6">
+                            <mat-form-field class="w-100">
+                                <mat-label>Email</mat-label>
+                                <input matInput formControlName="email" type="email" required>
+                                <mat-error *ngIf="workerForm?.get('email')?.errors?.['required']">
+                                    Email is required
+                                </mat-error>
+                                <mat-error *ngIf="workerForm?.get('email')?.errors?.['email']">
+                                    Please enter a valid email address
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Phone Field -->
+                        <div class="col-md-6">
+                            <mat-form-field class="w-100">
+                                <mat-label>Phone Number</mat-label>
+                                <input matInput formControlName="phone" type="tel" required>
+                                <mat-error *ngIf="workerForm?.get('phone')?.errors?.['required']">
+                                    Phone number is required
+                                </mat-error>
+                                <mat-error *ngIf="workerForm?.get('phone')?.errors?.['pattern']">
+                                    Please enter at least 8 digits
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Join Date Field -->
+                        <div class="col-md-6">
+                            <mat-form-field class="w-100">
+                                <mat-label>Join Date</mat-label>
+                                <input matInput [matDatepicker]="picker" formControlName="joindate" required>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="mb-25">
-                            <label class="main-label d-block lh-1 text-black">
-                                Projects
-                            </label>
-                            <mat-form-field>
-                                <mat-label>
-                                    Projects
-                                </mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                        </div>
+
+                    <!-- Form Actions -->
+                    <div class="button-row mt-4">
+                        <button mat-raised-button 
+                                color="primary" 
+                                type="submit"
+                                [disabled]="!workerForm.valid || isSubmitting">
+                            {{isSubmitting ? 'Creating...' : 'Create Worker'}}
+                        </button>
+                        <button mat-button 
+                                type="button" 
+                                routerLink="/users-page/users-list"
+                                [disabled]="isSubmitting"
+                                class="ms-2">
+                            <mat-icon>cancel</mat-icon>
+                            Cancel
+                        </button>
                     </div>
-                    <div class="col-sm-12">
-                        <div class="mb-25">
-                            <label class="main-label d-block lh-1 text-black">
-                                Add Some Info
-                            </label>
-                            <mat-form-field class="textarea">
-                                <mat-label>
-                                    Write your description
-                                </mat-label>
-                                <textarea matInput placeholder="E.g. It makes me feel..."></textarea>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-25">
-                            <label class="main-label d-block lh-1 text-black">
-                                Facebook
-                            </label>
-                            <mat-form-field>
-                                <mat-label>
-                                    Facebook
-                                </mat-label>
-                                <input matInput placeholder="facebook@example.com">
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-25">
-                            <label class="main-label d-block lh-1 text-black">
-                                Twitter
-                            </label>
-                            <mat-form-field>
-                                <mat-label>
-                                    Twitter
-                                </mat-label>
-                                <input matInput placeholder="twitter@example.com">
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-25">
-                            <label class="main-label d-block lh-1 text-black">
-                                Linkedin
-                            </label>
-                            <mat-form-field>
-                                <mat-label>
-                                    Linkedin
-                                </mat-label>
-                                <input matInput placeholder="linkedin@example.com">
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="mb-25">
-                            <label class="main-label d-block lh-1 text-black">
-                                YouTube
-                            </label>
-                            <mat-form-field>
-                                <mat-label>
-                                    YouTube
-                                </mat-label>
-                                <input matInput placeholder="youtube@example.com">
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="mb-25">
-                            <label class="main-label d-block lh-1 text-black">
-                                Customer Image
-                            </label>
-                            <file-upload class="file-uploader" [multiple]="multiple"></file-upload>
-                        </div>
-                    </div>
-                </div>
-                <div class="btn-box">
-                    <button mat-button>
-                        Add User
-                    </button>
-                    <button mat-button>
-                        Cancel
-                    </button>
-                </div>
-            </mat-card-content>
-        </mat-card>
-    </div>
-    <div class="col-xxl-5 col-xxxl-4">
-        <mat-card
-            class="daxa-card add-user-card mb-25 border-radius bg-white border-none d-block"
-            [class.rtl-enabled]="themeService.isRTLEnabled()"
-        >
-            <mat-card-header>
-                <mat-card-title>
-                    <h5 class="mb-0">
-                        Privacy Policy
-                    </h5>
-                </mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <div class="mb-25">
-                    <mat-checkbox>
-                        Allow users to show your email
-                    </mat-checkbox>
-                    <mat-checkbox>
-                        Allow users to show your experiences
-                    </mat-checkbox>
-                    <mat-checkbox>
-                        Allow users to show your followers
-                    </mat-checkbox>
-                </div>
-                <label class="main-label d-block lh-1 text-black">
-                    Select Your Skills
-                </label>
-                <mat-form-field>
-                    <mat-label>
-                        Select
-                    </mat-label>
-                    <mat-select>
-                        <mat-option value="option1">
-                            Leadership
-                        </mat-option>
-                        <mat-option value="option2">
-                            Project Management
-                        </mat-option>
-                        <mat-option value="option3">
-                            Data Analysis
-                        </mat-option>
-                        <mat-option value="option4">
-                            Teamwork
-                        </mat-option>
-                        <mat-option value="option5">
-                            Web Development
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                </form>
             </mat-card-content>
         </mat-card>
     </div>

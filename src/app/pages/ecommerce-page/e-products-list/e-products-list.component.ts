@@ -30,7 +30,7 @@ export class EProductsListComponent implements OnInit {
     userId: number = 1; // Set a static userId (e.g., 1)
 
 
-    
+
 
 
     displayedColumns: string[] = [
@@ -106,7 +106,7 @@ export class EProductsListComponent implements OnInit {
         this.loadMaterials();
         console.log(this.materials);
       }
-    
+
       loadMaterials(): void {
         this.materialService.getAllMaterials().subscribe(data => {
           this.materials = data.map(material => {
@@ -166,20 +166,20 @@ export class EProductsListComponent implements OnInit {
         };
     }
 
-       addMaterial(): void 
+       addMaterial(): void
           {
             this.router.navigate(['/ecommerce-page/create-product']);
 
-              
+
             }
             updateTask(materialId:number): void {
                 console.log('Navigating to edit-product with ID:', materialId);
 
               this.router.navigate(['/ecommerce-page/edit-product', materialId]);
-              };    
-          
-         
-    
+              };
+
+
+
           deleteMaterial(materialId: number): void {
             this.materialService.deleteMaterial(this.userId, materialId).subscribe(() => {
                 this.materials = this.materials.filter(material => material.id !== materialId);
@@ -187,13 +187,13 @@ export class EProductsListComponent implements OnInit {
 
                 this.availableCount = this.materials.filter(mat => mat.status === 'DISPONIBLE').length;
                 this.unavailableCount = this.materials.filter(mat => mat.status === 'NON_DISPONIBLE').length;
-            
+
             });
         }
       }
-          
-          
-    
+
+
+
 
 
 

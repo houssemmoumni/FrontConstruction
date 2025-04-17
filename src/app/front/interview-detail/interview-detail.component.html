@@ -1,0 +1,85 @@
+<div class="container py-5">
+    @if (isLoading) {
+      <div class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3">Loading interview details...</p>
+      </div>
+    }
+
+    @if (error) {
+      <div class="alert alert-danger text-center">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        {{ error }}
+        <button class="btn btn-sm btn-outline-primary ms-3" routerLink="/">
+          Return Home
+        </button>
+      </div>
+    }
+
+    @if (interview && !isLoading) {
+      <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">
+            <i class="bi bi-calendar2-check me-2"></i>
+            Your Interview Details
+          </h3>
+        </div>
+
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <h5><i class="bi bi-clock-history me-2 text-primary"></i> Scheduled Time</h5>
+              <p class="lead">{{ formattedDate }}</p>
+            </div>
+
+            <div class="col-md-6">
+              <h5><i class="bi bi-info-circle me-2 text-primary"></i> Status</h5>
+              <span class="badge" [class.bg-success]="canJoin" [class.bg-warning]="!canJoin" [class.text-dark]="!canJoin">
+                {{ canJoin ? 'Ready to join' : 'Will activate 24 hours before interview' }}
+              </span>
+            </div>
+          </div>
+
+          @if (canJoin && interview.meetLink) {
+            <div class="mb-4">
+              <h5><i class="bi bi-camera-video me-2 text-primary"></i> Meeting Link</h5>
+              <a [href]="interview.meetLink" target="_blank" class="btn btn-success">
+                <i class="bi bi-arrow-up-right-circle me-2"></i>
+                Join Interview Now
+              </a>
+            </div>
+          }
+
+          <div class="mb-4">
+            <h5><i class="bi bi-card-checklist me-2 text-primary"></i> Preparation</h5>
+            <div class="alert alert-info">
+              {{ interview.feedback || 'Please prepare for a technical discussion about your application.' }}
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap justify-content-between mt-4 gap-2">
+            @if (interview.interviewDate) {
+              <button class="btn btn-primary" (click)="addToCalendar()">
+                <i class="bi bi-calendar-plus me-2"></i>
+                Add to Calendar
+              </button>
+            }
+
+            @if (true || (canJoin && !interview.completed)) {
+                <button class="btn btn-success" (click)="completeInterview()">
+                  <i class="bi bi-check-circle me-2"></i>
+                  Terminer l'entretien
+                </button>
+              }
+
+            <button class="btn btn-outline-secondary" routerLink="/">
+              <i class="bi bi-house-door me-2"></i>
+              Return Home
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>

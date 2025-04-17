@@ -1,0 +1,263 @@
+<div class="admin-container">
+    <mat-card class="admin-card">
+      <mat-card-header>
+        <mat-card-title>Project Management</mat-card-title>
+        <div class="notification-bell-container">
+          <button mat-icon-button
+                  [matMenuTriggerFor]="notificationMenu"
+                  [matBadge]="unreadCount"
+                  matBadgeColor="warn"
+                  matBadgeSize="small"
+                  matBadgePosition="above after"
+                  class="notification-bell"
+                  [class.shake]="hasNewNotification"
+                  [matTooltip]="isConnected ? 'Notifications' : 'Connecting...'">
+            <mat-icon>notifications</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="toolbar">
+          <button mat-raised-button color="primary" (click)="isEditing = true">
+            <mat-icon>add</mat-icon> Add Project
+          </button>
+
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search</mat-label>
+            <input matInput [(ngModel)]="searchText" (input)="applyFilter()">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="mat-table-container">
+          <div class="mat-table-wrapper">
+            <table mat-table [dataSource]="paginatedProjects" class="mat-elevation-z8">
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let project">{{ project.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="location">
+                <th mat-header-cell *matHeaderCellDef>Location</th>
+                <td mat-cell *matCellDef="let project">{{ project.location }}</td>
+              </ng-container>
+              <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let project">{{ project.description }}</td>
+              </ng-container>
+              <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef>Image</th>
+                <td mat-cell *matCellDef="let project">
+                  <div class="image-container">
+                    <img *ngIf="project.image" [src]="project.image" alt="Project image" class="project-image">
+                    <span *ngIf="!project.image" class="no-image">No image</span>
+                  </div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let project">
+                  <span class="status-badge" [class.published]="project.published">
+                    {{ project.published ? 'Published' : 'Unpublished' }}
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let project">
+                  <button mat-icon-button (click)="editProject(project)" matTooltip="Edit">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="deleteProject(project)" matTooltip="Delete">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button mat-icon-button
+                          (click)="togglePublish(project)"
+                          [color]="project.published ? 'accent' : 'primary'"
+                          matTooltip="{{ project.published ? 'Unpublish' : 'Publish' }}">
+                    <mat-icon>{{ project.published ? 'unpublish' : 'publish' }}</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+
+          <mat-paginator [length]="filteredProjects.length"
+                        [pageSize]="pageSize"
+                        [pageSizeOptions]="[5, 10, 25]"
+                        (page)="onPageChange($event)">
+          </mat-paginator>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Notification Menu -->
+    <mat-menu #notificationMenu="matMenu" class="notification-menu">
+      <div class="menu-header">
+        <h3>Incident Notifications</h3>
+        <button mat-icon-button (click)="markAllAsRead()" matTooltip="Mark all as read">
+          <mat-icon>done_all</mat-icon>
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="notification-list">
+        <mat-list>
+          <mat-list-item *ngFor="let notification of notifications"
+                        (click)="handleNotificationClick(notification)"
+                        [class.unread]="!notification.is_read">
+            <div class="notification-content">
+              <div class="notification-icon">
+                <mat-icon [class]="getSeverityIcon(notification.severity)">
+                  {{getSeverityIcon(notification.severity)}}
+                </mat-icon>
+              </div>
+              <div class="notification-details">
+                <div class="notification-message">{{ notification.message }}</div>
+                <div class="notification-meta">
+                  <span class="severity-badge {{notification.severity?.toLowerCase()}}">
+                    {{ notification.severity }}
+                  </span>
+                  <span class="notification-time">
+                    {{ notification.notification_date | date: 'shortTime' }}
+                  </span>
+                </div>
+                <div *ngIf="notification.incident" class="incident-details mt-2">
+                  <p><strong>Reporter:</strong> {{ notification.incident.reporterName || 'Anonymous' }}</p>
+                  <p><strong>Date:</strong> {{ notification.incident.reportDate | date: 'shortDate' }}</p>
+                  <p><strong>Description:</strong> {{ notification.incident.description }}</p>
+                  <button mat-raised-button
+                          color="primary"
+                          *ngIf="notification.incident.id"
+                          (click)="forceAssign(notification.incident.id); $event.stopPropagation()"
+                          class="assign-technician-btn">
+                    <mat-icon>engineering</mat-icon>
+                    Assign Technician
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-list-item>
+
+          <div *ngIf="notifications.length === 0" class="empty-state">
+            <mat-icon>notifications_off</mat-icon>
+            <p>No new notifications</p>
+          </div>
+        </mat-list>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="menu-footer">
+        <button mat-button (click)="clearAll()">Clear All</button>
+        <button mat-button (click)="openNotificationCenter()">View All</button>
+      </div>
+    </mat-menu>
+
+    <!-- Notification Center Modal -->
+    <div class="notification-center-modal" *ngIf="showNotificationCenter">
+        <mat-card class="notification-center">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>notifications_active</mat-icon>
+              Incident Notification Center
+            </mat-card-title>
+            <button mat-icon-button (click)="showNotificationCenter = false">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="center-controls">
+              <button mat-stroked-button (click)="markAllAsRead()">
+                <mat-icon>done_all</mat-icon> Mark all as read
+              </button>
+              <button mat-stroked-button (click)="clearAll()">
+                <mat-icon>delete_sweep</mat-icon> Clear all
+              </button>
+            </div>
+
+            <div class="notification-list">
+              <mat-list>
+                <mat-list-item *ngFor="let notification of notifications"
+                              [class.unread]="!notification.is_read"
+                              [class.high-priority]="notification.severity === 'HIGH'">
+                  <div class="notification-content">
+                    <div class="notification-icon">
+                      <mat-icon [class]="getSeverityIcon(notification.severity)">
+                        {{ getSeverityIcon(notification.severity) }}
+                      </mat-icon>
+                    </div>
+
+                    <div class="notification-details">
+                      <!-- Notification Message -->
+                      <div class="notification-message">
+                        {{ notification.message }}
+                      </div>
+
+                      <!-- Severity and Time -->
+                      <div class="notification-meta">
+                        <span class="severity-badge {{notification.severity?.toLowerCase()}}">
+                          {{ notification.severity }}
+                        </span>
+                        <span class="notification-time">
+                          {{ notification.notification_date | date:'medium' }}
+                        </span>
+                      </div>
+
+                      <!-- Incident Details -->
+                      <div *ngIf="notification.incident || notification.incidentReport" class="incident-details">
+                        <p><strong>Reporter:</strong> {{ (notification.incident || notification.incidentReport)?.reporterName || 'Anonymous' }}</p>
+                        <p><strong>Date:</strong> {{ (notification.incident || notification.incidentReport)?.reportDate | date:'shortDate' }}</p>
+                        <p><strong>Description:</strong> {{ (notification.incident || notification.incidentReport)?.description }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </mat-list-item>
+
+                <div *ngIf="!notifications.length" class="empty-state">
+                  <mat-icon>notifications_off</mat-icon>
+                  <p>No notifications available</p>
+                  <p class="subtext">New incidents will appear here automatically</p>
+                </div>
+              </mat-list>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    <!-- Add/Edit Project Modal -->
+    <div *ngIf="isEditing" class="form-modal">
+      <div class="form-container">
+        <h2>{{ currentProject.id ? 'Edit' : 'Add' }} Project</h2>
+        <form (ngSubmit)="submitForm()">
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="currentProject.name" name="name" required>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Location</mat-label>
+            <input matInput [(ngModel)]="currentProject.location" name="location" required>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput [(ngModel)]="currentProject.description" name="description"></textarea>
+          </mat-form-field>
+
+          <div class="image-upload">
+            <label>Project Image:</label>
+            <input type="file" (change)="onFileSelected($event)" accept="image/*">
+            <div *ngIf="previewImage" class="image-preview">
+              <img [src]="previewImage" alt="Preview">
+              <button mat-icon-button class="remove-image" (click)="removeImage()">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" mat-button (click)="cancelForm()">Cancel</button>
+            <button type="submit" mat-raised-button color="primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

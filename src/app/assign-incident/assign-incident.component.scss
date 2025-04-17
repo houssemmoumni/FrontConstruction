@@ -1,0 +1,52 @@
+.assignment-card {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .spinner-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .incident-details {
+    margin-bottom: 20px;
+    p {
+      margin: 8px 0;
+    }
+  }
+
+  .technician-select,
+  .comments-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .severity-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    &.severity-high {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    &.severity-medium {
+      background-color: #fff3e0;
+      color: #ef6c00;
+    }
+    &.severity-low {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+  }
+
+  .mat-card-actions {
+    padding: 16px 0 0 0;
+    button {
+      margin-left: 8px;
+    }
+  }

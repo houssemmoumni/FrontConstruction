@@ -1,0 +1,110 @@
+<div class="page-wraper">
+    <div class="page-content bg-white">
+        <div class="section-full content-inner bg-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="page-title">Gestion des Offres d'Emploi</h2>
+                            <button class="btn btn-primary" (click)="navigate()">
+                                <mat-icon class="mr-2">add</mat-icon>Ajouter une Offre
+                            </button>
+                        </div>
+
+                        <div class="card shadow-sm">
+                            <div class="card-body p-0">
+                                <div class="search-bar p-3 border-bottom">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control"
+                                               [(ngModel)]="searchText"
+                                               (ngModelChange)="applyFilter()"
+                                               placeholder="Rechercher par titre ou description">
+                                        <span class="input-group-text">
+                                            <mat-icon>search</mat-icon>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th width="25%">Titre</th>
+                                                <th width="35%">Description</th>
+                                                <th width="15%">Statut</th>
+                                                <th width="25%" class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let offer of paginatedJobOffers">
+                                                <tr class="offer-row">
+                                                    <td class="font-weight-600">{{ offer.title }}</td>
+                                                    <td class="text-truncate" [title]="offer.description">{{ offer.description }}</td>
+                                                    <td>
+                                                        <span class="badge" [ngClass]="{
+                                                            'badge-success': offer.status === 'OPEN',
+                                                            'badge-danger': offer.status === 'CLOSED'
+                                                        }">
+                                                            {{ offer.status === 'OPEN' ? 'Ouverte' : 'Fermée' }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="btn-group" role="group">
+                                                            <button class="btn btn-sm btn-icon btn-edit"
+                                                                    (click)="editOffer(offer)"
+                                                                    matTooltip="Modifier"
+                                                                    matTooltipPosition="above">
+                                                                <mat-icon>edit</mat-icon>
+                                                            </button>
+
+                                                            <button class="btn btn-sm btn-icon btn-delete"
+                                                                    (click)="deleteOffer(offer)"
+                                                                    matTooltip="Supprimer"
+                                                                    matTooltipPosition="above">
+                                                                <mat-icon>delete</mat-icon>
+                                                            </button>
+
+                                                            <button class="btn btn-sm btn-icon btn-success"
+                                                                    (click)="publishOffer(offer)"
+                                                                    [disabled]="offer.status === 'PUBLISHED'"
+                                                                    matTooltip="Publier"
+                                                                    matTooltipPosition="above">
+                                                                <mat-icon>check</mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+
+                                            <tr *ngIf="filteredJobOffers.length === 0">
+                                                <td colspan="4" class="text-center py-4">
+                                                    <div class="empty-state">
+                                                        <mat-icon class="fa-3x mb-3">folder_open</mat-icon>
+                                                        <h4>Aucune offre d'emploi trouvée</h4>
+                                                        <p class="text-muted">Vous n'avez pas encore créé d'offre d'emploi</p>
+                                                        <button class="btn btn-primary mt-2" (click)="navigate()">
+                                                            <mat-icon class="mr-2">add</mat-icon>Créer une offre
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="p-3 border-top">
+                                    <mat-paginator [length]="filteredJobOffers.length"
+                                                   [pageSize]="pageSize"
+                                                   [pageSizeOptions]="[5, 10, 25, 100]"
+                                                   (page)="onPageChange($event)"
+                                                   class="custom-paginator">
+                                    </mat-paginator>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+.content-wrapper {
+    padding: 20px;
+    min-height: calc(100vh - 64px);
+    background-color: #f5f5f5;
+}
+
+.router-outlet-wrapper {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

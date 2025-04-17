@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import {
     CdkDragDrop,
     CdkDrag,
@@ -38,10 +39,25 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-kanban-board',
-    imports: [RouterLink,CommonModule, MatDialogModule,
+    standalone: true,
+    imports: [
+        RouterLink,
+        CommonModule,
+        MatDialogModule,
         MatIconModule,
-        MatTooltipModule,  // Add this import
-        MatCardModule, MatButtonModule, MatMenuModule, CdkDropList, CdkDrag, CdkDropListGroup, NgIf, MatSelectModule, MatInputModule, MatDatepickerModule, MatFormFieldModule, MatNativeDateModule],
+        MatTooltipModule,
+        MatCardModule,
+        MatButtonModule,
+        MatMenuModule,
+        DragDropModule,
+
+        NgIf,
+        MatSelectModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatNativeDateModule
+    ],
     templateUrl: './kanban-board.component.html',
     styleUrl: './kanban-board.component.scss'
 })
@@ -50,7 +66,7 @@ export class KanbanBoardComponent implements OnInit {
 inProgress: TaskResponse[] = [];
 completed: TaskResponse[] = [];
     staticUserId: number = 3; // Replace with dynamic ID when user module is ready
-       
+
 
     ngOnInit(): void {
         this.fetchTasks();
@@ -117,7 +133,7 @@ completed: TaskResponse[] = [];
             assignedToId: Number(task.assignedTo),  // Convert string to number
             status: newStatus
         };
-        
+
         // Update task in backend
         this.taskService.updateTask(task.id, updateData).subscribe({
             next: () => {

@@ -1,24 +1,28 @@
-<div
-    class="stat-item position-relative"
-    [class.rtl-enabled]="themeService.isRTLEnabled()"
-    [class.component-dark-theme]="themeService.isDark()"
->
-    <h5>
-        Active Leads
-    </h5>
-    <div class="number lh-1 fw-medium">
-        94,817
-    </div>
-    <span class="daxa-up-down-badge position-relative">
-        <i class="material-symbols-outlined">
-            trending_up
-        </i>
-        8.75%
-    </span>
-    <div class="chart">
-        <div id="crm_page_active_leads_chart"></div>
-        <div class="title d-block text-body">
-            This Month
+<section class="active-leads-section">
+    <header class="section-header">
+        <h5>Active Expenses</h5>
+    </header>
+    <div class="stat-item position-relative">
+        <div class="number lh-1 fw-medium">
+            {{ totalRevenue | number }}
+        </div>
+        <span class="daxa-up-down-badge position-relative">
+            <i class="material-symbols-outlined">trending_up</i>
+        </span>
+        <div class="chart">
+            <div id="crm_page_active_leads_chart"></div>
+            <div class="title d-block text-body">This Month</div>
         </div>
     </div>
-</div>
+
+    <div class="stats">
+        <header class="section-header">
+            <h5></h5>
+        </header>
+        <div class="stat-item">
+            <p><strong>Total Expenses:</strong> {{ stats.totalExpenses | currency:'USD' }}</p>
+            <p><strong>Total Projects:</strong> {{ stats.totalProjects }}</p>
+        </div>
+    </div>
+</section>
+

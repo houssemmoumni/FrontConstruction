@@ -8,16 +8,17 @@ import { OwlSlider15Component } from '../../elements/sliders/owl-slider15/owl-sl
 import { ActivatedRoute } from '@angular/router';
 import { MaterialService } from '../../../services/material.service';
 import { MaterialResponse } from '../../../models/material-response';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 declare var jQuery: any;
 declare var handleowlCarousel: any;
 
 @Component({
     selector: 'app-shop-product-details',
+    standalone: true,
     imports: [
-      CommonModule,
+        CommonModule,
         RouterLink,
         HeaderLight3Component,
         Banner1Component,
@@ -26,7 +27,7 @@ declare var handleowlCarousel: any;
         OwlSlider15Component
     ],
     templateUrl: './shop-product-details.component.html',
-    styleUrl: './shop-product-details.component.css'
+    styleUrls: ['./shop-product-details.component.css']
 })
 export class ShopProductDetailsComponent implements OnInit {
   material: MaterialResponse | undefined;
@@ -44,7 +45,7 @@ export class ShopProductDetailsComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    
+
 
     setTimeout(() => {
       (function ($) {

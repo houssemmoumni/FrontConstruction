@@ -1,0 +1,49 @@
+<div class="notification-container">
+    <button mat-icon-button
+            [matBadge]="unreadCount"
+            matBadgeColor="warn"
+            matBadgeSize="small"
+            [matTooltip]="isConnected ? 'Notifications' : 'Connecting...'">
+      <mat-icon>notifications</mat-icon>
+    </button>
+
+    <div class="notification-list">
+      <mat-list>
+        <mat-list-item *ngFor="let notification of notifications"
+                      (click)="handleNotificationClick(notification)"
+                      [class.unread]="!notification.is_read">
+          <div class="notification-content">
+            <mat-icon [class]="getSeverityIcon(notification.severity)">
+              {{getSeverityIcon(notification.severity)}}
+            </mat-icon>
+            <div class="notification-details">
+              <div>{{notification.message}}</div>
+              <small>{{notification.notification_date | date:'short'}}</small>
+              <div *ngIf="notification.incident || notification.incidentReport" class="incident-info">
+                <span>ID: {{(notification.incident || notification.incidentReport)?.id}}</span>
+                <span class="severity-badge">
+                  {{(notification.incident || notification.incidentReport)?.severity}}
+                </span>
+              </div>
+            </div>
+            <button *ngIf="notification.incident || notification.incidentReport"
+                   mat-button
+                   color="primary"
+                   (click)="handleNotificationClick(notification); $event.stopPropagation()">
+              Assign
+            </button>
+          </div>
+        </mat-list-item>
+
+        <div *ngIf="notifications.length === 0" class="empty-state">
+          <mat-icon>notifications_off</mat-icon>
+          <p>No notifications</p>
+        </div>
+      </mat-list>
+    </div>
+
+    <div class="notification-actions">
+      <button mat-button (click)="markAllAsRead()">Mark All Read</button>
+      <button mat-button (click)="clearAll()">Clear All</button>
+    </div>
+  </div>

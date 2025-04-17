@@ -21,7 +21,7 @@
                         "outputPath": "dist/daxa",
                         "index": "src/index.html",
                         "browser": "src/main.ts",
-                        "polyfills": ["zone.js","src/window-global-fix.ts"],
+                        "polyfills": ["zone.js","src/window-global-fix.ts","zone.js/testing"],
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
                         "allowedCommonJsDependencies": [
@@ -142,3 +142,4 @@
         "analytics": false
     }
 }
+

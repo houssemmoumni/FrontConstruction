@@ -1,67 +1,126 @@
 <div class="page-wraper">
-  <!-- header -->
-  <app-header-light3></app-header-light3>
-  <!-- header END -->
-  <!-- Content -->
-  <div class="page-content bg-gray">
-    <!-- inner page banner -->
-    <app-banner1 [data]="banner"></app-banner1>
-    <!-- inner page banner END -->
-    <div class="content-inner-2">
-      <div class="container">
-        <div class="row">
-          <div [ngClass]="{'col-xl-9 col-lg-8': layout.sidebar === true, 'col-xl-12 col-lg-12': layout.sidebar === false}">
-            <!-- blog grid -->
-            <div id="masonry" class="dlab-blog-grid-2" style="width: 100%;">
-              @for(item of blogList; track item;){
-                <div class="post card-container {{ layout.gridClass}} col-md-6 col-sm-12">
-                  <div class="blog-post blog-grid blog-rounded blog-effect1">
-                    <div class="dlab-post-media dlab-img-effect">
-                      <a [routerLink]="['/blog-single']"><img src="{{ item.image }}" alt="" /></a>
-                    </div>
-                    <div class="dlab-info p-a25 border-1">
-                      <div class="dlab-post-meta ">
-                        <ul>
-                          <li class="post-date">{{ item.date }}</li>
-                          <li class="post-author ml-2">By <a href="javascript:void(0);">{{ item.userName }}</a></li>
-                        </ul>
+    <app-header-light3></app-header-light3>
+
+    <div class="page-content bg-gray">
+      <app-banner1 [data]="banner"></app-banner1>
+
+      <div class="content-inner-2">
+        <div class="container">
+          <div class="row mb-4 align-items-center">
+            <div class="col-md-6">
+              <button type="button" mat-button class="btn btn-primary" [matMenuTriggerFor]="dateFilterMenu">
+                Filtrer par date
+              </button>
+              <mat-menu #dateFilterMenu="matMenu" class="card-header-menu" xPosition="before">
+                <button mat-menu-item (click)="filterByDate('today')">Aujourd'hui</button>
+                <button mat-menu-item (click)="filterByDate('thisWeek')">Cette semaine</button>
+                <button mat-menu-item (click)="filterByDate('thisMonth')">Ce mois-ci</button>
+                <button mat-menu-item (click)="filterByDate('thisYear')">Cette année</button>
+              </mat-menu>
+            </div>
+            <div class="col-md-6 d-flex align-items-center justify-content-end">
+              <div class="notification-container">
+                <div class="notification-bell" (click)="toggleNotifications()">
+                  <span class="material-icons">notifications</span>
+                  <span *ngIf="unreadNotificationsCount > 0" class="notification-badge">
+                    {{ unreadNotificationsCount }}
+                  </span>
+                </div>
+                <div *ngIf="showNotifications" class="notification-dropdown">
+                  <div class="notification-header">
+                    <h4>Notifications</h4>
+                    <button class="mark-all-read" (click)="markAllAsRead()">Tout marquer comme lu</button>
+                  </div>
+                  <ul class="notification-list">
+                    <li *ngFor="let notification of notifications"
+                        class="notification-item"
+                        [class.unread]="!notification.is_read"
+                        (click)="openNotificationModal(notification)">
+                      <div class="notification-icon">
+                        <span *ngIf="notification.type === 'rejected'" class="text-danger">❌</span>
+                        <span *ngIf="notification.type === 'accepted'" class="text-success">✅</span>
+                        <span *ngIf="notification.type === 'interview'" class="text-primary">📅</span>
                       </div>
-                      <div class="dlab-post-title ">
-                        <h4 class="post-title"><a [routerLink]="['/blog-single']">{{ item.title }}</a></h4>
+                      <div class="notification-content">
+                        <p class="notification-message">{{ notification.message }}</p>
+                        <div class="notification-meta">
+                          <span class="notification-time">{{ notification.created_at | date:'shortTime' }}</span>
+                          <button *ngIf="!notification.is_read"
+                                  class="mark-as-read"
+                                  (click)="markAsRead(notification); $event.stopPropagation()">
+                            Marquer comme lu
+                          </button>
+                        </div>
                       </div>
-                      <div class="dlab-post-text">
-                        <p>{{ item.decs }}</p>
-                      </div>
-                      <div class="dlab-post-readmore">
-                        <a [routerLink]="['/blog-single']" title="READ MORE" rel="bookmark" class="site-button">READ MORE
-                          <i class="ti-arrow-right"></i>
+                    </li>
+                    <li *ngIf="notifications.length === 0" class="empty-notifications">
+                      <i class="fas fa-bell-slash"></i>
+                      <p>Aucune notification</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <input type="text" class="form-control" placeholder="Rechercher par titre ou description" [(ngModel)]="searchQuery" (input)="applySearchFilter()">
+            </div>
+          </div>
+
+          <div class="row">
+            <div [ngClass]="{'col-xl-9 col-lg-8': layout.sidebar === true, 'col-xl-12 col-lg-12': layout.sidebar === false}">
+              <div id="masonry" class="dlab-blog-grid-2">
+                <div class="row">
+                  <div class="post card-container {{ layout.gridClass }} mb-4" *ngFor="let item of displayedBlogs">
+                    <div class="card shadow-sm h-100">
+                      <img *ngIf="item.image" [src]="item.image" class="card-img-top" alt="Blog Image">
+                      <div class="card-body">
+                        <h5 class="card-title font-weight-bold">{{ item.title }}</h5>
+                        <div class="card-text text-muted" [ngClass]="{'expanded': selectedItem === item}">
+                          {{ item.description || 'Pas de description disponible' }}
+                        </div>
+                        <a *ngIf="item.description && item.description.length > 50" href="javascript:void(0);" (click)="showFullDescription(item)" class="text-primary">
+                          {{ selectedItem === item ? 'Read Less' : 'Read More' }}
+                        </a>
+                        <p class="card-text">
+                          <small class="text-muted">Publié le : {{ item.postedDate | date: 'dd/MM/yyyy' }}</small>
+                        </p>
+                        <span class="badge badge-pill"
+                              [ngClass]="{'badge-success': item.status === 'OPEN', 'badge-danger': item.status === 'CLOSED'}">
+                          {{ item.status === 'OPEN' ? 'Ouvert' : 'Fermé' }}
+                        </span>
+                        <a [routerLink]="['/postuler', item.id]" class="btn btn-primary btn-block mt-3">
+                          Postuler
                         </a>
                       </div>
                     </div>
                   </div>
                 </div>
-              }
+              </div>
+
+              <div class="pagination-bx clearfix m-b30 text-center">
+                <ul class="pagination">
+                  <li class="page-item previous" [class.disabled]="currentPage === 1">
+                    <a class="page-link" href="javascript:void(0);" (click)="changePage(currentPage - 1)">
+                      <i class="ti-arrow-left"></i> Précédent
+                    </a>
+                  </li>
+                  <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+                    <a class="page-link" href="javascript:void(0);" (click)="changePage(page)">
+                      {{ page }}
+                    </a>
+                  </li>
+                  <li class="page-item next" [class.disabled]="currentPage === totalPages">
+                    <a class="page-link" href="javascript:void(0);" (click)="changePage(currentPage + 1)">
+                      Suivant <i class="ti-arrow-right"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <!-- blog grid END -->
-            <!-- Pagination start -->
-            <div class="pagination-bx clearfix m-b30 text-center">
-              <ul class="pagination">
-                <li class="previous"><a href="javascript:void(0);"><i class="ti-arrow-left"></i> Prev</a></li>
-                <li class="active"><a href="javascript:void(0);">1</a></li>
-                <li><a href="javascript:void(0);">2</a></li>
-                <li><a href="javascript:void(0);">3</a></li>
-                <li class="next"><a href="javascript:void(0);">Next <i class="ti-arrow-right"></i></a></li>
-              </ul>
-            </div>
-            <!-- Pagination END -->
           </div>
         </div>
       </div>
     </div>
+
+    <app-footer13></app-footer13>
+
+    <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
   </div>
-  <!-- Content END-->
-  <!-- Footer -->
-  <app-footer13></app-footer13>
-  <!-- Footer END-->
- <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
-</div>

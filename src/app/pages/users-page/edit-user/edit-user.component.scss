@@ -1,0 +1,65 @@
+.breadcrumb-card {
+    margin-bottom: 25px;
+
+    h5 {
+        font-size: 1.25rem;
+        font-weight: 500;
+    }
+
+    ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            display: inline;
+            margin-right: 5px;
+
+            a {
+                text-decoration: none;
+                color: var(--primary);
+            }
+
+            &:after {
+                content: '/';
+                margin-left: 5px;
+            }
+
+            &:last-child:after {
+                content: '';
+            }
+        }
+    }
+}
+
+.daxa-card {
+    padding: 20px;
+
+    mat-card-header {
+        margin-bottom: 20px;
+
+        mat-card-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+    }
+
+    mat-card-content {
+        .row {
+            margin-bottom: 15px;
+
+            mat-form-field {
+                width: 100%;
+            }
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: flex-end;
+
+            button {
+                margin-left: 10px;
+            }
+        }
+    }
+}

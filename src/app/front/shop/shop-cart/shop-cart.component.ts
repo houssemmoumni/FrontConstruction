@@ -52,7 +52,7 @@ export class ShopCartComponent implements OnInit {
   card: any;
   price: number = 0
   material: PurchaseRequest[] = [];
-  constructor(private cartService: CartService,    private materialService: MaterialService , private orderService: OrderService, private paymentService: PaymentService, 
+  constructor(private cartService: CartService,    private materialService: MaterialService , private orderService: OrderService, private paymentService: PaymentService,
   ) { }
 
   async ngOnInit() {
@@ -81,7 +81,7 @@ export class ShopCartComponent implements OnInit {
     this.cartService.computeCartTotals(); // Recalculate totals
 
     this.material = [];
-    this.price = 0; 
+    this.price = 0;
     for (let cart of this.cartItems){
       this.price = this.price + cart.material.price * cart.quantity
       this.material.push({materialId: cart.material.id, quantity: cart.quantity})
@@ -128,7 +128,7 @@ const price = this.price
    this.orderService.createOrder(order).subscribe(
       (response) => {
         console.log('Order created:', response);
-        
+
         this.cartService.clearCart(); // Clear the cart
       })
   }
@@ -149,9 +149,9 @@ const price = this.price
     const { error, paymentMethod } = await this.stripe.createPaymentMethod({
       type: 'card',
       card: this.card,
-    
+
     });
-   
+
     if (error) {
       console.error('Error creating payment method:', error);
       alert('Payment failed: ' + error.message); // Notify the user
@@ -164,17 +164,17 @@ const price = this.price
       currency: 'usd', // Currency code
       paymentMethodId: paymentMethod.id, // Stripe payment method ID
        // Convert to cents (Stripe expects amounts in cents)
-      
-    };
-    
 
-  
+    };
+
+
+
     // Call the PaymentService to process the payment
     this.paymentService.createPayment(paymentRequest).subscribe(
       (response) => {
         console.log('Payment successful:', response);
         alert('Payment successful!'); // Notify the user
-  
+
         // Proceed to checkout (create an order)
         this.checkout();
       },

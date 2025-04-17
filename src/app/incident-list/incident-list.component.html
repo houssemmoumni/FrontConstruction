@@ -1,0 +1,63 @@
+<!-- src/app/incident-list/incident-list.component.html -->
+<div class="page-content">
+    <div class="section-full">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="page-title mb-4">Incident Management</h2>
+
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover mb-0">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th width="10%">ID</th>
+                                            <th width="60%">Description</th>
+                                            <th width="15%">Status</th>
+                                            <th width="15%" class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngFor="let incident of dataSource.data">
+                                            <tr>
+                                                <td class="font-weight-600">{{ incident.id }}</td>
+                                                <td>{{ incident.description }}</td>
+                                                <td>
+                                                    <span class="badge" [ngClass]="{
+                                                        'badge-success': incident.status === 'RESOLVED',
+                                                        'badge-warning': incident.status === 'REOPENED',
+                                                        'badge-primary': incident.status === 'NEW'
+                                                    }">
+                                                        {{ incident.status }}
+                                                    </span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button mat-icon-button
+                                                            (click)="openAssignDialog(incident)"
+                                                            *ngIf="incident.status === 'REOPENED'">
+                                                        <mat-icon>assignment</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+
+                                        <tr *ngIf="dataSource.data.length === 0">
+                                            <td colspan="4" class="text-center py-4">
+                                                <div class="empty-state">
+                                                    <i class="far fa-folder-open fa-3x mb-3"></i>
+                                                    <h4>No incidents found</h4>
+                                                    <p class="text-muted">There are no incidents to display</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

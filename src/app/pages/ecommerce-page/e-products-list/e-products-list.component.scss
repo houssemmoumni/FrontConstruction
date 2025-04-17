@@ -7,7 +7,7 @@
                 }
                 .info {
                     margin-left: 25px;
-                    
+
                     li {
                         margin-right: 20px;
                         font: {
@@ -152,7 +152,7 @@
                 .mat-mdc-card-header {
                     .info {
                         margin-left: 0;
-    
+
                         li {
                             font-size: 13px;
                             margin: {
@@ -187,7 +187,7 @@
                     .mat-mdc-card-header {
                         .info {
                             margin-right: 0;
-        
+
                             li {
                                 margin: {
                                     right: 0;
@@ -235,7 +235,7 @@
                     .mat-mdc-card-header {
                         .mat-mdc-card-header-text {
                             display: block;
-                            
+
                             .mat-mdc-card-title {
                                 display: block;
                             }
@@ -329,7 +329,7 @@
                     }
                     .info {
                         margin-left: 0;
-    
+
                         li {
                             font-size: 14px;
                             margin: {
@@ -343,7 +343,7 @@
                     .mat-mdc-card-header {
                         .info {
                             margin-right: 0;
-        
+
                             li {
                                 margin: {
                                     right: 0;
@@ -386,7 +386,7 @@
                     }
                     .info {
                         margin-left: 0;
-    
+
                         li {
                             margin: {
                                 right: 15px;
@@ -399,7 +399,7 @@
                     .mat-mdc-card-header {
                         .info {
                             margin-right: 0;
-        
+
                             li {
                                 margin: {
                                     left: 15px;
@@ -442,7 +442,7 @@
                     }
                     .info {
                         margin-left: 0;
-    
+
                         li {
                             margin: {
                                 right: 15px;
@@ -455,7 +455,7 @@
                     .mat-mdc-card-header {
                         .info {
                             margin-right: 0;
-        
+
                             li {
                                 margin: {
                                     left: 15px;
@@ -529,7 +529,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 0;
-  
+
     .search-box {
         position: relative;
         display: flex;
@@ -538,13 +538,13 @@
         padding: 8px 12px;
         border-radius: 8px;
         width: 250px;
-  
+
         i {
             position: absolute;
             left: 10px;
             color: #666;
         }
-  
+
         .input-search {
             padding: 8px 30px;
             width: 100%;
@@ -554,7 +554,7 @@
             font-size: 14px;
         }
     }
-  
+
     select {
         padding: 8px 12px;
         font-size: 14px;
@@ -563,7 +563,7 @@
         background: #fff;
         cursor: pointer;
         min-width: 180px;
-  
+
         &:focus {
             outline: none;
             border-color: #007bff;

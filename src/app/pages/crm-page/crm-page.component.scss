@@ -1,0 +1,195 @@
+.stat-item {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+    h5 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .number {
+        font-size: 28px;
+        font-weight: 700;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    .daxa-up-down-badge {
+        display: inline-flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 5px 10px;
+        border-radius: 12px;
+
+        &.position-relative {
+            margin-top: 10px;
+        }
+
+        &.down {
+            background-color: #ffe6e6;
+            color: #d9534f;
+        }
+
+        &.up {
+            background-color: #e6ffe6;
+            color: #5cb85c;
+        }
+    }
+
+    .chart {
+        margin-top: 20px;
+
+        .title {
+            font-size: 14px;
+            color: #666;
+        }
+    }
+}
+
+.external-projects {
+    margin-top: 30px;
+
+    h5 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+
+        li {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+    }
+
+    p {
+        font-size: 14px;
+        color: #999;
+    }
+}
+
+.stats {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+
+    h5 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .stat-item {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 10px;
+
+        p {
+            margin: 0;
+            line-height: 1.5;
+        }
+    }
+}
+
+.active-projects {
+    margin-top: 30px;
+
+    h5 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+
+        li {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+    }
+
+    p {
+        font-size: 14px;
+        color: #999;
+    }
+}
+
+.crm-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.crm-header {
+    text-align: center;
+    margin-bottom: 30px;
+
+    h1 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    p {
+        font-size: 16px;
+        color: #555;
+    }
+}
+
+.crm-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+
+    app-revenue-growth,
+    app-lead-conversion,
+    app-active-leads {
+        flex: 1 1 calc(33.333% - 20px);
+        min-width: 300px;
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+    }
+}

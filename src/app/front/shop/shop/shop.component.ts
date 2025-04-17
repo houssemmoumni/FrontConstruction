@@ -51,8 +51,8 @@ export class ShopComponent implements OnInit {
   materials: MaterialResponse[] = [];
   MaterialStatus = MaterialStatus; // Expose enum to template
   filteredMaterials: any[] = []; // Filtered materials array
-  searchText: string = '';
   sortBy: string = 'none'; // Default sorting option
+    searchText: any;
 
 
 
@@ -62,8 +62,6 @@ export class ShopComponent implements OnInit {
   ) { }
   scroll_top() {
     window.scroll({
-      top: 0,
-      left: 0,
       behavior: 'smooth'
     });
   }
@@ -153,7 +151,7 @@ export class ShopComponent implements OnInit {
       rating :3
     },
 
-    
+
   ]
 
   ngOnInit(): void {
@@ -189,7 +187,7 @@ addToCart(item: MaterialResponse) {
     description: item.description,
     availableQuantity: item.availableQuantity,
     price: item.price,
-    category: { 
+    category: {
       id: 1, // Placeholder, update if category ID is available
       name: item.categoryName,
       description: '',
@@ -204,7 +202,7 @@ addToCart(item: MaterialResponse) {
   console.log('Added to cart:', item);
   this.router.navigate(['/front/shop-cart']);
 
-  
+
 
 }
 // Toggle item in wishlist

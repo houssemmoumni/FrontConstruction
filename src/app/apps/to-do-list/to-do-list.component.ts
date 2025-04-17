@@ -112,17 +112,17 @@ export class ToDoListComponent implements OnInit, OnDestroy {
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
       }
-      
+
 
     ngOnInit(): void {
         this.fetchTasks();
         this.fetchOuvriers();
         this.setupNotificationListener();
-        
+
         this.dataSource.filterPredicate = (data: TaskResponse, filter: string) => {
             const lowerCaseFilter = filter.trim().toLowerCase();
             const statusText = data.status ? data.status.toString().toLowerCase() : '';
-            return data.title.toLowerCase().includes(lowerCaseFilter) || 
+            return data.title.toLowerCase().includes(lowerCaseFilter) ||
                    statusText.includes(lowerCaseFilter);
         };
     }

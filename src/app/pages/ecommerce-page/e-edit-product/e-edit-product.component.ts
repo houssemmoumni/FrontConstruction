@@ -71,7 +71,7 @@ export class EEditProductComponent implements OnInit {
             },
         });
     }
-    
+
     loadCategories(): void {
         this.materialService.getAllCategories().subscribe({
             next: (data) => {

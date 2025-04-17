@@ -14,6 +14,7 @@
         "src/window-global-fix.ts"
     ],
     "include": [
-        "src/**/*.d.ts"
+        "src/**/*.d.ts",
+        "src/polyfills.ts"
     ]
 }
