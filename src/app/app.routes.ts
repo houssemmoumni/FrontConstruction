@@ -268,10 +268,13 @@ import { HomeSolarPlantComponent } from './front/home-solar-plant/home-solar-pla
 import { HomeSteelPlantComponent } from './front/home-steel-plant/home-steel-plant.component';
 import { IndexComponent } from './front/index/index.component';
 import { NegociationAllListComponent } from './apps/Negociation/Negociation-AllList/Negociation-AllList.component';
-    import { NegociationDetailleComponent } from './apps/Negociation/Negociation-detaille.component/Negociation-detaille.component';
-    import { NegociationAddComponent } from './apps/Negociation/Negociation-ADD/Negociation-ADD.component';
-    import { NegociationEditComponent } from './apps/Negociation/Negociation-edit.component';
-   import { NegociationComponent } from './front/pages/Negociation/Negociation.component';
+import { NegociationDetailleComponent } from './apps/Negociation/Negociation-detaille.component/Negociation-detaille.component';
+import { NegociationAddComponent } from './apps/Negociation/Negociation-ADD/Negociation-ADD.component';
+import { NegociationEditComponent } from './apps/Negociation/Negociation-edit.component';
+import { NegociationComponent } from './front/pages/Negociation/Negociation.component';
+import { NegociationList } from './front/pages/Negociation/NegociationList/NegociationList.component';
+import { NegociationChatComponent } from './apps/Negociation/Negociation-chat/Negociation-chat.component';
+import { NegociationChatFrontComponent } from './front/pages/Negociation/Negociation-chat/Negociation-chat.component';
   
   
 export const routes: Routes = [
@@ -726,11 +729,15 @@ export const routes: Routes = [
         { path: 'negociation-detaille/:id', component: NegociationDetailleComponent },
         { path: 'negociation-add', component: NegociationAddComponent },
         { path: 'negociation-edit/:id', component: NegociationEditComponent },
-        { path: 'front/negociation/:id', component: NegociationComponent }, 
+        { path: 'front/negociation/:id', component: NegociationComponent },
+        { path: 'front/negociationList/:id', component: NegociationList }, 
+        { path: 'negociationChat/:senderId/:negociationId', component: NegociationChatComponent }, 
+        { path: 'negociationChatFront/:senderId/:negociationId', component: NegociationChatFrontComponent }, 
+
         // Add this line
      
         { path: '**', component: NotFoundComponent }, // This line will remain down from the whole pages component list
         
     ];
-    
+
 

@@ -55,17 +55,23 @@ export class Navigation1Component {
   }
   ngOnInit(): void {
     setTimeout(() => {
-      (function ($) {
-        handleResizeElement();
-      })(jQuery);
-    }, 1000)
+        if (typeof jQuery !== 'undefined') {
+            (function ($) {
+                handleResizeElement();
+            })(jQuery);
+        } else {
+            console.error('jQuery is not defined. Ensure it is loaded in your project.');
+        }
+    }, 1000);
+
     this.handleActiveMenu(this.currentHref);
+
     setTimeout(() => {
-      if (typeof jQuery !== 'undefined') {
-        jQuery('.some-class').someFunction(); // Example usage
-      } else {
-        console.error('jQuery is not defined');
-      }
+        if (typeof jQuery !== 'undefined') {
+            jQuery('.some-class').someFunction(); // Example usage
+        } else {
+            console.error('jQuery is not defined');
+        }
     }, 1000);
   }
 

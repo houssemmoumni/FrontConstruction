@@ -88,6 +88,14 @@
                         <button type="button" mat-button matTooltip="Delete" matTooltipPosition="above" (click)="deleteNegociation(element.id!)">
                             <i class="material-symbols-outlined">delete</i>
                         </button>
+                        <button 
+                            type="button" 
+                            mat-button 
+                            matTooltip="CHAT" 
+                            matTooltipPosition="above" 
+                            [routerLink]="['/negociationChat', element.adminId, element.id]">
+                            <i class="material-symbols-outlined">edit</i>
+                        </button>
                     </div>
                 </td>
             </ng-container>

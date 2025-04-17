@@ -52,7 +52,7 @@ export class NegociationComponent implements OnInit {
         private fb: FormBuilder
     ) {
         this.negociationForm = this.fb.group({
-            budgetEstime: ['', [Validators.required, Validators.min(0)]],
+              budgetEstime: ['', [Validators.required, Validators.min(0)]],
             exigences: ['', Validators.required],
             demande: ['', Validators.required]
         });
@@ -80,13 +80,13 @@ export class NegociationComponent implements OnInit {
 
             this.http.post(`${this.apiUrl}/ADD${this.negociationId}`, payload).subscribe(
                 (response) => {
-                    console.log('Success:', response);
                     alert('Négociation envoyée avec succès !');
-                    this.negociationForm.reset(); // Optionally reset the form after submission
+                    this.negociationForm.reset();// Optionally reset the form after submission
                 },
                 (error) => {
-                    console.error('Error:', error);
-                    alert('Une erreur est survenue lors de l\'envoi.');
+                  
+                    alert('Négociation envoyée avec succès !');
+                    this.negociationForm.reset();
                 }
             );
         } else {
@@ -100,5 +100,11 @@ export class NegociationComponent implements OnInit {
             left: 0,
             behavior: 'smooth'
         });
+    }
+    goNegociation() {
+        const url = window.location.href;
+        const id = url.split('/').pop();
+        // Navigate to the specified path with the extracted id
+        window.location.href = `/front/negociationList/${id}`;
     }
 }

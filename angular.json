@@ -41,6 +41,7 @@
                             "src/assets/plugins/revolution/revolution/css/revolution.min.css"
                         ],
                         "scripts": [
+                            "node_modules/jquery/dist/jquery.min.js",
                             "src/assets/js/jquery.min.js",
                             "node_modules/jquery/dist/jquery.min.js",
                             "node_modules/apexcharts/dist/apexcharts.min.js",
@@ -64,7 +65,8 @@
                             "src/assets/plugins/revolution/revolution/js/jquery.themepunch.revolution.min.js",
                             "src/assets/js/rev.slider.js",
                             "src/assets/js/jquery.star-rating-svg.js",
-                            "src/assets/js/custom.js"
+                            "src/assets/js/custom.js",
+                            "node_modules/jquery/dist/jquery.min.js"
                         ],
                         "server": "src/main.server.ts",
                         "prerender": true,
@@ -127,15 +129,9 @@
                             "@angular/material/prebuilt-themes/azure-blue.css",
                             "src/styles.scss"
                         ],
-                        "scripts": []
-                    }
-                },
-                "server": {
-                    "builder": "@angular-devkit/build-angular:server",
-                    "options": {
-                        "outputPath": "dist/daxa/server",
-                        "main": "src/main.server.ts",
-                        "tsConfig": "tsconfig.server.json"
+                        "scripts": [
+                            "node_modules/jquery/dist/jquery.min.js"
+                        ]
                     }
                 }
             }

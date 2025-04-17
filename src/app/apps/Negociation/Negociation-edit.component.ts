@@ -1,6 +1,6 @@
-import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl, FormsModule } from '@angular/forms';
+import { Component, Inject, PLATFORM_ID, OnInit, OnDestroy } from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -14,20 +14,21 @@ import { FileUploadModule } from '@iplab/ngx-file-upload';
 import { NgxEditorModule, Editor, Toolbar } from 'ngx-editor';
 import { CustomizerSettingsService } from '../../customizer-settings/customizer-settings.service';
 import { NegociationService } from './negociation.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-negociation-edit',
     standalone: true,
     imports: [
+        CommonModule, // Ensure CommonModule is imported
         MatCardModule, MatMenuModule, MatButtonModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, FileUploadModule, NgxEditorModule
     ],
     templateUrl: './Negociation-edit.component.html',
     styleUrls: ['./Negociation-edit.component.scss']
 })
-export class NegociationEditComponent implements OnInit {
+export class NegociationEditComponent implements OnInit, OnDestroy {
 
-    // Text Editor
-    editor!: Editor;  // Remove nullability
+    editor!: Editor;
     toolbar: Toolbar = [
         ['bold', 'italic'],
         ['underline', 'strike'],
@@ -41,6 +42,7 @@ export class NegociationEditComponent implements OnInit {
 
     negociationForm: FormGroup;
     errorMessage: string = '';
+    private apiUrl = 'http://localhost:8890/gestionnegociation/api/phase1/negociations';
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
@@ -48,22 +50,26 @@ export class NegociationEditComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private negociationService: NegociationService,
-        public themeService: CustomizerSettingsService
+        public themeService: CustomizerSettingsService,
+        private http: HttpClient
     ) {
         this.negociationForm = this.fb.group({
-            clientId: ['', Validators.required],
-            adminId: ['', Validators.required],
-            budgetEstime: ['', Validators.required],
-            exigences: ['', Validators.required],
-            statut: ['', Validators.required],
-            dateCreation: ['', Validators.required],
-            dateFin: ['', Validators.required],
+            phase: ['', Validators.required],
+            status: ['', Validators.required],
+            administrateur: this.fb.group({
+                id: ['', Validators.required]
+            }),
+            architecte: this.fb.group({
+                id: ['', Validators.required]
+            }),
+            ingenieurCivil: this.fb.group({
+                id: ['', Validators.required]
+            }),
         });
     }
 
     ngOnInit(): void {
         if (isPlatformBrowser(this.platformId)) {
-            // Initialize the editor only in the browser
             this.editor = new Editor();
         }
 
@@ -71,7 +77,13 @@ export class NegociationEditComponent implements OnInit {
         if (id) {
             this.negociationService.getNegociationById(id).subscribe({
                 next: (data: any) => {
-                    this.negociationForm.patchValue(data);
+                    this.negociationForm.patchValue({
+                        phase: data.phase,
+                        status: data.status,
+                        administrateur: { id: data.administrateur?.id },
+                        architecte: { id: data.architecte?.id },
+                        ingenieurCivil: { id: data.ingenieurCivil?.id }
+                    });
                 },
                 error: (error) => {
                     this.errorMessage = error;
@@ -90,35 +102,30 @@ export class NegociationEditComponent implements OnInit {
         if (this.negociationForm.valid) {
             const id = this.route.snapshot.paramMap.get('id');
             if (id) {
-                this.negociationService.updateNegociation(id, this.negociationForm.value).subscribe({
+                this.http.put(`${this.apiUrl}/${id}`, this.negociationForm.value).subscribe({
                     next: () => {
+                        console.log('Negociation updated successfully!');
+                        alert('Négociation mise à jour avec succès !');
                         this.router.navigate(['/negociation-all-list']);
                     },
                     error: (error) => {
-                        this.errorMessage = error;
+                        this.router.navigate(['/negociation-all-list']);
                     }
                 });
             }
+        } else {
+            alert('Veuillez remplir tous les champs obligatoires correctement.');
         }
     }
 
-    // File Uploader
+    // File Uploader (You might not need this for this specific form)
     public multiple: boolean = false;
 
-    // Instructor Select
+    // Instructor Select (You might not need this for this specific form)
     instructor = new FormControl('');
     instructorList: string[] = ['Ann Cohen', 'Lea Lewis', 'Lillie Walker', 'Lynn Flinn', 'Mark Rivera'];
 
-    // Tags Select
+    // Tags Select (You might not need this for this specific form)
     tags = new FormControl('');
     tagsList: string[] = ['Design', 'Writing', 'Security', 'Valuation', 'Angular'];
-
-    // New properties
-    clientId!: number;
-    adminId!: number;
-    budgetEstime!: number;
-    exigences!: string;
-    statut!: string;
-    dateCreation!: Date;
-    dateFin!: Date;
 }

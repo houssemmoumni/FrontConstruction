@@ -1,0 +1,121 @@
+<div class="page-wraper">
+    <app-header-light3></app-header-light3>
+    <div class="page-content bg-white">
+        <div class="section-full content-inner overlay-black-dark" style="background-image:url(assets/images/background/bg1.jpg); background-position: 50% 50%;">
+            <div class="container">
+                <div class="negociation-table">
+                    <div class="table-responsive">
+                        <table mat-table [dataSource]="dataSource">
+                
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef>ID</th>
+                                <td mat-cell *matCellDef="let element">{{element.id}}</td>
+                            </ng-container>
+                
+                            <!-- Budget Estime Column -->
+                            <ng-container matColumnDef="budgetEstime">
+                                <th mat-header-cell *matHeaderCellDef>Budget Estimé</th>
+                                <td mat-cell *matCellDef="let element">{{element.budgetEstime}}</td>
+                            </ng-container>
+                
+                            <!-- Date Creation Column -->
+                            <ng-container matColumnDef="dateCreation">
+                                <th mat-header-cell *matHeaderCellDef>Date Création</th>
+                                <td mat-cell *matCellDef="let element">{{element.dateCreation}}</td>
+                            </ng-container>
+                
+                            <!-- Date Modification Column -->
+                            <ng-container matColumnDef="dateModification">
+                                <th mat-header-cell *matHeaderCellDef>Date Modification</th>
+                                <td mat-cell *matCellDef="let element">{{element.dateModification}}</td>
+                            </ng-container>
+                
+                            <!-- Demande Column -->
+                            <ng-container matColumnDef="demande">
+                                <th mat-header-cell *matHeaderCellDef>Demande</th>
+                                <td mat-cell *matCellDef="let element">{{element.demande}}</td>
+                            </ng-container>
+                
+                            <!-- Exigences Column -->
+                            <ng-container matColumnDef="exigences">
+                                <th mat-header-cell *matHeaderCellDef>Exigences</th>
+                                <td mat-cell *matCellDef="let element">{{element.exigences}}</td>
+                            </ng-container>
+                
+                            <!-- Phase Column -->
+                            <ng-container matColumnDef="phase">
+                                <th mat-header-cell *matHeaderCellDef>Phase</th>
+                                <td mat-cell *matCellDef="let element">{{element.phase}}</td>
+                            </ng-container>
+                
+                            <!-- Status Column -->
+                            <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef>Status</th>
+                                <td mat-cell *matCellDef="let element">{{element.status}}</td>
+                            </ng-container>
+                
+                            <!-- Admin ID Column -->
+                            <ng-container matColumnDef="adminId">
+                                <th mat-header-cell *matHeaderCellDef>Admin ID</th>
+                                <td mat-cell *matCellDef="let element">{{element.adminId}}</td>
+                            </ng-container>
+                
+                            <!-- Architecte ID Column -->
+                            <ng-container matColumnDef="architecteId">
+                                <th mat-header-cell *matHeaderCellDef>Architecte ID</th>
+                                <td mat-cell *matCellDef="let element">{{element.architecteId}}</td>
+                            </ng-container>
+                
+                            <!-- Client ID Column -->
+                            <ng-container matColumnDef="clientId">
+                                <th mat-header-cell *matHeaderCellDef>Client ID</th>
+                                <td mat-cell *matCellDef="let element">{{element.clientId}}</td>
+                            </ng-container>
+                
+                            <!-- Ingenieur Civil ID Column -->
+                            <ng-container matColumnDef="ingenieurCivilId">
+                                <th mat-header-cell *matHeaderCellDef>Ingénieur Civil ID</th>
+                                <td mat-cell *matCellDef="let element">{{element.ingenieurCivilId}}</td>
+                            </ng-container>
+                
+                            <!-- Action Column -->
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef>Action</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div class="action-info">
+                                        
+                                        <button type="button" mat-button matTooltip="Delete" matTooltipPosition="above" (click)="deleteNegociation(element.id!)">
+                                            <i class="material-symbols-outlined">delete</i>
+                                        </button>
+                                       
+                                        <button 
+                            type="button" 
+                            mat-button 
+                            matTooltip="CHAT" 
+                            matTooltipPosition="above" 
+                            [routerLink]="['/negociationChatFront', element.clientId, element.id]">
+                            <i class="material-symbols-outlined">edit</i>
+                        </button>
+                                    </div>
+                                </td>
+                            </ng-container>
+                
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                
+                        </table>
+                    </div>
+                    <mat-paginator  showFirstLastButtons></mat-paginator>
+                    <div *ngIf="errorMessage" class="error-message">
+                        {{ errorMessage }}
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    <app-footer13></app-footer13>
+    
+  </div>

@@ -13,7 +13,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterLink } from '@angular/router';
-import { CustomizerSettingsService } from '../../../customizer-settings/customizer-settings.service';
+import { CustomizerSettingsService } from '../../../../customizer-settings/customizer-settings.service';
+import { HeaderLight3Component } from '../../../elements/header/header-light3/header-light3.component';
+import { Footer13Component } from '../../../elements/footer/footer13/footer13.component';
 
 interface Message {
   contenu: string;
@@ -47,10 +49,22 @@ interface Document {
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatTabsModule
+    MatTabsModule,
+    HeaderLight3Component,
+        
+            Footer13Component,
+           
+            CommonModule,
+           
+            MatButtonModule,
+          
+
+            MatInputModule,
+          
+            ReactiveFormsModule
   ]
 })
-export class NegociationChatComponent implements OnInit {
+export class NegociationChatFrontComponent implements OnInit {
   openDocument(url: string): void {
     if (url.startsWith('blob:')) {
       try {
@@ -288,4 +302,10 @@ export class NegociationChatComponent implements OnInit {
       console.log('No file selected.');
     }
   }
+  goNegociation() {
+    const url = window.location.href;
+    const id = url.split('/').pop();
+    // Navigate to the specified path with the extracted id
+    window.location.href = `/front/negociationList/${this.senderId}`;
+}
 }
