@@ -22,6 +22,69 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
+🌟 FrontConstruction - Module Assurance & Pointage
+Application Angular pour la gestion des assurances et des pointages (microservices backend Spring Boot).
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+🚀 Installation & Lancement
+Cloner le dépôt :
+git clone https://github.com/houssemmoumni/FrontConstruction.git
+cd FrontConstruction
+
+Basculer sur la branche souhaitée (si spécifique) :
+git checkout Assurance-Pointage
+
+Installer les dépendances :
+npm install
+
+Démarrer l'application (mode développement) :
+ng serve
+Accédez à http://localhost:4200.
+
+✨ Fonctionnalités
+Module Assurance
+Espace Administrateur :
+
+📝 Gestion des contrats/assurances (CRUD).
+
+🔗 Affectation d’assurances à des contrats.
+
+📧 Notifications par mail lors des mises à jour.
+
+Espace Ouvrier :
+
+🔧 Gestion des maintenances.
+
+🏗️ Association de contrats/projets aux maintenances.
+
+Module Pointage
+Espace Administrateur :
+
+📊 Visualisation des pointages par admin.
+
+Espace Ouvrier :
+
+➕ Ajout de maintenances.
+
+📥 Génération de PDF pour les pointages.
+
+📱 Notification WhatsApp après pointage.
+
+
+📚 Documentation Technique
+Services Angular :
+
+AssuranceService : Appels API pour le module assurance.
+
+PointageService : Gère les requêtes liées aux pointages.
+
+Composants Clés :
+
+assurance-list.component : Affiche la liste des assurances.
+
+pointage-form.component : Formulaire d’ajout de pointage.
+
+📜 Endpoints API les plus imporatantes Utilisés
+Fonctionnalité	Méthode	Endpoint
+Lister assurances	GET	/api/assurance/assurances
+Ajouter un pointage	POST	/api/pointage/create-pointage
+Ajouter une maintenance	POST	/api/assurance/create-maintenance
