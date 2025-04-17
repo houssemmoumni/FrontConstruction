@@ -85,6 +85,9 @@ pointage-form.component : Formulaire d’ajout de pointage.
 
 📜 Endpoints API les plus imporatantes Utilisés
 Fonctionnalité	Méthode	Endpoint
-Lister assurances	GET	/api/assurance/assurances
-Ajouter un pointage	POST	/api/pointage/create-pointage
-Ajouter une maintenance	POST	/api/assurance/create-maintenance
+
+✨ Lister assurances	GET	/api/assurance/assurances
+
+✨ Ajouter un pointage	POST	/api/pointage/create-pointage
+
+✨ Ajouter une maintenance	POST	/api/assurance/create-maintenance
