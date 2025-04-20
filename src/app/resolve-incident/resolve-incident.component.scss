@@ -1,81 +1,242 @@
-.container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 1rem;
-  }
+@use '@angular/material' as mat;
+@include mat.core();
 
-  .spinner-container {
-    display: flex;
-    justify-content: center;
-    padding: 3rem;
-  }
+$primary-color: #3f51b5;
+$primary-light: #757de8;
+$primary-dark: #002984;
+$accent-color: #ff4081;
+$success-color: #4caf50;
+$error-color: #f44336;
+$grey-50: #fafafa;
+$grey-100: #f5f5f5;
+$grey-200: #eeeeee;
+$grey-800: #424242;
 
-  .error-message {
-    color: #f44336;
-    padding: 1rem;
-    background-color: #ffebee;
-    border-radius: 4px;
-    margin: 1rem 0;
-    text-align: center;
-  }
+.resolution-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
 
-  .content-container {
-    padding: 1rem;
-  }
-
-  .incident-details {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    background-color: #f5f5f5;
-    border-radius: 4px;
-
-    p {
-      margin: 0.5rem 0;
-      line-height: 1.6;
-    }
-  }
-
-  .resolution-actions {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #e0e0e0;
-
-    p {
+.resolution-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  
+  .card-header {
+    padding: 24px;
+    background-color: $grey-50;
+    border-bottom: 1px solid $grey-200;
+    
+    .card-title {
+      font-size: 24px;
       font-weight: 500;
-      margin-bottom: 1rem;
+      color: $primary-dark;
+    }
+    
+    .card-subtitle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      
+      .status-badge {
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 14px;
+        font-weight: 500;
+        background-color: $grey-200;
+        color: $grey-800;
+        
+        &.resolved {
+          background-color: rgba($success-color, 0.2);
+          color: darken($success-color, 10%);
+        }
+      }
+      
+      .token-valid {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        color: $success-color;
+        font-weight: 500;
+      }
     }
   }
+}
 
-  .button-group {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
 
-    button {
-      flex: 1;
-    }
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background-color: rgba($error-color, 0.1);
+  border-radius: 8px;
+  margin: 16px;
+  color: darken($error-color, 10%);
+  border-left: 4px solid $error-color;
+  
+  mat-icon {
+    color: $error-color;
   }
+}
 
-  .token-valid {
-    color: #4caf50;
+.content-container {
+  padding: 24px;
+}
+
+.incident-info {
+  margin-bottom: 32px;
+  
+  .incident-name {
+    font-size: 22px;
     font-weight: 500;
-    margin-left: 0.5rem;
+    margin: 0 0 24px 0;
+    color: $primary-dark;
   }
+}
 
-  .success-snackbar {
-    background-color: #4caf50;
-    color: white;
+.detail-section {
+  margin-bottom: 24px;
+  
+  .section-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 16px 0;
+    color: $grey-800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
 
-    .mat-simple-snackbar-action {
-      color: white;
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.detail-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background-color: $grey-50;
+  border-radius: 8px;
+  
+  .detail-icon {
+    color: $primary-color;
+    margin-top: 2px;
+  }
+  
+  .detail-label {
+    font-size: 12px;
+    color: $grey-800;
+    margin-bottom: 4px;
+  }
+  
+  .detail-value {
+    font-size: 14px;
+    color: $grey-800;
+    
+    &.severity-low {
+      color: $success-color;
+    }
+    
+    &.severity-medium {
+      color: #ff9800; // Orange
+    }
+    
+    &.severity-high {
+      color: $error-color;
     }
   }
+}
 
-  .error-snackbar {
-    background-color: #f44336;
-    color: white;
+.resolution-section {
+  padding-top: 24px;
+  border-top: 1px solid $grey-200;
+  
+  .section-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 16px 0;
+    color: $grey-800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .resolution-prompt {
+    font-size: 15px;
+    color: $grey-800;
+    margin: 0 0 24px 0;
+  }
+}
 
-    .mat-simple-snackbar-action {
-      color: white;
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  
+  button {
+    flex: 1;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+    
+    mat-icon {
+      font-size: 20px;
     }
   }
+  
+  .resolve-button {
+    background-color: $success-color;
+    color: white;
+    
+    &:hover {
+      background-color: darken($success-color, 10%);
+    }
+  }
+  
+  .reopen-button {
+    border-color: $grey-200;
+    
+    &:hover {
+      background-color: $grey-100;
+    }
+  }
+}
+
+.success-snackbar {
+  background-color: $success-color;
+  color: white;
+  
+  .mat-simple-snackbar-action {
+    color: white;
+  }
+}
+
+.error-snackbar {
+  background-color: $error-color;
+  color: white;
+  
+  .mat-simple-snackbar-action {
+    color: white;
+  }
+}
+
+@media (max-width: 600px) {
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

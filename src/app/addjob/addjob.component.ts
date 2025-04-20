@@ -29,11 +29,12 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class AddJobComponent implements OnInit {
   jobOffer: JobOffer = {
-    title: '',
-    description: '',
-    status: 'OPEN',
-    postedDate: '',
-    publish: false
+      title: '',
+      description: '',
+      status: 'OPEN',
+      postedDate: '',
+      publish: false,
+      image: ''
   };
 
   constructor(

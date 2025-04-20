@@ -67,6 +67,7 @@ export class WebSocketService {
           receiverId: payload.receiverId || 0,
           source: source, // Include the required source property
           incident: incidentData ? {
+            name: incidentData,
             id: incidentData.id,
             description: incidentData.description || '',
             reportDate: this.normalizeDate(incidentData.reportDate),

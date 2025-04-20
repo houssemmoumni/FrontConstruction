@@ -9,6 +9,12 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent  } from '../confirmation-dialog/confirmation-dialog.component';
+
 
 @Component({
   selector: 'app-application-list',
@@ -21,10 +27,13 @@ import { ActivatedRoute } from '@angular/router';
     MatSelectModule,
     FormsModule,
     MatIconModule,
+    FontAwesomeModule,
+    MatButtonModule,
+    MatTooltipModule
   ],
+
   templateUrl: './application-list.component.html',
-  styleUrls: ['./application-list.component.scss'],
-  providers: [CandidateService],
+  styleUrls: ['./application-list.component.scss']
 })
 export class ApplicationListComponent implements OnInit {
   applications: ApplicationDTO[] = [];
@@ -34,10 +43,12 @@ export class ApplicationListComponent implements OnInit {
   selectedStatus: string = 'ALL';
   pageSize: number = 5;
   currentPage: number = 0;
+  highlightedId: number | null = null;
 
   constructor(
     private candidateService: CandidateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -58,9 +69,8 @@ export class ApplicationListComponent implements OnInit {
         }));
         this.applyFilter();
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error('Error loading applications:', err);
-        alert('❌ Error loading applications. Please try again.');
       },
     });
   }
@@ -100,18 +110,51 @@ export class ApplicationListComponent implements OnInit {
   }
 
   updateStatus(id: number, status: string): void {
-    this.candidateService.updateApplicationStatus(id, status).subscribe({
-      next: () => {
-        alert('✅ Status updated successfully!');
-        this.loadApplications();
-      },
-      error: (err: any) => {
-        console.error('Error updating status:', err);
-        alert('❌ Error updating status. Please try again.');
-      },
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+            title: status === 'ACCEPTED' ? 'Confirmer l\'acceptation' : 'Confirmer le rejet',
+            message: `Êtes-vous sûr de vouloir ${status === 'ACCEPTED' ? 'accepter' : 'rejeter'} cette candidature ?`,
+            confirmText: 'Confirmer',
+            cancelText: 'Annuler'
+        }
     });
-  }
 
+    dialogRef.afterClosed().subscribe(confirmed => {
+        if (confirmed) {
+            this.candidateService.updateApplicationStatus(id, status).subscribe({
+                next: () => {
+                    this.showSuccessModal(status);
+                    this.loadApplications();
+                },
+                error: (err) => {
+                    this.showErrorModal(err);
+                }
+            });
+        }
+    });
+}
+
+private showSuccessModal(status: string): void {
+    this.dialog.open(ConfirmDialogComponent, {
+        data: {
+            title: 'Succès',
+            message: `La candidature a été ${status === 'ACCEPTED' ? 'acceptée' : 'rejetée'} avec succès`,
+            confirmText: 'OK',
+            hideCancel: true
+        }
+    });
+}
+
+private showErrorModal(error: any): void {
+    this.dialog.open(ConfirmDialogComponent, {
+        data: {
+            title: 'Erreur',
+            message: 'Une erreur est survenue lors de la mise à jour du statut',
+            confirmText: 'OK',
+            hideCancel: true
+        }
+    });
+}
   downloadResume(resume: string, candidateName: string): void {
     const link = document.createElement('a');
     link.href = `data:application/pdf;base64,${resume}`;
@@ -125,9 +168,8 @@ export class ApplicationListComponent implements OnInit {
         const blobUrl = URL.createObjectURL(pdf);
         window.open(blobUrl, '_blank');
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error('Error generating contract:', err);
-        alert('❌ Error generating contract: ' + (err.error?.message || err.message));
       }
     });
   }
@@ -135,25 +177,18 @@ export class ApplicationListComponent implements OnInit {
   nommer(applicationId: number): void {
     this.candidateService.downloadContractPdf(applicationId).subscribe({
       next: () => {
-        alert('✅ Candidate nominated successfully.');
         this.loadApplications();
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error('Error during nomination:', err);
-        alert('❌ Error during candidate nomination. Please try again.');
       }
     });
   }
 
   highlightApplication(applicationId: string): void {
-    const id = Number(applicationId);
+    this.highlightedId = Number(applicationId);
     setTimeout(() => {
-      const element = document.getElementById(`app-${id}`);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-        element.classList.add('highlight');
-        setTimeout(() => element.classList.remove('highlight'), 3000);
-      }
-    }, 500);
+      this.highlightedId = null;
+    }, 3000);
   }
 }

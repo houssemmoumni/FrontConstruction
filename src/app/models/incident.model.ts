@@ -15,6 +15,7 @@ export interface User {
 
   export interface IncidentReport {
     id: number;
+    name: string;
     description: string;
     reportDate: string;
     status: 'DECLARED' | 'ASSIGNED' | 'RESOLVED' | 'REOPENED';

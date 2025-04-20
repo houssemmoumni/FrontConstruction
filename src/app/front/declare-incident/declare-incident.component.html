@@ -1,119 +1,153 @@
-<div class="container">
-    <div *ngIf="!selectedProject" class="project-cards-container">
-      <mat-card *ngFor="let project of projects" class="project-card">
-        <img mat-card-image [src]="project.image" alt="{{project.name}}" *ngIf="project.image">
-        <mat-card-header>
-          <mat-card-title>{{project.name}}</mat-card-title>
-          <mat-card-subtitle>{{project.location}}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{project.description}}</p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button color="primary" (click)="selectProject(project)">
-            <mat-icon>report</mat-icon> DECLARE INCIDENT
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-
-    <div *ngIf="selectedProject" class="incident-form-container">
-      <mat-card>
-        <mat-card-header>
-          <div class="header-content">
-            <mat-card-title>Report Incident for {{selectedProject.name}}</mat-card-title>
-            <button mat-icon-button (click)="cancel()">
-              <mat-icon>close</mat-icon>
-            </button>
+<div class="incident-container">
+    <div *ngIf="!selectedProject" class="project-selection-view">
+      <h1 class="section-title">Select a Project to Report Incident</h1>
+      <div class="project-grid">
+        <mat-card *ngFor="let project of projects" class="project-card" (click)="selectProject(project)">
+          <div class="card-image-container">
+            <img mat-card-image [src]="project.image || './assets/default-project.jpg'" alt="{{project.name}}">
+            <div class="image-overlay"></div>
           </div>
-        </mat-card-header>
-
+          <mat-card-content class="card-content">
+            <div class="project-meta">
+              <mat-icon class="location-icon">location_on</mat-icon>
+              <span>{{project.location}}</span>
+            </div>
+            <h3>{{project.name}}</h3>
+            <p class="truncate-text">{{project.description || 'No description available'}}</p>
+          </mat-card-content>
+          <mat-card-actions class="card-actions">
+            <button mat-flat-button color="primary" class="report-button">
+              <mat-icon>warning</mat-icon>
+              Report Incident
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  
+    <div *ngIf="selectedProject" class="incident-form-view" @fadeIn>
+      <mat-card class="incident-form-card">
+        <div class="card-header">
+          <div class="header-content">
+            <div class="back-button" (click)="cancel()">
+              <mat-icon>arrow_back</mat-icon>
+              <span>Back to Projects</span>
+            </div>
+            <h2>Report New Incident</h2>
+            <div class="project-badge">
+              <mat-icon class="project-icon">folder</mat-icon>
+              <span>{{selectedProject.name}}</span>
+            </div>
+          </div>
+        </div>
+  
         <mat-card-content>
-          <form (ngSubmit)="submitIncident(incidentForm)" #incidentForm="ngForm">
-            <mat-form-field appearance="outline">
+          <form (ngSubmit)="submitIncident(incidentForm)" #incidentForm="ngForm" class="incident-form">
+            <!-- Reporter Name Field -->
+            <mat-form-field appearance="fill" class="form-field">
               <mat-label>Your Name</mat-label>
-              <input matInput [(ngModel)]="incident.reporterName" name="reporterName" required #reporterName="ngModel">
+              <input matInput 
+                     [(ngModel)]="incident.reporterName" 
+                     name="reporterName" 
+                     required
+                     #reporterName="ngModel">
+              <mat-icon matPrefix>person</mat-icon>
               <mat-error *ngIf="reporterName.invalid && (reporterName.dirty || reporterName.touched)">
                 Please enter your name
               </mat-error>
             </mat-form-field>
-
-            <mat-form-field appearance="outline">
+  
+            <!-- Severity Field -->
+            <mat-form-field appearance="fill" class="form-field">
               <mat-label>Severity Level</mat-label>
-              <mat-select [(ngModel)]="incident.severity" name="severity" required (selectionChange)="onSeverityChange()">
+              <mat-select [(ngModel)]="incident.severity" 
+                          name="severity" 
+                          required
+                          (selectionChange)="onSeverityChange()">
                 <mat-option value="LOW">
                   <div class="severity-option">
-                    <span class="severity-dot low"></span>
-                    Low
-                    <span *ngIf="autoDetectedSeverity === 'LOW'" class="auto-detected-badge">
-                      (Auto-detected)
+                    <span class="severity-indicator low"></span>
+                    <span>Low Priority</span>
+                    <span *ngIf="autoDetectedSeverity === 'LOW'" class="auto-detected-tag">
+                      <mat-icon>auto_awesome</mat-icon> Suggested
                     </span>
                   </div>
                 </mat-option>
                 <mat-option value="MEDIUM">
                   <div class="severity-option">
-                    <span class="severity-dot medium"></span>
-                    Medium
-                    <span *ngIf="autoDetectedSeverity === 'MEDIUM'" class="auto-detected-badge">
-                      (Auto-detected)
+                    <span class="severity-indicator medium"></span>
+                    <span>Medium Priority</span>
+                    <span *ngIf="autoDetectedSeverity === 'MEDIUM'" class="auto-detected-tag">
+                      <mat-icon>auto_awesome</mat-icon> Suggested
                     </span>
                   </div>
                 </mat-option>
                 <mat-option value="HIGH">
                   <div class="severity-option">
-                    <span class="severity-dot high"></span>
-                    High
-                    <span *ngIf="autoDetectedSeverity === 'HIGH'" class="auto-detected-badge">
-                      (Auto-detected)
+                    <span class="severity-indicator high"></span>
+                    <span>High Priority</span>
+                    <span *ngIf="autoDetectedSeverity === 'HIGH'" class="auto-detected-tag">
+                      <mat-icon>auto_awesome</mat-icon> Suggested
                     </span>
                   </div>
                 </mat-option>
               </mat-select>
-              <mat-hint *ngIf="isDetectingSeverity">
-                <mat-spinner diameter="16"></mat-spinner>
-                Analyzing description...
+              <mat-icon matPrefix>priority_high</mat-icon>
+              <mat-hint *ngIf="isDetectingSeverity" class="detection-hint">
+                <mat-spinner diameter="18"></mat-spinner>
+                Analyzing severity...
               </mat-hint>
-              <mat-hint *ngIf="autoDetectedSeverity && !isDetectingSeverity">
-                Auto-detected severity: {{autoDetectedSeverity}}
+              <mat-hint *ngIf="autoDetectedSeverity && !isDetectingSeverity" class="detection-hint">
+                <mat-icon>insights</mat-icon>
+                Suggested severity: <strong>{{autoDetectedSeverity}}</strong> ({{confidence}}% confidence)
               </mat-hint>
             </mat-form-field>
-
-            <mat-form-field appearance="outline">
+  
+            <!-- Description Field -->
+            <mat-form-field appearance="fill" class="form-field description-field">
               <mat-label>Incident Description</mat-label>
               <textarea matInput
                        [(ngModel)]="incident.description"
                        (input)="onDescriptionChange($event)"
                        name="description"
                        required
-                       rows="4"
+                       rows="5"
                        #description="ngModel"></textarea>
+              <mat-icon matPrefix>description</mat-icon>
               <mat-error *ngIf="description.invalid && (description.dirty || description.touched)">
                 Please describe the incident
               </mat-error>
-              <mat-hint>
-                <div class="severity-indicator">
-                  <span>Current severity prediction: </span>
-                  <span [ngClass]="{
-                    'low-severity': predictedSeverity === 'LOW',
-                    'medium-severity': predictedSeverity === 'MEDIUM',
-                    'high-severity': predictedSeverity === 'HIGH'
+              <mat-hint class="severity-prediction">
+                <div class="prediction-container">
+                  <span>Severity prediction: </span>
+                  <span class="prediction-badge" [ngClass]="{
+                    'low': predictedSeverity === 'LOW',
+                    'medium': predictedSeverity === 'MEDIUM',
+                    'high': predictedSeverity === 'HIGH'
                   }">
-                    {{predictedSeverity || 'Start typing...'}}
-                  </span>
-                  <span *ngIf="confidence" class="confidence-level">
-                    ({{confidence}}% confidence)
+                    {{predictedSeverity || 'Start typing to analyze...'}}
+                    <span *ngIf="confidence" class="confidence-value">{{confidence}}%</span>
                   </span>
                 </div>
               </mat-hint>
             </mat-form-field>
-
+  
+            <!-- Form Actions -->
             <div class="form-actions">
-              <button mat-button type="button" (click)="cancel()">CANCEL</button>
-              <button mat-raised-button
+              <button mat-stroked-button 
+                      type="button" 
+                      (click)="cancel()"
+                      class="cancel-button">
+                Cancel
+              </button>
+              <button mat-flat-button
                       color="primary"
                       type="submit"
-                      [disabled]="isSubmitting || incidentForm.invalid">
-                SUBMIT INCIDENT
+                      [disabled]="isSubmitting || incidentForm.invalid"
+                      class="submit-button">
+                <span *ngIf="!isSubmitting">Submit Incident</span>
+                <span *ngIf="isSubmitting">Submitting...</span>
+                <mat-icon *ngIf="!isSubmitting">send</mat-icon>
                 <mat-spinner *ngIf="isSubmitting" diameter="20"></mat-spinner>
               </button>
             </div>

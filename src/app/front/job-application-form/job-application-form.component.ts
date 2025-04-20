@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule, NgForm } from '@angular/forms';
 import { NgIf } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent  } from '../../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-job-application-form',
@@ -30,7 +32,8 @@ export class JobApplicationFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -45,17 +48,33 @@ export class JobApplicationFormComponent implements OnInit {
         this.cvError = null;
       } else {
         this.selectedFile = null;
-        this.cvError = '❌ Veuillez télécharger un fichier PDF.';
+        this.cvError = 'Veuillez télécharger un fichier PDF.';
       }
     }
   }
 
   onSubmit() {
     if (this.applicationForm.invalid || !this.selectedFile) {
-      alert('❌ Veuillez remplir correctement tous les champs et ajouter un CV.');
       return;
     }
 
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirmer la candidature',
+        message: 'Êtes-vous sûr de vouloir soumettre votre candidature ?',
+        confirmText: 'Confirmer',
+        cancelText: 'Annuler'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.submitApplication();
+      }
+    });
+  }
+
+  private submitApplication() {
     const formData = new FormData();
     formData.append('jobOfferId', this.application.jobOfferId as string);
     formData.append('firstName', this.application.candidate.firstName);
@@ -63,16 +82,14 @@ export class JobApplicationFormComponent implements OnInit {
     formData.append('email', this.application.candidate.email);
     formData.append('phoneNumber', this.application.candidate.phoneNumber);
     formData.append('address', this.application.candidate.address);
-    formData.append('resumeFile', this.selectedFile);
+    formData.append('resumeFile', this.selectedFile as File);
 
     this.http.post('http://localhost:8060/api/applications', formData).subscribe({
       next: () => {
-        alert('✅ Candidature soumise avec succès !');
         this.router.navigate(['/applicationlist']);
       },
       error: (error) => {
         console.error('Erreur lors de la soumission :', error);
-        alert(error.error?.error || '❌ Erreur lors de la soumission. Vérifiez les champs et réessayez.');
       },
     });
   }

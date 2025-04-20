@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { IncidentService } from '../services/incident.service';
-import { IncidentReport } from '../models/incident.model'; // Assurez-vous que ce chemin est correct
+import { IncidentReport } from '../models/incident.model';
 
 @Component({
   selector: 'app-resolve-incident',
@@ -15,6 +16,7 @@ import { IncidentReport } from '../models/incident.model'; // Assurez-vous que c
     CommonModule,
     MatCardModule,
     MatButtonModule,
+    MatIconModule,
     MatProgressSpinnerModule,
     MatSnackBarModule
   ],

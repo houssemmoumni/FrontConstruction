@@ -1,7 +1,6 @@
 <h2>Formulaire de Candidature</h2>
 
 <form (ngSubmit)="onSubmit()" #applicationForm="ngForm">
-  <!-- Prénom -->
   <div class="form-group">
     <label for="firstName">Prénom</label>
     <input
@@ -21,7 +20,6 @@
     </div>
   </div>
 
-  <!-- Nom de famille -->
   <div class="form-group">
     <label for="lastName">Nom de famille</label>
     <input
@@ -41,7 +39,6 @@
     </div>
   </div>
 
-  <!-- Email -->
   <div class="form-group">
     <label for="email">Email</label>
     <input
@@ -56,11 +53,10 @@
     />
     <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
       <div *ngIf="email.errors?.['required']">L'email est requis.</div>
-      <div *ngIf="email.errors?.['email']">L'email doit être valide (ex: exemple&#64;domaine.com).</div>
+      <div *ngIf="email.errors?.['email']">L'email doit être valide.</div>
     </div>
   </div>
 
-  <!-- Numéro de Téléphone -->
   <div class="form-group">
     <label for="phoneNumber">Numéro de Téléphone</label>
     <input
@@ -80,7 +76,6 @@
     </div>
   </div>
 
-  <!-- Adresse -->
   <div class="form-group">
     <label for="address">Adresse</label>
     <input
@@ -98,7 +93,6 @@
     </div>
   </div>
 
-  <!-- CV (Fichier PDF) -->
   <div class="form-group">
     <label for="resume">CV (PDF uniquement)</label>
     <input
@@ -111,6 +105,5 @@
     <div *ngIf="cvError" class="text-danger">{{ cvError }}</div>
   </div>
 
-  <!-- Boutons -->
   <button type="submit" class="btn btn-primary" [disabled]="applicationForm.invalid || !selectedFile">Soumettre la candidature</button>
 </form>

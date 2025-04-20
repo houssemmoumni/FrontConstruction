@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SeverityDetectionService } from '../../services/severity-detection.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-declare-incident',
@@ -30,7 +31,15 @@ import { SeverityDetectionService } from '../../services/severity-detection.serv
     MatProgressSpinnerModule
   ],
   templateUrl: './declare-incident.component.html',
-  styleUrls: ['./declare-incident.component.scss']
+  styleUrls: ['./declare-incident.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class DeclareIncidentComponent implements OnInit {
   projects: Project[] = [];
@@ -67,7 +76,7 @@ export class DeclareIncidentComponent implements OnInit {
       next: (projects) => {
         this.projects = projects.map(p => ({
           ...p,
-          image: p.image ? 'data:image/jpeg;base64,' + p.image : undefined
+          image: p.image ? 'data:image/jpeg;base64,' + p.image : './assets/default-project.jpg'
         }));
         this.isLoading = false;
       },

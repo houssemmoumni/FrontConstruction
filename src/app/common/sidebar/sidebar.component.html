@@ -42,7 +42,6 @@
                                 <span class="daxa-badge">
                                     5
                                 </span>
-
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <ul class="sidebar-sub-menu">
@@ -88,21 +87,6 @@
                         <i class="material-symbols-outlined">work</i>
                         <span class="title">Job Offer</span>
                     </a>
-                    <a routerLink="/projects" class="sidebar-menu-link" routerLinkActive="active">
-                        <i class="material-symbols-outlined">business</i>
-                        <span class="title">Projets</span>
-                      </a>
-                      <a routerLink="/completed" class="sidebar-menu-link" routerLinkActive="active">
-                        <i class="material-symbols-outlined">calendar_today</i>
-                        <span class="title">Completed Interviews</span>
-                      </a>
-
-
-                      <a routerLink="/incidents" class="sidebar-menu-link" routerLinkActive="active">
-                        <i class="material-symbols-outlined">business</i>
-                        <span class="title">incident</span>
-                      </a>
-
 
                     <a routerLink="/applicationlist" class="sidebar-menu-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <i class="material-symbols-outlined">work</i>
@@ -132,6 +116,29 @@
                             Chat
                         </span>
                     </a>
+
+                    <!-- PROJECT SUBSECTION -->
+                    <span class="sub-title text-body">
+                        PROJECT
+                    </span>
+                    <a routerLink="/projects" class="sidebar-menu-link" routerLinkActive="active">
+                        <i class="material-symbols-outlined">business</i>
+                        <span class="title">Projects</span>
+                    </a>
+                    <a routerLink="/completed" class="sidebar-menu-link" routerLinkActive="active">
+                        <i class="material-symbols-outlined">calendar_today</i>
+                        <span class="title">Completed Interviews</span>
+                    </a>
+
+                    <!-- INCIDENT SUBSECTION -->
+                    <span class="sub-title text-body">
+                        INCIDENT
+                    </span>
+                    <a routerLink="/incidents" class="sidebar-menu-link" routerLinkActive="active">
+                        <i class="material-symbols-outlined">business</i>
+                        <span class="title">Incidents</span>
+                    </a>
+
                     <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = true">
                         <mat-expansion-panel-header>
                             <mat-panel-title>

@@ -1,47 +1,97 @@
-<div class="container">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>
-          {{token ? 'Confirm Resolution' : 'Update Incident Status'}} #{{incidentId}}
+<div class="resolution-container">
+    <mat-card class="resolution-card">
+      <mat-card-header class="card-header">
+        <mat-card-title class="card-title">
+          {{token ? 'Confirm Resolution' : 'Update Incident Status'}}
         </mat-card-title>
-        <mat-card-subtitle *ngIf="incidentDetails">
-          Current status: {{incidentDetails.status}}
-          <span *ngIf="validToken" class="token-valid">(Verified)</span>
+        <mat-card-subtitle *ngIf="incidentDetails" class="card-subtitle">
+          <span class="status-badge" [class.resolved]="incidentDetails.status === 'RESOLVED'">
+            {{incidentDetails.status | titlecase}}
+          </span>
+          <span *ngIf="validToken" class="token-valid">
+            <mat-icon>verified</mat-icon>
+            Verified
+          </span>
         </mat-card-subtitle>
       </mat-card-header>
-
+  
       <mat-card-content>
         <div *ngIf="loading" class="spinner-container">
           <mat-spinner diameter="50"></mat-spinner>
         </div>
-
+  
         <div *ngIf="errorMessage" class="error-message">
+          <mat-icon>error_outline</mat-icon>
           {{errorMessage}}
         </div>
-
+  
         <div *ngIf="incidentDetails && !loading" class="content-container">
-          <div class="incident-details">
-            <p><strong>Description:</strong> {{incidentDetails.description}}</p>
-            <p><strong>Severity:</strong> {{incidentDetails.severity}}</p>
-            <p *ngIf="incidentDetails.project"><strong>Project:</strong> {{incidentDetails.project.name}}</p>
-            <p *ngIf="incidentDetails.assignedTo"><strong>Assigned to:</strong> {{incidentDetails.assignedTo.username}}</p>
+          <div class="incident-info">
+            <h2 class="incident-name">{{incidentDetails.name || 'Incident #' + incidentId}}</h2>
+            
+            <div class="detail-section">
+              <h3 class="section-title">Details</h3>
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <mat-icon class="detail-icon">description</mat-icon>
+                  <div>
+                    <div class="detail-label">Description</div>
+                    <div class="detail-value">{{incidentDetails.description}}</div>
+                  </div>
+                </div>
+                
+                <div class="detail-item">
+                  <mat-icon class="detail-icon">priority_high</mat-icon>
+                  <div>
+                    <div class="detail-label">Severity</div>
+                    <div class="detail-value severity-{{incidentDetails.severity?.toLowerCase()}}">
+                      {{incidentDetails.severity}}
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="detail-item" *ngIf="incidentDetails.project">
+                  <mat-icon class="detail-icon">location_on</mat-icon>
+                  <div>
+                    <div class="detail-label">Project</div>
+                    <div class="detail-value">{{incidentDetails.project.name}}</div>
+                  </div>
+                </div>
+                
+                <div class="detail-item" *ngIf="incidentDetails.assignedTo">
+                  <mat-icon class="detail-icon">person</mat-icon>
+                  <div>
+                    <div class="detail-label">Assigned To</div>
+                    <div class="detail-value">{{incidentDetails.assignedTo.username}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <div class="resolution-actions">
-            <p>{{token ? 'Have you resolved this incident?' : 'Update incident status:'}}</p>
-
-            <div class="button-group">
+  
+          <div class="resolution-section">
+            <h3 class="section-title">{{token ? 'Resolution Confirmation' : 'Status Update'}}</h3>
+            <p class="resolution-prompt">
+              {{token ? 'Have you resolved this incident?' : 'Update incident status:'}}
+            </p>
+            
+            <div class="action-buttons">
               <button mat-raised-button
                       color="primary"
                       (click)="resolve(true)"
-                      [disabled]="loading">
-                {{token ? 'Yes, Resolved' : 'Mark as Resolved'}}
+                      [disabled]="loading"
+                      class="resolve-button">
+                <mat-icon>check_circle</mat-icon>
+                {{token ? 'Confirm Resolution' : 'Mark as Resolved'}}
               </button>
-
+  
               <button mat-stroked-button
+                      color="primary"
                       (click)="resolve(false)"
                       [disabled]="loading"
-                      *ngIf="token || (!token && incidentDetails.status === 'RESOLVED')">
+                      *ngIf="token || (!token && incidentDetails.status === 'RESOLVED')"
+                      class="reopen-button">
+                <mat-icon>cancel</mat-icon>
                 {{token ? 'Not Resolved' : 'Reopen Incident'}}
               </button>
             </div>

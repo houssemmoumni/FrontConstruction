@@ -1,100 +1,115 @@
-<div class="breadcrumb-card mb-4">
-    <h5 class="mb-0">Applications List</h5>
-    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
-      <li class="breadcrumb-item position-relative">
-        <a routerLink="/" class="d-inline-block position-relative">
-          <i class="ri-home-8-line"></i>
-          Dashboard
-        </a>
-      </li>
-      <li class="breadcrumb-item position-relative">Applications</li>
-      <li class="breadcrumb-item position-relative">List</li>
-    </ol>
-  </div>
+<div class="page-wraper">
+    <div class="page-content bg-white">
+        <div class="section-full content-inner bg-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="page-title">Applications List</h2>
+                            <div class="d-flex gap-2">
+                                <mat-form-field appearance="outline">
+                                    <input matInput [(ngModel)]="searchText" (ngModelChange)="applyFilter()"
+                                           placeholder="Search">
+                                    <mat-icon matSuffix>search</mat-icon>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="applyFilter()"
+                                                placeholder="Status">
+                                        <mat-option value="ALL">All</mat-option>
+                                        <mat-option value="ACCEPTED">Accepted</mat-option>
+                                        <mat-option value="REJECTED">Rejected</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
 
-  <div class="d-flex justify-content-between mb-4">
-    <div class="search-bar">
-      <mat-form-field appearance="outline">
-        <input matInput [(ngModel)]="searchText" (ngModelChange)="applyFilter()"
-               placeholder="Search by name, email or job">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-    </div>
+                        <div class="card shadow-sm">
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Full Name</th>
+                                                <th>Email</th>
+                                                <th>Job Offer</th>
+                                                <th>Status</th>
+                                                <th>Resume</th>
+                                                <th class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let application of paginatedApplications" 
+                                                [id]="'app-' + application.id"
+                                                [class.highlight]="highlightedId === application.id">
+                                                <td class="font-weight-600">{{ application.candidate.firstName }} {{ application.candidate.lastName }}</td>
+                                                <td>{{ application.candidate.email }}</td>
+                                                <td>{{ application.jobOffer.title }}</td>
+                                                <td>
+                                                    <span class="badge" [ngClass]="{
+                                                        'badge-success': application.status === 'ACCEPTED',
+                                                        'badge-danger': application.status === 'REJECTED'
+                                                    }">
+                                                        {{ application.status }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button *ngIf="application.resume"
+                                                            class="btn btn-sm btn-primary"
+                                                            (click)="downloadResume(application.resume, application.candidate.firstName + '_' + application.candidate.lastName)">
+                                                        Download CV
+                                                    </button>
+                                                    <span *ngIf="!application.resume" class="text-muted">No CV</span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="d-flex flex-wrap gap-1">
+                                                        <button mat-mini-fab color="primary" 
+                                                                (click)="updateStatus(application.id, 'ACCEPTED')"
+                                                                matTooltip="Accept">
+                                                            <mat-icon>check</mat-icon>
+                                                        </button>
+                                                        <button mat-mini-fab color="warn" 
+                                                                (click)="updateStatus(application.id, 'REJECTED')"
+                                                                matTooltip="Reject">
+                                                            <mat-icon>close</mat-icon>
+                                                        </button>
+                                                        <!-- <button mat-mini-fab color="accent" 
+                                                                (click)="nommer(application.id)"
+                                                                matTooltip="Nominate">
+                                                            <mat-icon>person_add</mat-icon>
+                                                        </button> -->
+                                                        <button *ngIf="application.interviewPassed"
+                                                                mat-mini-fab color="info" 
+                                                                (click)="generateContract(application.id)"
+                                                                matTooltip="Generate Contract">
+                                                            <mat-icon>description</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
-    <div class="status-filter">
-      <mat-form-field appearance="outline">
-        <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="applyFilter()"
-                    placeholder="Filter by status">
-          <mat-option value="ALL">All</mat-option>
-          <mat-option value="ACCEPTED">Accepted</mat-option>
-          <mat-option value="REJECTED">Rejected</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  </div>
+                                            <tr *ngIf="filteredApplications.length === 0">
+                                                <td colspan="6" class="text-center py-4">
+                                                    <div class="empty-state">
+                                                        <i class="far fa-folder-open fa-3x mb-3"></i>
+                                                        <h4>No applications found</h4>
+                                                        <p class="text-muted">There are currently no applications matching your criteria</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
 
-  <div class="table-responsive">
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Full Name</th>
-          <th>Email</th>
-          <th>Job Offer</th>
-          <th>Status</th>
-          <th>Resume</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let application of paginatedApplications" [id]="'app-' + application.id">
-          <td>{{ application.candidate.firstName }} {{ application.candidate.lastName }}</td>
-          <td>{{ application.candidate.email }}</td>
-          <td>{{ application.jobOffer.title }}</td>
-          <td>
-            <span [ngClass]="{
-              'text-success': application.status === 'ACCEPTED',
-              'text-danger': application.status === 'REJECTED'
-            }">
-              {{ application.status }}
-            </span>
-          </td>
-          <td>
-            <button *ngIf="application.resume"
-                    class="btn btn-primary"
-                    (click)="downloadResume(application.resume, application.candidate.firstName + '_' + application.candidate.lastName)">
-              Download CV
-            </button>
-            <span *ngIf="!application.resume">No CV</span>
-          </td>
-          <td>
-            <div class="d-flex flex-wrap gap-1">
-              <button class="btn btn-success" (click)="updateStatus(application.id, 'ACCEPTED')">
-                Accept
-              </button>
-              <button class="btn btn-danger" (click)="updateStatus(application.id, 'REJECTED')">
-                Reject
-              </button>
-              <button class="btn btn-warning" (click)="nommer(application.id)">
-                Nominate
-              </button>
-              <button *ngIf="application.interviewPassed"
-                      class="btn btn-info"
-                      (click)="generateContract(application.id)">
-                <i class="ri-file-text-line"></i> Generate Contract
-              </button>
+                        <mat-paginator [length]="filteredApplications.length"
+                                       [pageSize]="pageSize"
+                                       [pageSizeOptions]="[5, 10, 25, 100]"
+                                       (page)="onPageChange($event)">
+                        </mat-paginator>
+                    </div>
+                </div>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <mat-paginator [length]="filteredApplications.length"
-                 [pageSize]="pageSize"
-                 [pageSizeOptions]="[5, 10, 25, 100]"
-                 (page)="onPageChange($event)">
-  </mat-paginator>
-
-  <div *ngIf="filteredApplications.length === 0" class="alert alert-info mt-4">
-    No applications found.
-  </div>
+        </div>
+    </div>
+</div>

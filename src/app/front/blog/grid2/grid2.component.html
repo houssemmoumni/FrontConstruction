@@ -1,15 +1,19 @@
 <div class="page-wraper">
+    <!-- Header -->
     <app-header-light3></app-header-light3>
-
+  
+    <!-- Content -->
     <div class="page-content bg-gray">
+      <!-- Banner -->
       <app-banner1 [data]="banner"></app-banner1>
-
+  
       <div class="content-inner-2">
         <div class="container">
+          <!-- Search and Filter Row -->
           <div class="row mb-4 align-items-center">
             <div class="col-md-6">
               <button type="button" mat-button class="btn btn-primary" [matMenuTriggerFor]="dateFilterMenu">
-                Filtrer par date
+                <fa-icon [icon]="faFilter" class="mr-2"></fa-icon>Filtrer
               </button>
               <mat-menu #dateFilterMenu="matMenu" class="card-header-menu" xPosition="before">
                 <button mat-menu-item (click)="filterByDate('today')">Aujourd'hui</button>
@@ -20,8 +24,8 @@
             </div>
             <div class="col-md-6 d-flex align-items-center justify-content-end">
               <div class="notification-container">
-                <div class="notification-bell" (click)="toggleNotifications()">
-                  <span class="material-icons">notifications</span>
+                <div class="notification-bell" (click)="toggleNotifications($event)">
+                  <fa-icon [icon]="unreadNotificationsCount > 0 ? faBell : farBell"></fa-icon>
                   <span *ngIf="unreadNotificationsCount > 0" class="notification-badge">
                     {{ unreadNotificationsCount }}
                   </span>
@@ -29,87 +33,89 @@
                 <div *ngIf="showNotifications" class="notification-dropdown">
                   <div class="notification-header">
                     <h4>Notifications</h4>
-                    <button class="mark-all-read" (click)="markAllAsRead()">Tout marquer comme lu</button>
+                    <button class="mark-all-read" (click)="markAllAsRead($event)">
+                      Tout marquer comme lu
+                    </button>
                   </div>
                   <ul class="notification-list">
                     <li *ngFor="let notification of notifications"
                         class="notification-item"
                         [class.unread]="!notification.is_read"
                         (click)="openNotificationModal(notification)">
-                      <div class="notification-icon">
-                        <span *ngIf="notification.type === 'rejected'" class="text-danger">❌</span>
-                        <span *ngIf="notification.type === 'accepted'" class="text-success">✅</span>
-                        <span *ngIf="notification.type === 'interview'" class="text-primary">📅</span>
-                      </div>
                       <div class="notification-content">
                         <p class="notification-message">{{ notification.message }}</p>
                         <div class="notification-meta">
                           <span class="notification-time">{{ notification.created_at | date:'shortTime' }}</span>
-                          <button *ngIf="!notification.is_read"
-                                  class="mark-as-read"
-                                  (click)="markAsRead(notification); $event.stopPropagation()">
-                            Marquer comme lu
-                          </button>
                         </div>
                       </div>
                     </li>
                     <li *ngIf="notifications.length === 0" class="empty-notifications">
-                      <i class="fas fa-bell-slash"></i>
+                      <fa-icon [icon]="faBellSlash"></fa-icon>
                       <p>Aucune notification</p>
                     </li>
                   </ul>
                 </div>
               </div>
-              <input type="text" class="form-control" placeholder="Rechercher par titre ou description" [(ngModel)]="searchQuery" (input)="applySearchFilter()">
+              <input type="text" class="form-control ml-3" placeholder="Rechercher des offres..."
+                    [(ngModel)]="searchQuery" (input)="applySearchFilter()">
             </div>
           </div>
-
+  
+          <!-- Job Grid -->
           <div class="row">
             <div [ngClass]="{'col-xl-9 col-lg-8': layout.sidebar === true, 'col-xl-12 col-lg-12': layout.sidebar === false}">
-              <div id="masonry" class="dlab-blog-grid-2">
-                <div class="row">
-                  <div class="post card-container {{ layout.gridClass }} mb-4" *ngFor="let item of displayedBlogs">
-                    <div class="card shadow-sm h-100">
-                      <img *ngIf="item.image" [src]="item.image" class="card-img-top" alt="Blog Image">
-                      <div class="card-body">
-                        <h5 class="card-title font-weight-bold">{{ item.title }}</h5>
-                        <div class="card-text text-muted" [ngClass]="{'expanded': selectedItem === item}">
-                          {{ item.description || 'Pas de description disponible' }}
-                        </div>
-                        <a *ngIf="item.description && item.description.length > 50" href="javascript:void(0);" (click)="showFullDescription(item)" class="text-primary">
-                          {{ selectedItem === item ? 'Read Less' : 'Read More' }}
-                        </a>
-                        <p class="card-text">
-                          <small class="text-muted">Publié le : {{ item.postedDate | date: 'dd/MM/yyyy' }}</small>
-                        </p>
-                        <span class="badge badge-pill"
+              <div id="masonry" class="dlab-blog-grid-3 row">
+                <div *ngFor="let item of displayedBlogs" class="post card-container {{ layout.gridClass }} col-md-6 col-sm-12 mb-4">
+                  <div class="blog-post blog-grid blog-rounded blog-effect1">
+                    <div class="dlab-post-media dlab-img-effect">
+                      <a [routerLink]="['/postuler', item.id]">
+                        <img [src]="item.image" alt="{{ item.title }}" class="img-fluid">
+                      </a>
+                    </div>
+                    <div class="dlab-info p-a20 border-1">
+                      <div class="dlab-post-meta">
+                        <ul>
+                          <li class="post-date">Publié le {{ item.postedDate | date:'dd/MM/yyyy' }}</li>
+                        </ul>
+                      </div>
+                      <div class="dlab-post-title">
+                        <h4 class="post-title">
+                          <a [routerLink]="['/postuler', item.id]">{{ item.title }}</a>
+                        </h4>
+                      </div>
+                      <div class="dlab-post-text">
+                        <p>{{ (item.description || 'Aucune description disponible') | slice:0:100 }}{{ item.description && item.description.length > 100 ? '...' : '' }}</p>
+                      </div>
+                      <div class="dlab-post-status">
+                        <span class="badge"
                               [ngClass]="{'badge-success': item.status === 'OPEN', 'badge-danger': item.status === 'CLOSED'}">
-                          {{ item.status === 'OPEN' ? 'Ouvert' : 'Fermé' }}
+                          {{ item.status === 'OPEN' ? 'Recrutement actif' : 'Poste pourvu' }}
                         </span>
-                        <a [routerLink]="['/postuler', item.id]" class="btn btn-primary btn-block mt-3">
-                          Postuler
+                      </div>
+                      <div class="dlab-post-readmore">
+                        <a [routerLink]="['/postuler', item.id]" title="Postuler" rel="bookmark" class="site-button">
+                          Postuler <fa-icon [icon]="faArrowRight"></fa-icon>
                         </a>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
+  
+              <!-- Pagination -->
               <div class="pagination-bx clearfix m-b30 text-center">
                 <ul class="pagination">
-                  <li class="page-item previous" [class.disabled]="currentPage === 1">
-                    <a class="page-link" href="javascript:void(0);" (click)="changePage(currentPage - 1)">
-                      <i class="ti-arrow-left"></i> Précédent
+                  <li class="previous" [class.disabled]="currentPage === 1">
+                    <a (click)="changePage(currentPage - 1)">
+                      <fa-icon [icon]="faArrowLeft"></fa-icon> Précédent
                     </a>
                   </li>
-                  <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
-                    <a class="page-link" href="javascript:void(0);" (click)="changePage(page)">
-                      {{ page }}
-                    </a>
+                  <li *ngFor="let page of pages" [class.active]="page === currentPage">
+                    <a (click)="changePage(page)">{{ page }}</a>
                   </li>
-                  <li class="page-item next" [class.disabled]="currentPage === totalPages">
-                    <a class="page-link" href="javascript:void(0);" (click)="changePage(currentPage + 1)">
-                      Suivant <i class="ti-arrow-right"></i>
+                  <li class="next" [class.disabled]="currentPage === totalPages">
+                    <a (click)="changePage(currentPage + 1)">
+                      Suivant <fa-icon [icon]="faArrowRight"></fa-icon>
                     </a>
                   </li>
                 </ul>
@@ -119,8 +125,12 @@
         </div>
       </div>
     </div>
-
+  
+    <!-- Footer -->
     <app-footer13></app-footer13>
-
-    <button class="scroltop fa fa-chevron-up" (click)="scroll_top()"></button>
+  
+    <!-- Scroll Top Button -->
+    <button class="scroltop" (click)="scroll_top()">
+      <fa-icon [icon]="faArrowUp"></fa-icon>
+    </button>
   </div>
